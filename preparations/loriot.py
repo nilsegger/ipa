@@ -6,7 +6,8 @@ import websockets
 import asyncio
 import ujson
 
-from payload_decoders import elsys_ersoco2, lora_adeunis
+from preparations.payload_decoders import lora_adeunis
+from preparations.payload_decoders import elsys_ersoco2
 
 token = "vgEAGQAAABZsb3JhLmF2ZWN0cmlzb25saW5lLmNoNkHslMchluLwH41kU_YDTg=="
 uri = "wss://lora.avectrisonline.ch/app?token={}"
