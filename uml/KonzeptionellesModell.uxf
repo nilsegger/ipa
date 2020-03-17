@@ -40,7 +40,7 @@ Personal, Admin</panel_attributes><additional_attributes></additional_attributes
 m1=0..1
 m2=0..*</panel_attributes><additional_attributes>80;10;10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>310</x><y>470</y><w>420</w><h>150</h></coordinates><panel_attributes>lt=&lt;-
 m1=1
-m2=0..*</panel_attributes><additional_attributes>390;10;390;120;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>640</y><w>270</w><h>40</h></coordinates><panel_attributes>lt=&lt;-&gt;
+m2=0..*</panel_attributes><additional_attributes>390;10;390;120;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>640</y><w>270</w><h>40</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;
 m1=0..*
 m2=1</panel_attributes><additional_attributes>10;10;250;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>80</x><y>570</y><w>240</w><h>110</h></coordinates><panel_attributes>Meldung
 -
