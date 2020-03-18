@@ -1,60 +1,60 @@
-<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>910</x><y>570</y><w>160</w><h>80</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
-Person
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>1150</x><y>700</y><w>160</w><h>80</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
+Personen
 -
-&lt;&lt;pk&gt;&gt; id: int {auto}
-rolle: Rolle {not null}</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>930</x><y>430</y><w>120</w><h>60</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+&lt;&lt;pk&gt;&gt; id: int {auto, not null}
+rolle: Rolle {not null}</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1170</x><y>560</y><w>120</w><h>60</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
 Rolle
 -
-ADMIN, PERSONAL</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>980</x><y>480</y><w>30</w><h>110</h></coordinates><panel_attributes>lt=-&gt;</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>520</x><y>90</y><w>160</w><h>80</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
+ADMIN, PERSONAL</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1220</x><y>610</y><w>30</w><h>110</h></coordinates><panel_attributes>lt=-&gt;</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>760</x><y>220</y><w>160</w><h>80</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
 Gebäude
 -
-&lt;&lt;pk&gt;&gt; id: int {auto}
-name: varchar {not null}</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>520</x><y>250</y><w>170</w><h>120</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
-Stockwerk
+&lt;&lt;pk&gt;&gt; id: int {auto, not null}
+name: varchar[100] {not null}</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>760</x><y>380</y><w>170</w><h>120</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
+Stockwerke
 -
-&lt;&lt;pk&gt;&gt; id: int {auto}
+&lt;&lt;pk&gt;&gt; id: int {auto, not null}
 &lt;&lt;fk&gt;&gt; idGebäude: int {not null}
-name: varchar {not null}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>580</x><y>160</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1..*</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>520</x><y>440</y><w>170</w><h>120</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
-Raum
+name: varchar[100] {not null}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>820</x><y>290</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1..*</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>760</x><y>570</y><w>170</w><h>120</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
+Räume
 -
-&lt;&lt;pk&gt;&gt; id: int {auto}
+&lt;&lt;pk&gt;&gt; id: int {auto, not null}
 &lt;&lt;fk&gt;&gt; idStockwerk: int {not null}
-name: varchar {not null}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>580</x><y>360</y><w>50</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1..*</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>180</x><y>450</y><w>230</w><h>110</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
-Sensor
+name: varchar {not null}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>820</x><y>490</y><w>50</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1..*</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>420</x><y>580</y><w>230</w><h>110</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
+Sensoren
 -
-&lt;&lt;pk&gt;&gt; dev_eui: varchar {not null}
+&lt;&lt;pk&gt;&gt; dev_eui: varchar[16] {not null}
 &lt;&lt;fk&gt;&gt; idRaum: int {not null}
-name: varchar
+name: varchar[100]
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>400</x><y>490</y><w>140</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m2=0..*</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>180</x><y>260</y><w>230</w><h>130</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
-Sensor Wert
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>620</y><w>140</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..*</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>420</x><y>390</y><w>230</w><h>130</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
+SensorenWerte
 -
-&lt;&lt;pk&gt;&gt; id: int {auto}
-&lt;&lt;fk&gt;&gt; dev_euiSensor: varchar {not null}
-roh: varchar
-dekodiertJSON: varchar
-erhalten: timestamp</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>380</y><w>50</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=0..*</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>400</x><y>720</y><w>250</w><h>170</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
-Meldung
+&lt;&lt;pk&gt;&gt; id: int {auto, not null}
+&lt;&lt;fk&gt;&gt; dev_euiSensor: varchar[16] {not null}
+roh: text
+dekodiertJSON: text
+erhalten: timestamp</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>510</y><w>50</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=0..*</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>640</x><y>850</y><w>250</w><h>170</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
+Meldungen
 -
-&lt;&lt;pk&gt;&gt; id: int {auto}
-&lt;&lt;fk&gt;&gt; dev_euiSensor: varcahr
+&lt;&lt;pk&gt;&gt; id: int {auto, not null}
+&lt;&lt;fk&gt;&gt; dev_euiSensor: varchar[16]
 &lt;&lt;fk&gt;&gt; idRaum: int {not null}
 &lt;&lt;fk&gt;&gt; idPerson: int
 art: MeldungsArt {not null}
 datum: timestamp {not null}
 bearbeitet: boolean {false}
-beschreibung: varchar {not null}
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>200</x><y>760</y><w>140</w><h>60</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+beschreibung: text{not null}
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>440</x><y>890</y><w>140</w><h>60</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
 MeldungsArt
 -
-Automatisch, Personal</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>330</x><y>770</y><w>90</w><h>30</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>640</y><w>330</w><h>160</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;
+Automatisch, Personal</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>570</x><y>900</y><w>90</w><h>30</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>Relation</id><coordinates><x>880</x><y>770</y><w>330</w><h>160</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;
 m1=0..*
-m2=1</panel_attributes><additional_attributes>10;130;300;130;300;10</additional_attributes></element><element><id>Relation</id><coordinates><x>320</x><y>550</y><w>100</w><h>210</h></coordinates><panel_attributes>lt=&lt;-
+m2=1</panel_attributes><additional_attributes>10;130;300;130;300;10</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>680</y><w>100</w><h>210</h></coordinates><panel_attributes>lt=&lt;-
 m1=1
-m2=0..*</panel_attributes><additional_attributes>10;10;10;180;80;180</additional_attributes></element><element><id>Relation</id><coordinates><x>570</x><y>550</y><w>50</w><h>190</h></coordinates><panel_attributes>lt=&lt;-
+m2=0..*</panel_attributes><additional_attributes>10;10;10;180;80;180</additional_attributes></element><element><id>Relation</id><coordinates><x>810</x><y>680</y><w>50</w><h>190</h></coordinates><panel_attributes>lt=&lt;-
 m1=0..1
 m2=0..*</panel_attributes><additional_attributes>10;10;10;170</additional_attributes></element></diagram>
