@@ -1,0 +1,9 @@
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLDeployment</id><coordinates><x>440</x><y>370</y><w>150</w><h>90</h></coordinates><panel_attributes>Uvicorn</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>410</x><y>640</y><w>520</w><h>90</h></coordinates><panel_attributes>Frontend</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>410</x><y>290</y><w>510</w><h>210</h></coordinates><panel_attributes>Server SI1010023</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>720</x><y>370</y><w>150</w><h>90</h></coordinates><panel_attributes>IIS</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>450</y><w>100</w><h>210</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-
+text/html
+text/css
+text/javascript</panel_attributes><additional_attributes>10;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>450</y><w>140</w><h>210</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-
+http://si1010023/api/</panel_attributes><additional_attributes>10;10;10;190</additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>450</y><w>110</w><h>210</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+application/json
+image/jpeg
+image/png</panel_attributes><additional_attributes>10;10;10;190</additional_attributes></element><element><id>Relation</id><coordinates><x>840</x><y>450</y><w>120</w><h>210</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-
+http://si1010023/</panel_attributes><additional_attributes>10;10;10;190</additional_attributes></element></diagram>

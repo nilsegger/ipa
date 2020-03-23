@@ -1,0 +1,12 @@
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLDeployment</id><coordinates><x>340</x><y>310</y><w>880</w><h>60</h></coordinates><panel_attributes>API</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLActor</id><coordinates><x>750</x><y>560</y><w>60</w><h>110</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>340</x><y>510</y><w>880</w><h>140</h></coordinates><panel_attributes>Benutzer</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>350</x><y>360</y><w>90</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-
+Login Daten</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>360</y><w>110</w><h>170</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+Refresh Token
+Access Token</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>360</y><w>120</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-
+Aufruf auf Daten
+mit Access Token</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>670</x><y>360</y><w>60</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-
+Daten</panel_attributes><additional_attributes>10;150;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>740</x><y>360</y><w>120</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-
+Aufruf auf Daten
+mit Access Token</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>860</x><y>360</y><w>170</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-
+Access Token abgelaufen</panel_attributes><additional_attributes>10;150;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1020</x><y>360</y><w>110</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-
+Refresh Token</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>1140</x><y>360</y><w>100</w><h>170</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+Access Token</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element></diagram>
