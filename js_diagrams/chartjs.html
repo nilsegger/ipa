@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chart.js</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+    <style>
+        .container {
+            position: absolute;
+            top: 50%;
+            margin-top: -250px;
+            left: 50%;
+            margin-left: -250px;
+            height: 500px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Chart.js</h1>
+
+<div class="container">
+    <canvas id="myChart"></canvas>
+</div>
+
+<script>
+    let canvas = document.getElementById('myChart');
+    let ctx = canvas.getContext('2d');
+    ctx.width = 500;
+    ctx.heigth = 500;
+    let myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['01.01', '02.01', '03.01', '04.01', '05.01', '06.01'],
+            datasets: [{
+                label: 'Sensor 1',
+                data: [20, 18, 22, 24, 20, 23],
+                borderWidth: 1
+            }]
+        }, options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+
+</body>
+</html>
