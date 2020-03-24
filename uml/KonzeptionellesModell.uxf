@@ -1,66 +1,66 @@
-<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>610</x><y>658</y><w>250</w><h>140</h></coordinates><panel_attributes>Sensor
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>860</x><y>607</y><w>250</w><h>110</h></coordinates><panel_attributes>Sensor
 -
 - name: String
 - dev_eui: String
 - art: Sensor Art
 - daten: List&lt;Sensor Wert&gt;
-- beobachter: List&lt;Wert Beobachter&gt;
-- materialProMeldung: Material Pro Meldung</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>930</x><y>398</y><w>230</w><h>60</h></coordinates><panel_attributes>Gebäude
+- beobachter: List&lt;Wert Beobachter&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1180</x><y>347</y><w>230</w><h>60</h></coordinates><panel_attributes>Gebäude
 -
 - name: String
-- stockwerke: List&lt;Stockwerk&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>960</x><y>518</y><w>170</w><h>90</h></coordinates><panel_attributes>Stockwerk
+- stockwerke: List&lt;Stockwerk&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1210</x><y>467</y><w>170</w><h>90</h></coordinates><panel_attributes>Stockwerk
 -
 - name: String
 - räume: List&lt;Räume&gt;
-- niveau: int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>950</x><y>668</y><w>180</w><h>80</h></coordinates><panel_attributes>Raum
+- niveau: int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1200</x><y>617</y><w>180</w><h>80</h></coordinates><panel_attributes>Raum
 -
 - name: String
-- sensoren: List&lt;Sensor&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1030</x><y>598</y><w>50</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1..*</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>1030</x><y>448</y><w>50</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1..*</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>850</x><y>698</y><w>120</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m2=0..*</panel_attributes><additional_attributes>100;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>400</x><y>578</y><w>150</w><h>90</h></coordinates><panel_attributes>Wert Beobachter
+- sensoren: List&lt;Sensor&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1280</x><y>547</y><w>50</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1..*</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>1280</x><y>397</y><w>50</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1..*</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>1100</x><y>647</y><w>120</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..*</panel_attributes><additional_attributes>100;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>540</x><y>527</y><w>260</w><h>110</h></coordinates><panel_attributes>Wert Beobachter
 -
 - name: String
 - art: Wert Beobachter Art
 - wertName: String
-- auslöser: int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>560</x><y>498</y><w>190</w><h>80</h></coordinates><panel_attributes>Sensor Wert
+- auslöser: int
+- materialProMeldung: Material Pro Meldung</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>810</x><y>447</y><w>190</w><h>80</h></coordinates><panel_attributes>Sensor Wert
 -
 - roh: String
 - dekodiert: Map&lt;String, Any&gt;
-- erhalten: Datum</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>568</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=0..*</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>500</x><y>528</y><w>80</w><h>70</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>60;10;10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>500</x><y>658</y><w>130</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m2=0..*</panel_attributes><additional_attributes>110;50;10;50;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1100</x><y>878</y><w>130</w><h>60</h></coordinates><panel_attributes>Person
+- erhalten: Datum</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>890</x><y>517</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=0..*</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>477</y><w>80</w><h>70</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>60;10;10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>627</y><w>130</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..*</panel_attributes><additional_attributes>110;30;10;30;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1350</x><y>827</y><w>130</w><h>60</h></coordinates><panel_attributes>Person
 -
 - name: String
-- rolle: Rolle</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1110</x><y>788</y><w>100</w><h>60</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+- rolle: Rolle</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1360</x><y>737</y><w>100</w><h>60</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
 Rolle
 -
-Personal, Admin</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1150</x><y>838</y><w>30</w><h>60</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;40;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>750</x><y>878</y><w>240</w><h>60</h></coordinates><panel_attributes>Personal Meldung
+Personal, Admin</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1400</x><y>787</y><w>30</w><h>60</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;40;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1000</x><y>827</y><w>240</w><h>60</h></coordinates><panel_attributes>Personal Meldung
 -
 - melder: Person
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>530</x><y>728</y><w>100</w><h>130</h></coordinates><panel_attributes>lt=&lt;-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>780</x><y>677</y><w>100</w><h>130</h></coordinates><panel_attributes>lt=&lt;-
 m1=0..1
-m2=0..*</panel_attributes><additional_attributes>80;10;10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>570</x><y>738</y><w>420</w><h>150</h></coordinates><panel_attributes>lt=&lt;-
+m2=0..*</panel_attributes><additional_attributes>80;10;10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>820</x><y>687</y><w>420</w><h>150</h></coordinates><panel_attributes>lt=&lt;-
 m1=1
-m2=0..*</panel_attributes><additional_attributes>390;10;390;120;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>980</x><y>908</y><w>140</w><h>40</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;
+m2=0..*</panel_attributes><additional_attributes>390;10;390;120;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>1230</x><y>857</y><w>140</w><h>40</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;
 m1=0..*
-m2=1</panel_attributes><additional_attributes>10;10;120;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>340</x><y>838</y><w>240</w><h>110</h></coordinates><panel_attributes>Meldung
+m2=1</panel_attributes><additional_attributes>10;10;120;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>590</x><y>787</y><w>240</w><h>110</h></coordinates><panel_attributes>Meldung
 -
 - betroffenerSensor: Sensor
 - betroffenerRaum: Raum
 - datum: Datum
 - bearbeitet: Boolean
-- beschreibung: String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>570</x><y>908</y><w>200</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;180;10</additional_attributes></element><element><id>Relation</id><coordinates><x>410</x><y>658</y><w>30</w><h>200</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;180;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>770</x><y>508</y><w>170</w><h>60</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+- beschreibung: String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>820</x><y>857</y><w>200</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;180;10</additional_attributes></element><element><id>Relation</id><coordinates><x>660</x><y>627</y><w>30</w><h>180</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;160;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1020</x><y>457</y><w>170</w><h>60</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
 Sensor Art
 -
-Adeunis RF, Elsys CO2, Tabs</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>548</y><w>120</w><h>100</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>100;80;10;80;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>220</x><y>498</y><w>140</w><h>60</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+Adeunis RF, Elsys CO2, Tabs</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>497</y><w>90</w><h>100</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>70;80;10;80;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>420</x><y>447</y><w>140</w><h>60</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
 Wert Beobachter Art
 -
-Richtwert, Zählerstand</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>830</x><y>558</y><w>30</w><h>120</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>700</x><y>178</y><w>120</w><h>50</h></coordinates><panel_attributes>Material
+Richtwert, Zählerstand</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1080</x><y>507</y><w>30</w><h>120</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>640</x><y>147</y><w>120</w><h>50</h></coordinates><panel_attributes>Material
 -
-name: String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>650</x><y>308</y><w>250</w><h>100</h></coordinates><panel_attributes>Material pro Meldung
+name: String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>590</x><y>307</y><w>250</w><h>100</h></coordinates><panel_attributes>Material pro Meldung
 -
-material: List&lt; Tuple&lt;Anzahl, Material&gt; &gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>398</y><w>50</w><h>280</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m2=0..1</panel_attributes><additional_attributes>10;260;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>740</x><y>218</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=-&gt;
+material: List&lt; Tuple&lt;Anzahl, Material&gt; &gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>690</x><y>397</y><w>50</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..1</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>680</x><y>187</y><w>50</w><h>140</h></coordinates><panel_attributes>lt=-&gt;
 m2=0..*
-m1=0..*</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element></diagram>
+m1=0..*</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element></diagram>
