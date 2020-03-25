@@ -9,6 +9,8 @@ async def test_tabs_decoder():
 
     decoder = TabsDecoder()
 
+    # TODO Batterien Wert korrekt umwandeln.
+
     json = await decoder.decode(data_door_closed)
     assert not json['status']
     assert json['vdd'] == 85
