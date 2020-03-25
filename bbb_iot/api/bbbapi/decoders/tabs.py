@@ -28,12 +28,7 @@ class TabsDecoder(Decoder):
         # if status is True, door is open
         status = bin(int(status_bits, base=16))[-1] == '1'
 
-        battery_bits = bin(int(data[2:4], base=16))
-        battery_bits = battery_bits[len(battery_bits) - 4:]
-        battery_bits = [battery_bits[i] for i in range(len(battery_bits) - 1,
-                                                       -1, -1)]
-        battery = sum([pow(i, 2) for i in range(len(battery_bits)) if
-                       battery_bits[i] == '1'])
+        battery = int(data[3], base=16)
 
         return {
             'status': status,

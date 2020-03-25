@@ -11,9 +11,9 @@ async def test_tabs_decoder():
 
     json = await decoder.decode(data_door_closed)
     assert not json['status']
-    assert json['vdd'] == 92
+    assert json['vdd'] == 85
 
     json = await decoder.decode(data_door_opened)
     assert json['status']
-    assert json['vdd'] == 92
+    assert json['vdd'] == 85
 
