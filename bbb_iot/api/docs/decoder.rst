@@ -21,3 +21,10 @@ Interface
 
 .. autoclass:: decoders.decoder.Decoder
     :members:
+
+-------------
+Elsys ERS CO2
+-------------
+
+.. autoclass:: decoders.elsys.ElsysDecoder
+    :members:
