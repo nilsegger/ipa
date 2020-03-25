@@ -35,3 +35,10 @@ Adeunis RF
 
 .. autoclass:: decoders.adeunis.AdeunisDecoder
     :members:
+
+----
+Tabs
+----
+
+.. autoclass:: decoders.tabs.TabsDecoder
+    :members:
