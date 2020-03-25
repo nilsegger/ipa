@@ -4,9 +4,7 @@ from decoders.decoder import Decoder
 
 class ElsysDecoder(Decoder):
     """Implementation für die Dekodierung eines Wertes eines Elsys ERS CO2
-    Sensors. Basierend auf das Datenblatt_.
-
-    .. _Datenblatt: https://elsys.se/public/datasheets/ERS_CO2_datasheet.pdf
+    Sensors. Basierend auf das `Datenblatt <https://elsys.se/public/datasheets/ERS_CO2_datasheet.pdf>`__.
     """
 
     async def decode(self, data: str) -> Dict[str, Any]:
@@ -22,7 +20,7 @@ class ElsysDecoder(Decoder):
             data (str): Elsys ERS CO2 Sensor Wert im Hex Format.
 
         Returns:
-            Ein Dict, welches die oben genannten Werte enthält.
+            Ein Dict, welches die Oben genannten Werte enthält.
         """
 
         # Der untenstehende Code ist als Vorarbeit deklariert.

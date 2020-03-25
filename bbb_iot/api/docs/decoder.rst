@@ -28,3 +28,10 @@ Elsys ERS CO2
 
 .. autoclass:: decoders.elsys.ElsysDecoder
     :members:
+
+----------
+Adeunis RF
+----------
+
+.. autoclass:: decoders.adeunis.AdeunisDecoder
+    :members:
