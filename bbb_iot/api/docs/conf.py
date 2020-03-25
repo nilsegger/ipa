@@ -16,6 +16,9 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 # -- Project information -----------------------------------------------------
 

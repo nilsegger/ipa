@@ -3,18 +3,29 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to BBB Building Management's documentation!
-===================================================
+BBB Building Management's documentation
+=======================================
+
+Dies ist die technische Dokumentation für den Python Quellcode im Backend.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   decoder
 
+
+Sensoren
+========
+
+Es gibt vordefinierte Sensoren, möchte man einen Neuen hinzufügen, so muss
+für diesen einen :class:`~decoder.Decoder` erstellt werden und einen
+Eintrag in die folgende Enumerierung eingetragen werden.
+
+.. autoclass:: common_types.SensorTypes
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
