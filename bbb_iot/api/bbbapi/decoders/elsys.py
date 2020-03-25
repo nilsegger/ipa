@@ -1,11 +1,15 @@
 from typing import Dict, Any
-from decoders.decoder import Decoder
+from bbbapi.decoders.decoder import Decoder
+from bbbapi.common_types import SensorTypes
 
 
 class ElsysDecoder(Decoder):
     """Implementation für die Dekodierung eines Wertes eines Elsys ERS CO2
     Sensors. Basierend auf das `Datenblatt <https://elsys.se/public/datasheets/ERS_CO2_datasheet.pdf>`__.
     """
+
+    def __init__(self):
+        super().__init__(SensorTypes.ELSYS_ERS_CO2)
 
     async def decode(self, data: str) -> Dict[str, Any]:
         """Dekodiert data in die Werte

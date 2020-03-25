@@ -1,11 +1,15 @@
 from typing import Dict, Any
-from decoders.decoder import Decoder
+from bbbapi.decoders.decoder import Decoder
+from bbbapi.common_types import SensorTypes
 
 
 class TabsDecoder(Decoder):
     """Dekodiert einen Wert eines Tabs Sensors anhand dieses `Datenblatts
     <https://iot-shop.de/wp-content/uploads/2020/03/RM_Door-_-Window-Sensor_20200205_v2.pdf>`__
     """
+
+    def __init__(self):
+        super().__init__(SensorTypes.TABS)
 
     async def decode(self, data: str) -> Dict[str, Any]:
         """Dekodiert den Sensor Wert in folgende Werte.
@@ -33,5 +37,5 @@ class TabsDecoder(Decoder):
 
         return {
             'status': status,
-            'vdd': battery
+            'vdd': int(100 / 14 * battery)
         }

@@ -1,4 +1,4 @@
-from common_types import SensorTypes
+from bbbapi.common_types import SensorTypes
 from typing import Dict, Any
 
 

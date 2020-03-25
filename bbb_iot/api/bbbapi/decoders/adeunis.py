@@ -1,11 +1,15 @@
 from typing import Dict, Any
-from decoders.decoder import Decoder
+from bbbapi.decoders.decoder import Decoder
+from bbbapi.common_types import SensorTypes
 
 
 class AdeunisDecoder(Decoder):
     """Decoder für den Adeunis Test Sensor. Die Dekodierung passiert
     basierend auf das `Datenblatt <https://www.adeunis.com/wp-content/uploads/2017/08/User_Guide_FTD_LoRaWAN_EU863-870_V1.2.3.pdf>`__.
     """
+
+    def __init__(self):
+        super().__init__(SensorTypes.ADEUNIS_RF)
 
     async def decode(self, data: str) -> Dict[str, Any]:
         """Dekodiert den gegebenen Sensor Wert in folgende Werte.
