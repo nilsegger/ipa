@@ -9,6 +9,7 @@ from tedious.util import create_uuid
 
 from bbbapi.common_types import Roles
 from bbbapi.models.personal import Personal
+from bbbapi.util import sanitize_fields
 
 
 class PersonalController(ModelController):
@@ -57,12 +58,12 @@ class PersonalController(ModelController):
 
     async def update(self, connection: SQLConnectionInterface, model: Model, _global: Model = None):
         """Aktualisiert Personal. Wenn Benutzername oder Passwort nicht leer ist, so wird das auch das Login aktualisiert."""
-
+        await self.validate(model, ValidationTypes.CREATE)
         if not model["benutzername"].empty or not model["passwort"].empty or not model["rolle"].empty:
             await self.auth.update(connection, Requester(uuid=model["uuid"].value),
                                    model["benutzername"].value, model["passwort"].value,
                                    model["rolle"].value.value if not model["rolle"].empty else None)
-        return await super().update(connection, model, _global)
+        await connection.execute(await self._update_stmt(), *await self._model_to_sql_values(model))
 
     async def get_manipulation_permissions(self, requester: Requester, model: Model) -> Tuple[ManipulationPermissions, Dict[str, Any]]:
         """Nur Administratoren dürfen eine Person erstellen, aktualisieren oder löschen."""
@@ -101,4 +102,6 @@ class PersonalController(ModelController):
                 raise ValidationError(['uuid'], "UUID can not be set in advance.")
 
             await model.validate_not_empty(['name', 'benutzername', 'passwort', 'rolle'])
+
+        sanitize_fields(['name', 'benutzername'])
 
