@@ -1,4 +1,3 @@
-from starlette.testclient import TestClient
 import tedious.config
 from bbbapi.common_types import Roles
 from bbbapi.routes import create_app
@@ -8,16 +7,6 @@ from ..util import get_admin_headers, get_personal_headers
 tedious.config.load_config('config.ini')
 
 app = create_app()
-
-
-def compare_global(client, uri, headers, expected):
-    response = client.get(uri, headers=headers)
-    assert response.status_code == 200
-    json = response.json()
-    assert json['name'] == expected['name']
-    assert json['benutzername'] == expected['benutzername']
-    assert json['rolle'] == expected['rolle']
-
 
 def test_personal_route():
     route_test(app, get_admin_headers(), get_personal_headers(),

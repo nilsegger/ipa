@@ -10,5 +10,3 @@ app = create_app()
 def test_gebaeude_route():
 
     route_test(app, get_admin_headers(), get_personal_headers(), {'name': 'Martinsberg'}, {'name': 'Bruggerstrasse'}, ['name'], 'id', '/gebaeude')
-
-    # TODO get vum controller muess vermuetlich no verbesseret werde und test_route bi personal implementeire.

@@ -1,4 +1,9 @@
+from bbbapi.controller.gebaeude_controller import GebaeudeController
+
+from bbbapi.models.gebaeude import Gebaeude
 from tedious.auth.auth import Auth
+from tedious.tests.util import TestConnection
+
 from bbbapi.common_types import Roles
 import asyncio
 import tedious.config
@@ -28,3 +33,13 @@ def get_admin_headers():
 def get_personal_headers():
     """Erstellt den Authorization Header welcher dafür benützt wird einen Authorisierten Aufruf auf die Datenbank zu machen."""
     return {'Authorization': 'Bearer {}'.format(create_non_admin_token().decode('utf-8'))}
+
+
+# todo models erstelle
+
+async def create_gebaeude():
+    model = Gebaeude()
+    model["name"].value = "Test Gebäude"
+    async with TestConnection() as connection:
+        await GebaeudeController().create(connection, model)
+    return model

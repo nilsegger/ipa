@@ -1,15 +1,27 @@
 from starlette.testclient import TestClient
+from tedious.util import KeyPathsIter
+
+
+def compare_dict(fields, actual, expected):
+    if isinstance(fields, list):
+        fields = KeyPathsIter(fields)
+
+    for key, _iter in fields:
+        if _iter is None:
+            assert actual[key] == expected[key]
+        else:
+            compare_dict(_iter, actual[key], expected[key])
 
 
 def compare_global(fields, client, uri, headers, expected):
     response = client.get(uri, headers=headers)
     assert response.status_code == 200
     json = response.json()
-    for field in fields:
-        assert json[field] == expected[field]
+    compare_dict(fields, json, expected)
 
 
-def route_test(app, valid_header, invalid_header, create_request, update_request,
+def route_test(app, valid_header, invalid_header, create_request,
+               update_request,
                compare_fields, identifier, uri):
     """Testet Route ob Modell erstellt, aktualisiert und gelöscht werden kann.
     Testet zusätzlich unatuorisierter Zugriff und Zugriff auf nicht existierendes Modell.

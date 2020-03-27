@@ -1,6 +1,8 @@
 from uuid import UUID
 
 import tedious.config
+from bbbapi.controller.stockwerk_controller import StockwerkController
+
 from bbbapi.controller.gebaeude_controller import GebaeudeController
 
 from bbbapi.models.gebaeude import Gebaeude
@@ -12,11 +14,13 @@ from tedious.sql.postgres import PostgreSQLDatabase
 
 from bbbapi.controller.personal_controller import PersonalController
 from bbbapi.models.personal import Personal
+from bbbapi.models.stockwerk import Stockwerk
 
 controller = None
 auth_resource = None
 personal_form_resource = None
 gebaeude_form_resource = None
+stockwerke_form_resource = None
 
 
 async def login(request):
@@ -43,6 +47,15 @@ async def gebaeude_form(request):
     return await controller.handle(request, gebaeude_form_resource, model=model)
 
 
+async def stockwerk_form(request):
+    """Route für das Erstellen, Aktualisieren und Löschen von Stockwerken."""
+
+    model = None
+    if 'id' in request.path_params:
+        model = Stockwerk(_id=int(request.path_params['id']))
+    return await controller.handle(request, stockwerke_form_resource,
+                                   model=model)
+
 def create_app():
     """Creates app and adds all routes."""
     global controller
@@ -59,6 +72,9 @@ def create_app():
     global gebaeude_form_resource
     gebaeude_form_resource = FormResource(Gebaeude, GebaeudeController(), 'id')
 
+    global stockwerke_form_resource
+    stockwerke_form_resource = FormResource(Stockwerk, StockwerkController(), 'id')
+
     return StarletteApp(controller, [
         Route('/login', login, methods=["POST", "PUT", "DELETE"]),
 
@@ -67,6 +83,9 @@ def create_app():
               methods=["GET", "PUT", "DELETE"]),
 
         Route('/gebaeude', gebaeude_form, methods=["POST"]),
-        Route('/gebaeude/{id}', gebaeude_form,
+        Route('/gebaeude/{id}', gebaeude_form, methods=["GET", "PUT", "DELETE"]),
+
+        Route('/stockwerke', stockwerk_form, methods=["POST"]),
+        Route('/stockwerke/{id}', stockwerk_form,
               methods=["GET", "PUT", "DELETE"]),
     ]).app
