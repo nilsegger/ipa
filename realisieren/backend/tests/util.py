@@ -30,13 +30,18 @@ def create_non_admin_token():
                 'name': 'Personal',
                 'role': Roles.PERSONAL.value}))
 
+
 def get_admin_headers():
     """Erstellt den Authorization Header welcher dafür benützt wird einen Authorisierten Aufruf auf die Datenbank zu machen."""
-    return {'Authorization': 'Bearer {}'.format(create_admin_access_token().decode('utf-8'))}
+    return {'Authorization': 'Bearer {}'.format(
+        create_admin_access_token().decode('utf-8'))}
+
 
 def get_personal_headers():
     """Erstellt den Authorization Header welcher dafür benützt wird einen Authorisierten Aufruf auf die Datenbank zu machen."""
-    return {'Authorization': 'Bearer {}'.format(create_non_admin_token().decode('utf-8'))}
+    return {'Authorization': 'Bearer {}'.format(
+        create_non_admin_token().decode('utf-8'))}
+
 
 async def create_gebaeude():
     model = Gebaeude()
@@ -44,6 +49,7 @@ async def create_gebaeude():
     async with TestConnection() as connection:
         await GebaeudeController().create(connection, model)
     return model
+
 
 async def create_stockwerk():
     gebaeude = await create_gebaeude()

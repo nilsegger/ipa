@@ -1,5 +1,6 @@
 from typing import Tuple, Dict, Any, List
 
+from bbbapi.util import sanitize_fields
 from tedious.auth.auth import Requester
 from tedious.mdl.model import Model, Permissions, ValidationError
 from tedious.sql.interface import SQLConnectionInterface
@@ -106,4 +107,6 @@ class RaumController(ModelController):
             stockwerk = await self.stockwerk_controller.get(connection, model["stockwerk"])
             if stockwerk is None:
                 raise ValidationError(['stockwerk.id'], "Stockwerk existiert nicht.")
+
+        sanitize_fields(model, ['name'])
 
