@@ -32,7 +32,7 @@ class GebaeudeController(ModelController):
 
     async def create(self, connection: SQLConnectionInterface, model: Model):
         """Erstellt ein neues Gebäude."""
-        await self.validate(model, ValidationTypes.CREATE)
+        await self.validate(connection, model, ValidationTypes.CREATE)
         model["id"].value = await connection.fetch_value(await self._insert_stmt(), model["name"].value)
         return model
 
@@ -70,7 +70,8 @@ class GebaeudeController(ModelController):
             }
         return {}
 
-    async def validate(self, model: Model, _type: ValidationTypes):
+    async def validate(self, connection: SQLConnectionInterface, model: Model, _type: ValidationTypes):
+        """Prüft, dass der Name nicht leer ist."""
 
         if _type == ValidationTypes.CREATE:
             await model.validate_not_empty(['name'])

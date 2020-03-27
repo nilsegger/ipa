@@ -10,5 +10,6 @@ class Stockwerk(Model):
         super().__init__(name, [
             IntField('id', value=_id),
             Gebaeude('gebaeude'),
-            StrField('name', min_len=3, max_len=99)
+            StrField('name', min_len=3, max_len=99),
+            IntField('niveau')
         ])

@@ -1,8 +1,10 @@
 from typing import Dict, Tuple, Any, List
 
+from bbbapi.controller.gebaeude_controller import GebaeudeController
+
 from bbbapi.util import sanitize_fields
 from tedious.auth.auth import Requester
-from tedious.mdl.model import Model, Permissions
+from tedious.mdl.model import Model, Permissions, ValidationError
 from tedious.mdl.model_controller import ModelController, ValidationTypes, \
     ManipulationPermissions
 from tedious.sql.interface import SQLConnectionInterface
@@ -15,23 +17,24 @@ class StockwerkController(ModelController):
 
     def __init__(self):
         super().__init__('stockwerke', 'id')
+        self.gebaude_controller = GebaeudeController()
 
     async def _model_to_sql_values(self, model: Model):
-        return model["id"].value, model["gebaeude"]["id"].value, model["name"].value
+        return model["id"].value, model["gebaeude"]["id"].value, model["name"].value, model["niveau"].value
 
     async def _insert_stmt(self):
-        return "INSERT INTO stockwerke (id, idgebaeude, name) VALUES (DEFAULT, $1, $2) RETURNING id"
+        return "INSERT INTO stockwerke (id, idgebaeude, name, niveau) VALUES (DEFAULT, $1, $2, $3) RETURNING id"
 
     async def _update_stmt(self):
-        return "UPDATE stockwerke SET idgebaeude=$2, name=$3 WHERE id=$1"
+        return "UPDATE stockwerke SET idgebaeude=$2, name=$3, niveau=$4 WHERE id=$1"
 
     async def _select_stmt(self, model: Model, fields,
                            join_foreign_keys=False):
         if not join_foreign_keys:
-            return """SELECT idGebaeude AS "gebaeude.id", name FROM stockwerke WHERE id=$1"""
+            return """SELECT idGebaeude AS "gebaeude.id", name, niveau FROM stockwerke WHERE id=$1"""
         else:
             return """SELECT 
-                        stockwerke.name, 
+                        stockwerke.name, stockwerke.niveau, 
                         gebaeude.id AS "gebaeude.id", 
                         gebaeude.name as "gebaeude.name"
                         FROM stockwerke
@@ -46,9 +49,9 @@ class StockwerkController(ModelController):
 
     async def create(self, connection: SQLConnectionInterface, model: Model):
         """Erstellt das Stockwerk und setzt die automatisch inkrementierte ID."""
-        await self.validate(model, ValidationTypes.CREATE)
+        await self.validate(connection, model, ValidationTypes.CREATE)
         model["id"].value = await connection.fetch_value(await self._insert_stmt(), model["gebaeude"]["id"].value,
-            model["name"].value)
+            model["name"].value, model["niveau"].value)
         return model
 
     async def get_manipulation_permissions(self, requester: Requester,
@@ -71,7 +74,8 @@ class StockwerkController(ModelController):
                 'gebaeude': {
                     'id': Permissions.READ_WRITE
                 },
-                'name': Permissions.READ_WRITE
+                'name': Permissions.READ_WRITE,
+                'niveau': Permissions.READ_WRITE,
             }
         elif role is not None and role == Roles.PERSONAL.value:
             return {
@@ -79,17 +83,21 @@ class StockwerkController(ModelController):
                 'gebaeude': {
                     'id': Permissions.READ
                 },
-                'name': Permissions.READ
+                'name': Permissions.READ,
+                'niveau': Permissions.READ
             }
         else:
             return {}
 
-    async def validate(self, model: Model, _type: ValidationTypes):
+    async def validate(self, connection: SQLConnectionInterface, model: Model, _type: ValidationTypes):
+        """Prüft dass alle Werte gegeben sind. Zudem wird hier geschaut, dass die Gebäude ID korrekt ist."""
 
         if _type == ValidationTypes.CREATE:
-            await model.validate_not_empty(['gebaeude.id', 'name'])
+            await model.validate_not_empty(['gebaeude.id', 'name', 'niveau'])
 
-        # todo validate gebaude exusts
+        if not model["gebaeude"].empty:
+            if await self.gebaude_controller.get(connection, model["gebaeude"]) is None:
+                raise ValidationError(['gebaeude.id'], "Das gegebene Gebäude existiert nicht.")
 
         sanitize_fields(model, ['name'])
 

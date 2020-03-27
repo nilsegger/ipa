@@ -36,7 +36,8 @@ STOCKWERKE_TABLE = """
     CREATE TABLE Stockwerke(
         id SERIAL4 PRIMARY KEY,
         idGebaeude int4 NOT NULL,
-        name varchar(100) NOT NULL,        
+        name varchar(100) NOT NULL,
+        niveau int NOT NULL,
         FOREIGN KEY (idGebaeude) REFERENCES Gebaeude(id)
     );
 """

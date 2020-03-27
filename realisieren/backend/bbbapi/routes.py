@@ -1,6 +1,10 @@
 from uuid import UUID
 
 import tedious.config
+from bbbapi.controller.raum_controller import RaumController
+
+from bbbapi.models.raum import Raum
+
 from bbbapi.controller.stockwerk_controller import StockwerkController
 
 from bbbapi.controller.gebaeude_controller import GebaeudeController
@@ -21,6 +25,7 @@ auth_resource = None
 personal_form_resource = None
 gebaeude_form_resource = None
 stockwerke_form_resource = None
+raeume_form_resource = None
 
 
 async def login(request):
@@ -56,6 +61,16 @@ async def stockwerk_form(request):
     return await controller.handle(request, stockwerke_form_resource,
                                    model=model)
 
+
+async def raeume_form(request):
+    """Route für das Erstellen, Aktualisieren und Löschen von Räume."""
+
+    model = None
+    if 'id' in request.path_params:
+        model = Raum(_id=int(request.path_params['id']))
+    return await controller.handle(request, raeume_form_resource, model=model)
+
+
 def create_app():
     """Creates app and adds all routes."""
     global controller
@@ -75,6 +90,9 @@ def create_app():
     global stockwerke_form_resource
     stockwerke_form_resource = FormResource(Stockwerk, StockwerkController(), 'id')
 
+    global raeume_form_resource
+    raeume_form_resource = FormResource(Raum, RaumController(), 'id')
+
     return StarletteApp(controller, [
         Route('/login', login, methods=["POST", "PUT", "DELETE"]),
 
@@ -87,5 +105,9 @@ def create_app():
 
         Route('/stockwerke', stockwerk_form, methods=["POST"]),
         Route('/stockwerke/{id}', stockwerk_form,
+              methods=["GET", "PUT", "DELETE"]),
+
+        Route('/raeume', raeume_form, methods=["POST"]),
+        Route('/raeume/{id}', raeume_form,
               methods=["GET", "PUT", "DELETE"]),
     ]).app

@@ -14,7 +14,8 @@ Stockwerke
 -
 &lt;&lt;pk&gt;&gt; id: int {auto, not null}
 &lt;&lt;fk&gt;&gt; idGebaeude: int {not null}
-name: varchar[100] {not null}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>930</x><y>179</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+name: varchar[100] {not null}
+niveau: int {not null}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>930</x><y>179</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m2=1..*</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>870</x><y>459</y><w>170</w><h>120</h></coordinates><panel_attributes>&lt;&lt;table&gt;&gt;
 Räume
 -

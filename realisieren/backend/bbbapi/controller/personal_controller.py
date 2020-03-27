@@ -50,7 +50,7 @@ class PersonalController(ModelController):
     async def create(self, connection: SQLConnectionInterface, model: Personal):
         """Personal Models müssen nicht nur erstellt werden, sondern auch noch ein dazu passendes login haben.
         Dieses wird hier erstellt."""
-        await self.validate(model, ValidationTypes.CREATE)
+        await self.validate(connection, model, ValidationTypes.CREATE)
         requester = await self.auth.register(connection, model["benutzername"].value, model["passwort"].value, model["rolle"].value.value)
         model["uuid"].value = requester.uuid
         await connection.execute(await self._insert_stmt(), *await self._model_to_sql_values(model))
@@ -58,7 +58,7 @@ class PersonalController(ModelController):
 
     async def update(self, connection: SQLConnectionInterface, model: Model, _global: Model = None):
         """Aktualisiert Personal. Wenn Benutzername oder Passwort nicht leer ist, so wird das auch das Login aktualisiert."""
-        await self.validate(model, ValidationTypes.UPDATE)
+        await self.validate(connection, model, ValidationTypes.UPDATE)
         if not model["benutzername"].empty or not model["passwort"].empty or not model["rolle"].empty:
             await self.auth.update(connection, Requester(uuid=model["uuid"].value),
                                    model["benutzername"].value, model["passwort"].value,
@@ -92,7 +92,7 @@ class PersonalController(ModelController):
         else:
             return {}
 
-    async def validate(self, model: Model, _type: ValidationTypes):
+    async def validate(self, connection: SQLConnectionInterface, model: Model, _type: ValidationTypes):
         """Prüft beim erstellen des Models if die UUID und der Name schon gesetzt wurde.
            Da die UUID die Login UUID referenziert kann diese nicht hier gesetzt werden."""
 

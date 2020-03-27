@@ -14,6 +14,6 @@ def test_stockwerke_route():
     gebaeude2 = asyncio.get_event_loop().run_until_complete(create_gebaeude())
 
     route_test(app, get_admin_headers(), get_personal_headers(),
-               {'name': 'Obergeschoss', 'gebaeude': {'id': gebaeude["id"].value}},
-               {'name': 'Obergeschoss', 'gebaeude': {'id': gebaeude2["id"].value}},
+               {'name': 'Obergeschoss', 'niveau': 0, 'gebaeude': {'id': gebaeude["id"].value}},
+               {'name': 'Obergeschoss', 'niveau': 0, 'gebaeude': {'id': gebaeude2["id"].value}},
                ['name', 'gebaeude.id'], 'id', '/stockwerke')
