@@ -58,7 +58,7 @@ class PersonalController(ModelController):
 
     async def update(self, connection: SQLConnectionInterface, model: Model, _global: Model = None):
         """Aktualisiert Personal. Wenn Benutzername oder Passwort nicht leer ist, so wird das auch das Login aktualisiert."""
-        await self.validate(model, ValidationTypes.CREATE)
+        await self.validate(model, ValidationTypes.UPDATE)
         if not model["benutzername"].empty or not model["passwort"].empty or not model["rolle"].empty:
             await self.auth.update(connection, Requester(uuid=model["uuid"].value),
                                    model["benutzername"].value, model["passwort"].value,
@@ -103,5 +103,5 @@ class PersonalController(ModelController):
 
             await model.validate_not_empty(['name', 'benutzername', 'passwort', 'rolle'])
 
-        sanitize_fields(['name', 'benutzername'])
+        sanitize_fields(model, ['name', 'benutzername'])
 
