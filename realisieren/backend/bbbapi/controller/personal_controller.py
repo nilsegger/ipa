@@ -29,6 +29,12 @@ class PersonalController(ModelController):
         """
         return model["uuid"].value, model["name"].value
 
+    async def _select_stmt(self, model: Model, fields, join_foreign_keys=False):
+        if join_foreign_keys:
+            return "SELECT name, logins.username AS benutzername, logins.role AS rolle FROM Personal LEFT JOIN logins on personal.uuid = logins.uuid WHERE personal.uuid=$1"
+        else:
+            return "SELECT name FROM Personal WHERE uuid=$1"
+
     async def _insert_stmt(self):
         return "INSERT INTO Personal (uuid, name) VALUES ($1, $2)"
 

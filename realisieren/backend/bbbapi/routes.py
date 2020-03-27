@@ -1,3 +1,5 @@
+from uuid import UUID
+
 import tedious.config
 from starlette.routing import Route
 from tedious.asgi.starlette import ResourceController, StarletteApp
@@ -20,8 +22,11 @@ async def login(request):
 
 async def personal_form(request):
     """Route für das Erstellen und Löschen von Personal."""
-    print("Hello??")
-    return await controller.handle(request, personal_form_resource)
+
+    model = None
+    if 'uuid' in request.path_params:
+        model = Personal(uuid=UUID(hex=request.path_params['uuid']))
+    return await controller.handle(request, personal_form_resource, model=model)
 
 
 def create_app():
@@ -39,5 +44,6 @@ def create_app():
 
     return StarletteApp(controller, [
         Route('/login', login, methods=["POST", "PUT", "DELETE"]),
-        Route('/personal', personal_form, methods=["POST"])
+        Route('/personal', personal_form, methods=["POST"]),
+        Route('/personal/{uuid}', personal_form, methods=["GET", "PUT", "DELETE"]),
     ]).app

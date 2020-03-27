@@ -13,6 +13,18 @@ def create_admin_access_token():
                 'role': Roles.ADMIN.value}))
 
 
+def create_non_admin_token():
+    """Erstellt einen Access Token für ein Personal Mitarbeiter."""
+    return asyncio.get_event_loop().run_until_complete(Auth().create_token(
+        audience=tedious.config.CONFIG["TOKEN"]["audience"],
+        claims={'uid': '6a3d738ad080caaaaaaab6302da731c9',
+                'name': 'Personal',
+                'role': Roles.PERSONAL.value}))
+
 def get_admin_headers():
     """Erstellt den Authorization Header welcher dafür benützt wird einen Authorisierten Aufruf auf die Datenbank zu machen."""
     return {'Authorization': 'Bearer {}'.format(create_admin_access_token().decode('utf-8'))}
+
+def get_personal_headers():
+    """Erstellt den Authorization Header welcher dafür benützt wird einen Authorisierten Aufruf auf die Datenbank zu machen."""
+    return {'Authorization': 'Bearer {}'.format(create_non_admin_token().decode('utf-8'))}
