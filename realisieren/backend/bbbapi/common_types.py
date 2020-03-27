@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Roles:
+class Roles(Enum):
     """Ein Benutzer kann entweder ein Administrator oder aus dem
     Personal sein.
 

@@ -18,7 +18,7 @@ LOGIN_TABLE = """
 
 PERSONAL_TABLE = """
     CREATE TYPE Rolle AS ENUM ('ADMIN', 'PERSONAL');
-    CREATE TABLE Personen(
+    CREATE TABLE Personal(
         uuid UUID PRIMARY KEY,
         name varchar(100),
         FOREIGN KEY (uuid) REFERENCES logins(uuid)
@@ -80,7 +80,8 @@ BEOBACHTER_TABLE = """
         name VARCHAR(100) NOT NULL,
         wertName VARCHAR(100) NOT NULL,
         art BeobachterArt NOT NULL,
-        ausloeserWert int NOT NULL
+        ausloeserWert int NOT NULL,
+        FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui)
     );
 """
 
@@ -95,7 +96,9 @@ MELDUNGEN_TABLE = """
         datum timestamp NOT NULL,
         bearbeitet boolean DEFAULT false,
         beschreibung TEXT NOT NULL,
-        FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui)
+        FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui),
+        FOREIGN KEY (idRaum) REFERENCES Raeume(id),
+        FOREIGN KEY (uuidPerson) REFERENCES Personal(uuid)
     );
 """
 
