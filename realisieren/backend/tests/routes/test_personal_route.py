@@ -28,8 +28,11 @@ def test_personal_form():
 
 
 def test_personal_list():
+    # Falls es andere Daten in der Datenbank hat so ist dies unmöglich zum testen.
     app = create_app()
-    personal = [asyncio.get_event_loop().run_until_complete(create_personal()) for _ in range(5)]
+
+    for _ in range(3):
+        asyncio.get_event_loop().run_until_complete(create_personal())
 
     with TestClient(app) as client:
         response = client.get('/personal', headers=get_admin_headers())

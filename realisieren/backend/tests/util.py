@@ -1,3 +1,6 @@
+from bbbapi.controller.raum_controller import RaumController
+
+from bbbapi.models.raum import Raum
 from tedious.util import create_uuid
 
 from bbbapi.controller.personal_controller import PersonalController
@@ -74,3 +77,14 @@ async def create_stockwerk():
     async with TestConnection() as connection:
         await StockwerkController().create(connection, model)
     return model
+
+async def create_raum():
+    stockwerk = await create_stockwerk()
+    model = Raum()
+    model["name"] = "Test Raum"
+    model["stockwerk"]["id"].value = stockwerk["id"].value
+    async with TestConnection() as connection:
+        await RaumController().create(connection, model)
+    return model
+
+
