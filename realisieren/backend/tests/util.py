@@ -1,4 +1,8 @@
+from tedious.util import create_uuid
+
+from bbbapi.controller.personal_controller import PersonalController
 from bbbapi.controller.stockwerk_controller import StockwerkController
+from bbbapi.models.personal import Personal
 
 from bbbapi.models.stockwerk import Stockwerk
 
@@ -42,6 +46,16 @@ def get_personal_headers():
     return {'Authorization': 'Bearer {}'.format(
         create_non_admin_token().decode('utf-8'))}
 
+
+async def create_personal():
+    async with TestConnection() as connection:
+        model = Personal()
+        model["benutzername"].value = create_uuid().hex[:30]
+        model["rolle"].value = Roles.PERSONAL
+        model["name"].value = "Test Benutzer"
+        model["passwort"].value = "123456"
+        await PersonalController().create(connection, model)
+        return model
 
 async def create_gebaeude():
     model = Gebaeude()

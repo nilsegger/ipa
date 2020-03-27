@@ -19,18 +19,7 @@ class PersonalController(ModelController):
         super().__init__('Personal', 'uuid')
         self.auth = auth
 
-    async def _model_to_sql_values(self, model: Personal):
-        """Antwortet mit den korrekt sortieren Werten eines Personal Models.
-
-        Args:
-            model: Personal Model
-
-        Returns:
-            uuid, name
-        """
-        return model["uuid"].value, model["name"].value
-
-    async def _select_stmt(self, model: Model, fields, join_foreign_keys=False):
+    async def _select_stmt(self, model: Model, join_foreign_keys=False):
         if join_foreign_keys:
             return "SELECT name, logins.username AS benutzername, logins.role AS rolle FROM Personal LEFT JOIN logins on personal.uuid = logins.uuid WHERE personal.uuid=$1"
         else:
@@ -39,8 +28,18 @@ class PersonalController(ModelController):
     async def _insert_stmt(self):
         return "INSERT INTO Personal (uuid, name) VALUES ($1, $2)"
 
+    async def _insert_values(self, model: Model):
+        """Antwortet mit den korrekt sortieren Werten eines Personal Models für diese Erstellung."""
+
+        return model["uuid"].value, model["name"].value
+
     async def _update_stmt(self):
         return "UPDATE personal SET name=$2 WHERE uuid=$1"
+
+    async def _update_values(self, model: Model):
+        """Antwortet mit den korrekt sortieren Werten eines Personal Models für die Aktualisierung."""
+
+        return model["uuid"].value, model["name"].value
 
     @property
     def identifiers(self) -> List[str]:
@@ -53,7 +52,7 @@ class PersonalController(ModelController):
         await self.validate(connection, model, ValidationTypes.CREATE)
         requester = await self.auth.register(connection, model["benutzername"].value, model["passwort"].value, model["rolle"].value.value)
         model["uuid"].value = requester.uuid
-        await connection.execute(await self._insert_stmt(), *await self._model_to_sql_values(model))
+        await connection.execute(await self._insert_stmt(), *await self._insert_values(model))
         return model
 
     async def update(self, connection: SQLConnectionInterface, model: Model, _global: Model = None):
@@ -63,7 +62,7 @@ class PersonalController(ModelController):
             await self.auth.update(connection, Requester(uuid=model["uuid"].value),
                                    model["benutzername"].value, model["passwort"].value,
                                    model["rolle"].value.value if not model["rolle"].empty else None)
-        await connection.execute(await self._update_stmt(), *await self._model_to_sql_values(model))
+        await connection.execute(await self._update_stmt(), *await self._update_values(model))
 
     async def get_manipulation_permissions(self, requester: Requester, model: Model) -> Tuple[ManipulationPermissions, Dict[str, Any]]:
         """Nur Administratoren dürfen eine Person erstellen, aktualisieren oder löschen."""

@@ -19,17 +19,19 @@ class StockwerkController(ModelController):
         super().__init__('stockwerke', 'id')
         self.gebaude_controller = GebaeudeController()
 
-    async def _model_to_sql_values(self, model: Model):
-        return model["id"].value, model["gebaeude"]["id"].value, model["name"].value, model["niveau"].value
-
     async def _insert_stmt(self):
         return "INSERT INTO stockwerke (id, idgebaeude, name, niveau) VALUES (DEFAULT, $1, $2, $3) RETURNING id"
+
+    async def _insert_values(self, model: Model):
+        return model["gebaeude"]["id"].value, model["name"].value, model["niveau"].value
 
     async def _update_stmt(self):
         return "UPDATE stockwerke SET idgebaeude=$2, name=$3, niveau=$4 WHERE id=$1"
 
-    async def _select_stmt(self, model: Model, fields,
-                           join_foreign_keys=False):
+    async def _update_values(self, model: Model):
+        return model["id"].value, model["gebaeude"]["id"].value, model["name"].value, model["niveau"].value
+
+    async def _select_stmt(self, model: Model, join_foreign_keys=False):
         if not join_foreign_keys:
             return """SELECT idGebaeude AS "gebaeude.id", name, niveau FROM stockwerke WHERE id=$1"""
         else:
@@ -50,8 +52,7 @@ class StockwerkController(ModelController):
     async def create(self, connection: SQLConnectionInterface, model: Model):
         """Erstellt das Stockwerk und setzt die automatisch inkrementierte ID."""
         await self.validate(connection, model, ValidationTypes.CREATE)
-        model["id"].value = await connection.fetch_value(await self._insert_stmt(), model["gebaeude"]["id"].value,
-            model["name"].value, model["niveau"].value)
+        model["id"].value = await connection.fetch_value(await self._insert_stmt(), *await self._insert_values(model))
         return model
 
     async def get_manipulation_permissions(self, requester: Requester,

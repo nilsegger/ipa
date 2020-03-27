@@ -22,11 +22,7 @@ class RaumController(ModelController):
 
     """Raum Controller für die Erstellung, Aktualisierung und Löschung von Räumen."""
 
-    async def _model_to_sql_values(self, model: Model):
-        return model["id"].value, model["name"].value, model["stockwerk"]["id"].value
-
-    async def _select_stmt(self, model: Model, fields,
-                           join_foreign_keys=False):
+    async def _select_stmt(self, model: Model, join_foreign_keys=False):
 
         if not join_foreign_keys:
             return "SELECT id, idStockwerk, name FROM raeume WHERE id=$1"
@@ -48,8 +44,14 @@ class RaumController(ModelController):
     async def _insert_stmt(self):
         return "INSERT INTO raeume (id, name, idstockwerk) VALUES (DEFAULT, $1, $2) RETURNING id"
 
+    async def _insert_values(self, model: Model):
+        return model["name"].value, model["stockwerk"]["id"].value
+
     async def _update_stmt(self):
         return "UPDATE raeume SET name=$2, idstockwerk=$3 WHERE id=$1"
+
+    async def _update_values(self, model: Model):
+        return model["id"].value, model["name"].value, model["stockwerk"]["id"].value
 
     @property
     def identifiers(self) -> List[str]:
@@ -59,7 +61,7 @@ class RaumController(ModelController):
     async def create(self, connection: SQLConnectionInterface, model: Model):
         """Erstellt den Raum nach dem die Werte überprüft wurden."""
         await self.validate(connection, model, ValidationTypes.CREATE)
-        model["id"].value = await connection.fetch_value(await self._insert_stmt(), model["name"].value, model["stockwerk"]["id"].value)
+        model["id"].value = await connection.fetch_value(await self._insert_stmt(), * await self._insert_values(model))
         return model
 
     async def get_manipulation_permissions(self, requester: Requester,

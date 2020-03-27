@@ -16,24 +16,27 @@ class GebaeudeController(ModelController):
     def __init__(self):
         super().__init__('Gebaeude', 'id')
 
-    async def _model_to_sql_values(self, model: Model):
-        """Antwortet mit id, name."""
-        return model["id"].value, model["name"].value
-
-    async def _select_stmt(self, model: Model, fields,
-                           join_foreign_keys=False):
+    async def _select_stmt(self, model: Model, join_foreign_keys=False):
         return "SELECT name FROM gebaeude WHERE id=$1"
 
     async def _insert_stmt(self):
         return "INSERT INTO Gebaeude(id, name) VALUES (DEFAULT, $1) RETURNING id"
 
+    async def _insert_values(self, model: Model):
+        """Antwortet mit name."""
+        return model["name"].value,
+
     async def _update_stmt(self):
         return "UPDATE Gebaeude SET name=$2 WHERE id=$1"
+
+    async def _update_values(self, model: Model):
+        """Antwortet mit id, name."""
+        return model["id"].value, model["name"].value
 
     async def create(self, connection: SQLConnectionInterface, model: Model):
         """Erstellt ein neues Gebäude."""
         await self.validate(connection, model, ValidationTypes.CREATE)
-        model["id"].value = await connection.fetch_value(await self._insert_stmt(), model["name"].value)
+        model["id"].value = await connection.fetch_value(await self._insert_stmt(), *await self._insert_values(model))
         return model
 
     @property
