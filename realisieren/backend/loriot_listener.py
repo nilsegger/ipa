@@ -41,7 +41,7 @@ async def lookup_sensor(connection: Connection, dev_eui: str):
         return None
 
 
-async def handle_sensor(connection: Connection, sensor: Sensor, raw, decoded):
+async def handle(connection: Connection, sensor: Sensor, raw, decoded):
     """Lädt die neuen Sensor Daten in die SensorWert Tabelle und alarmiert Beobachter.
 
     Args:
@@ -83,11 +83,14 @@ async def listen(uri: str, db: PostgreSQLDatabase):
                                 "Überspringe Sensor der Art {}, da kein Dekodierer existiert.".format(
                                     sensor["art"].value))
                         else:
-                            decoded = await decoders[sensor["art"].value].decode(raw)
-                            await handle_sensor(connection, sensor, raw,
+                            decoded = await decoders[
+                                sensor["art"].value].decode(raw)
+                            await handle(connection, sensor, raw,
                                                 decoded)
                     else:
-                        print("Sensor {} übersprungen da dieser nicht eingetragen ist.". format(dev_eui))
+                        print(
+                            "Sensor {} übersprungen da dieser nicht eingetragen ist.".format(
+                                dev_eui))
 
 
 async def main():
@@ -98,12 +101,10 @@ async def main():
 
     async with PostgreSQLDatabase(
             **tedious.config.CONFIG["DB_CREDENTIALS"]) as db:
-        exited_controlled = False
-        while not exited_controlled:
+        while True:
             try:
                 print("{} Server gestartet.".format(datetime.now()))
                 await listen(uri, db)
-                exited_controlled = True
             except Exception as e:
                 print(
                     "{} Eine Exception wurde erhoben. Es werden 5s gewartet bis der Server wieder gestartet wird. \n {} {}".format(
