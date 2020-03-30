@@ -8,5 +8,5 @@ setup(
     url='#',
     author_email='nils.egger@avectris.ch',
     packages=['bbbapi', 'bbbapi.decoders', 'bbbapi.controller', 'bbbapi.models'],
-    install_requires=['starlette', 'pytest', 'bleach']
+    install_requires=['starlette', 'pytest', 'bleach', 'websockets']
 )
