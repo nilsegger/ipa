@@ -69,10 +69,10 @@ class MeldungController(ModelController):
                     """
 
     async def _insert_stmt(self):
-        return "INSERT INTO meldungen(dev_euisensor, idraum, uuidpersonal, art, datum, beschreibung) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id"
+        return "INSERT INTO meldungen(dev_euisensor, idbeobachter, idraum, uuidpersonal, art, datum, beschreibung) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id"
 
     async def _insert_values(self, model: Model):
-        return model["sensor"]["dev_eui"].value, model["raum"]["id"].value, model["personal"]["uuid"].value, model["art"].value.value, datetime.now(), model["beschreibung"].value
+        return model["sensor"]["dev_eui"].value, model["beobachter"]["id"].value, model["raum"]["id"].value, model["personal"]["uuid"].value, model["art"].value.value, datetime.now(), model["beschreibung"].value
 
     async def _update_stmt(self):
         return "UPDATE meldungen SET dev_euisensor=coalesce($2, dev_euisensor), idraum=coalesce($3, idraum), uuidpersonal=coalesce($4, uuidpersonal), beschreibung=coalesce($5, beschreibung) WHERE id=$1"

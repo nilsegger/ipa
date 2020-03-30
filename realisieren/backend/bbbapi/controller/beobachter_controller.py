@@ -48,10 +48,10 @@ class BeobachterController(ModelController):
                    "ausloeserWert"].value
 
     async def _update_stmt(self):
-        return "UPDATE beobachter SET dev_euiSensor=coalesce($2, dev_euiSensor), name=coalesce($3, name), wertName=coalesce($4, wertName), art=coalesce($5, art),  ausloeserwert=coalesce($6, ausloeserwert) WHERE id=$1"
+        return "UPDATE beobachter SET dev_euiSensor=coalesce($2, dev_euiSensor), name=coalesce($3, name), wertName=coalesce($4, wertName), art=coalesce($5, art),  ausloeserwert=coalesce($6, ausloeserwert), stand=coalesce($7, stand) WHERE id=$1"
 
     async def _update_values(self, model: Model):
-        return (model["id"].value, *await self._insert_values(model))
+        return (model["id"].value, *await self._insert_values(model), model["stand"].value)
 
     async def create(self, connection: SQLConnectionInterface, model: Model):
         """Erstellt Beobachter und setzt ID."""

@@ -1,8 +1,16 @@
 import tedious.config
+from bbbapi.controller.beobachter_controller import BeobachterController
+
+from bbbapi.controller.meldung_controller import MeldungController
+
+from bbbapi.beobachter.beobachter import RichtwertDarueberBeobachter, \
+    ZaehlerstandBeobachter, RichtwertDarunterBeobachter
+from bbbapi.models.beobachter import Beobachter
+
 from bbbapi.decoders.tabs import TabsDecoder
 from bbbapi.decoders.elsys import ElsysDecoder
 from bbbapi.decoders.adeunis import AdeunisDecoder
-from bbbapi.common_types import SensorArt
+from bbbapi.common_types import SensorArt, BeobachterArt
 from bbbapi.models.sensor import Sensor, datetime
 import time
 from bbbapi.controller.sensor_controller import SensorController
@@ -23,6 +31,11 @@ decoders = {
     SensorArt.TABS: TabsDecoder()
 }
 
+beobachters = {
+    BeobachterArt.RICHTWERT_DARUEBER: RichtwertDarueberBeobachter(),
+    BeobachterArt.RICHTWERT_DARUNTER: RichtwertDarunterBeobachter(),
+    BeobachterArt.ZAEHLERSTAND: ZaehlerstandBeobachter(),
+}
 
 async def lookup_sensor(connection: Connection, dev_eui: str):
     """Sucht in der Sensoren Tabllen nach dem Sensor mit der dev_eui.
@@ -50,9 +63,17 @@ async def handle(connection: Connection, sensor: Sensor, raw, decoded):
         raw: Roher Sensor Wert
         decoded: Dekodierter Sensor Wert in form eines Dict
     """
-    stmt = "INSERT INTO sensorenwerte (dev_euisensor, rohwert, dekodiertjson, erhalten) VALUES ($1, $2, $3, $4)"
-    await connection.execute(stmt, sensor["dev_eui"].value, raw,
+    insert_stmt = "INSERT INTO sensorenwerte (dev_euisensor, rohwert, dekodiertjson, erhalten) VALUES ($1, $2, $3, $4)"
+    await connection.execute(insert_stmt, sensor["dev_eui"].value, raw,
                              json.dumps(decoded), datetime.now())
+
+    select_beobachter = """SELECT id, name, art, wertName as "wertName", ausloeserWert as "ausloeserWert", stand FROM beobachter WHERE dev_euiSensor=$1"""
+    fetched_beobachters = await connection.fetch_models(Beobachter, select_beobachter, sensor["dev_eui"].value)
+    beobachter_controller = BeobachterController()
+    meldung_controller = MeldungController()
+    for beobachter in fetched_beobachters:
+        instance = beobachters[beobachter["art"].value]
+        await instance.watch(connection, beobachter, beobachter_controller, meldung_controller, sensor, decoded)
 
 
 async def listen(uri: str, db: PostgreSQLDatabase):
@@ -112,7 +133,7 @@ async def main():
                 time.sleep(5)
 
 
-"""
+
 async def add_sensor():
     async with PostgreSQLDatabase(
             **tedious.config.CONFIG["DB_CREDENTIALS"]) as db:
@@ -122,7 +143,7 @@ async def add_sensor():
             sensor["art"].value = SensorTypes.ADEUNIS_RF
             sensor["raum"]["id"].value = 3
             await sensor_controller.create(connection, sensor)
-"""
+
 
 if __name__ == '__main__':
     asyncio.get_event_loop().run_until_complete(main())

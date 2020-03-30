@@ -80,9 +80,9 @@ BEOBACHTER_TABLE = """
         dev_euiSensor VARCHAR(16) NOT NULL,
         name VARCHAR(100) NOT NULL,
         art BeobachterArt NOT NULL,
-        wertName VARCHAR(100) NOT NULL,
+        wertName VARCHAR(100),
         ausloeserWert int NOT NULL,
-        stand int DEFAULT 0
+        stand int DEFAULT 0,
         FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui)
     );
 """
@@ -101,7 +101,7 @@ MELDUNGEN_TABLE = """
         beschreibung TEXT NOT NULL,
         FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui),
         FOREIGN KEY (idRaum) REFERENCES Raeume(id),
-        FOREIGN KEY (uuidPersonal) REFERENCES Personal(uuid)
+        FOREIGN KEY (uuidPersonal) REFERENCES Personal(uuid),
         FOREIGN KEY (idBeobachter) REFERENCES Beobachter(id)
     );
 """
