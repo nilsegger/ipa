@@ -1,6 +1,6 @@
 from typing import Dict, Any
 from bbbapi.decoders.decoder import Decoder
-from bbbapi.common_types import SensorTypes
+from bbbapi.common_types import SensorArt
 
 
 class TabsDecoder(Decoder):
@@ -9,7 +9,7 @@ class TabsDecoder(Decoder):
     """
 
     def __init__(self):
-        super().__init__(SensorTypes.TABS)
+        super().__init__(SensorArt.TABS)
 
     async def decode(self, data: str) -> Dict[str, Any]:
         """Dekodiert den Sensor Wert in folgende Werte.

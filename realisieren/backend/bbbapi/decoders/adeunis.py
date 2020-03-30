@@ -1,6 +1,6 @@
 from typing import Dict, Any
 from bbbapi.decoders.decoder import Decoder
-from bbbapi.common_types import SensorTypes
+from bbbapi.common_types import SensorArt
 
 
 class AdeunisDecoder(Decoder):
@@ -9,7 +9,7 @@ class AdeunisDecoder(Decoder):
     """
 
     def __init__(self):
-        super().__init__(SensorTypes.ADEUNIS_RF)
+        super().__init__(SensorArt.ADEUNIS_RF)
 
     async def decode(self, data: str) -> Dict[str, Any]:
         """Dekodiert den gegebenen Sensor Wert in folgende Werte.

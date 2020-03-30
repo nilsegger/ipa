@@ -1,6 +1,6 @@
 from typing import Dict, Any
 from bbbapi.decoders.decoder import Decoder
-from bbbapi.common_types import SensorTypes
+from bbbapi.common_types import SensorArt
 
 
 class ElsysDecoder(Decoder):
@@ -9,7 +9,7 @@ class ElsysDecoder(Decoder):
     """
 
     def __init__(self):
-        super().__init__(SensorTypes.ELSYS_ERS_CO2)
+        super().__init__(SensorArt.ELSYS_ERS_CO2)
 
     async def decode(self, data: str) -> Dict[str, Any]:
         """Dekodiert data in die Werte

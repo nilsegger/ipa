@@ -2,7 +2,7 @@ import tedious.config
 from bbbapi.decoders.tabs import TabsDecoder
 from bbbapi.decoders.elsys import ElsysDecoder
 from bbbapi.decoders.adeunis import AdeunisDecoder
-from bbbapi.common_types import SensorTypes
+from bbbapi.common_types import SensorArt
 from bbbapi.models.sensor import Sensor, datetime
 import time
 from bbbapi.controller.sensor_controller import SensorController
@@ -18,9 +18,9 @@ continue_listening = True
 sensor_controller = SensorController()
 
 decoders = {
-    SensorTypes.ADEUNIS_RF: AdeunisDecoder(),
-    SensorTypes.ELSYS_ERS_CO2: ElsysDecoder(),
-    SensorTypes.TABS: TabsDecoder()
+    SensorArt.ADEUNIS_RF: AdeunisDecoder(),
+    SensorArt.ELSYS_ERS_CO2: ElsysDecoder(),
+    SensorArt.TABS: TabsDecoder()
 }
 
 
@@ -86,7 +86,7 @@ async def listen(uri: str, db: PostgreSQLDatabase):
                             decoded = await decoders[
                                 sensor["art"].value].decode(raw)
                             await handle(connection, sensor, raw,
-                                                decoded)
+                                         decoded)
                     else:
                         print(
                             "Sensor {} übersprungen da dieser nicht eingetragen ist.".format(

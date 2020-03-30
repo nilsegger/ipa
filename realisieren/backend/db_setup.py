@@ -92,14 +92,14 @@ MELDUNGEN_TABLE = """
         id SERIAL4 PRIMARY KEY,
         dev_euiSensor VARCHAR(16),
         idRaum int4 NOT NULL,
-        uuidPerson UUID,
+        uuidPersonal UUID,
         art MeldungsArt NOT NULL,
         datum timestamp NOT NULL,
         bearbeitet boolean DEFAULT false,
         beschreibung TEXT NOT NULL,
         FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui),
         FOREIGN KEY (idRaum) REFERENCES Raeume(id),
-        FOREIGN KEY (uuidPerson) REFERENCES Personal(uuid)
+        FOREIGN KEY (uuidPersonal) REFERENCES Personal(uuid)
     );
 """
 

@@ -1,4 +1,4 @@
-from bbbapi.common_types import SensorTypes
+from bbbapi.common_types import SensorArt
 from typing import Dict, Any
 
 
@@ -7,7 +7,7 @@ class Decoder:
 
     __slots__ = ('sensor_type', )
 
-    def __init__(self, sensor_type: SensorTypes):
+    def __init__(self, sensor_type: SensorArt):
         self.sensor_type = sensor_type
 
     async def decode(self, data: str) -> Dict[str, Any]:

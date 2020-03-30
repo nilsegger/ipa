@@ -7,6 +7,6 @@ setup(
     author='Nils Egger',
     url='#',
     author_email='nils.egger@avectris.ch',
-    packages=['bbbapi', 'bbbapi.decoders', 'bbbapi.controller', 'bbbapi.models'],
+    packages=['bbbapi', 'bbbapi.decoders', 'bbbapi.controller', 'bbbapi.models', 'bbbapi.resources'],
     install_requires=['starlette', 'pytest', 'bleach', 'websockets']
 )

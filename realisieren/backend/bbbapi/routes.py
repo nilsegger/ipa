@@ -12,6 +12,7 @@ from bbbapi.controller.sensor_controller import SensorController
 from bbbapi.controller.sensoren_list_controller import SensorenListController
 from bbbapi.controller.stockwerke_list_controller import \
     StockwerkeListController
+from bbbapi.models.meldung import Meldung
 
 from bbbapi.models.raum import Raum
 
@@ -30,6 +31,7 @@ from bbbapi.controller.personal_controller import PersonalController
 from bbbapi.models.personal import Personal
 from bbbapi.models.sensor import Sensor
 from bbbapi.models.stockwerk import Stockwerk
+from bbbapi.resources.meldung_form_resource import MeldungFormResource
 
 controller = None
 auth_resource = None
@@ -43,6 +45,7 @@ raeume_form_resource = None
 raeume_list_resource = None
 sensor_form_resource = None
 sensoren_list_resource = None
+meldungen_form_resource = None
 
 
 async def login(request):
@@ -123,6 +126,15 @@ async def sensoren_list(request):
     return await controller.handle(request, sensoren_list_resource)
 
 
+async def meldungen_form(request):
+    """Route für das Erstellen, Aktualisieren und Löschen von Meldungen."""
+
+    model = None
+    if 'id' in request.path_params:
+        model = Meldung(_id=int(request.path_params['id']))
+    return await controller.handle(request, meldungen_form_resource, model=model)
+
+
 def create_app():
     """Creates app and adds all routes."""
     global controller
@@ -167,7 +179,8 @@ def create_app():
             StockwerkeListController(),
             [Roles.ADMIN.value,
              Roles.PERSONAL.value],
-            ['id', 'name', 'niveau', 'gebaeude.id', 'gebaeude.name'], join_foreign_keys=True)
+            ['id', 'name', 'niveau', 'gebaeude.id', 'gebaeude.name'],
+            join_foreign_keys=True)
 
         global raeume_form_resource
         raeume_form_resource = FormResource(Raum, RaumController(), 'id')
@@ -178,7 +191,8 @@ def create_app():
             [Roles.ADMIN.value,
              Roles.PERSONAL.value],
             ['id', 'name', 'stockwerk.id', 'stockwerk.name',
-             'stockwerk.niveau', 'gebaeude.id', 'gebaeude.name'], join_foreign_keys=True)
+             'stockwerk.niveau', 'gebaeude.id', 'gebaeude.name'],
+            join_foreign_keys=True)
 
         global sensor_form_resource
         sensor_form_resource = FormResource(Sensor, SensorController(),
@@ -186,10 +200,19 @@ def create_app():
 
         global sensoren_list_resource
         sensoren_list_resource = StaticListResource(SensorenListController(),
-            [Roles.ADMIN.value, Roles.PERSONAL.value],
-            ['dev_eui', 'name', 'art', 'raum.id', 'raum.name', 'stockwerk.id',
-             'stockwerk.name', 'stockwerk.niveau', 'gebaeude.id',
-             'gebaeude.name'], join_foreign_keys=True)
+                                                    [Roles.ADMIN.value,
+                                                     Roles.PERSONAL.value],
+                                                    ['dev_eui', 'name', 'art',
+                                                     'raum.id', 'raum.name',
+                                                     'stockwerk.id',
+                                                     'stockwerk.name',
+                                                     'stockwerk.niveau',
+                                                     'gebaeude.id',
+                                                     'gebaeude.name'],
+                                                    join_foreign_keys=True)
+
+    global meldungen_form_resource
+    meldungen_form_resource = MeldungFormResource()
 
     return StarletteApp(controller, [
         Route('/login', login, methods=["POST", "PUT", "DELETE"]),
@@ -217,5 +240,9 @@ def create_app():
         Route('/sensoren', sensoren_list, methods=["GET"]),
         Route('/sensoren', sensor_form, methods=["POST"]),
         Route('/sensoren/{dev_eui}', sensor_form,
+              methods=["GET", "PUT", "DELETE"]),
+
+        Route('/meldungen', meldungen_form, methods=["POST"]),
+        Route('/meldungen/{id}', meldungen_form,
               methods=["GET", "PUT", "DELETE"]),
     ]).app

@@ -1,7 +1,7 @@
 import tedious.config
 from starlette.testclient import TestClient
 import random
-from bbbapi.common_types import SensorTypes
+from bbbapi.common_types import SensorArt
 from bbbapi.routes import create_app
 from .route_test_util import route_test
 from ..util import get_admin_headers, get_personal_headers, create_raum, create_sensor
@@ -15,8 +15,8 @@ def test_sensoren_route():
     raum2 = asyncio.get_event_loop().run_until_complete(create_raum())
 
     route_test(app, get_admin_headers(), get_personal_headers(),
-               {'dev_eui': ''.join(random.choice("abcdefghijklmnopqrstuvwxyz") for _ in range(16)), 'name': 'Sensor 1', 'art': SensorTypes.ADEUNIS_RF.value, 'raum': {'id': raum["id"].value}},
-               {'name': 'Sensor 1.0', 'art': SensorTypes.ELSYS_ERS_CO2.value, 'raum': {'id': raum2["id"].value}},
+               {'dev_eui': ''.join(random.choice("abcdefghijklmnopqrstuvwxyz") for _ in range(16)), 'name': 'Sensor 1', 'art': SensorArt.ADEUNIS_RF.value, 'raum': {'id': raum["id"].value}},
+               {'name': 'Sensor 1.0', 'art': SensorArt.ELSYS_ERS_CO2.value, 'raum': {'id': raum2["id"].value}},
                ['name', 'art', 'raum.id'], 'dev_eui', '/sensoren')
 
 

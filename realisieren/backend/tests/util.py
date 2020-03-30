@@ -21,16 +21,16 @@ from bbbapi.models.gebaeude import Gebaeude
 from tedious.auth.auth import Auth
 from tedious.tests.util import TestConnection
 
-from bbbapi.common_types import Roles, SensorTypes
+from bbbapi.common_types import Roles, SensorArt
 import asyncio
 import tedious.config
 
 
 def create_admin_access_token():
-    """Erstellt einen Access Token für den Admin Benutzer mit der UUID 8a733d6a-80d0-41c9-a2a8-b6302da731c9"""
+    """Erstellt einen Access Token für den Admin Benutzer mit der UUID c947a79d-4302-4e4f-8905-15272301db4d"""
     return asyncio.get_event_loop().run_until_complete(Auth().create_token(
         audience=tedious.config.CONFIG["TOKEN"]["audience"],
-        claims={'uid': '6a3d738ad080c941a2a8b6302da731c9',
+        claims={'uid': '9da747c902434f4e890515272301db4d',
                 'name': 'Admin',
                 'role': Roles.ADMIN.value}))
 
@@ -42,7 +42,6 @@ def create_non_admin_token():
         claims={'uid': '6a3d738ad080caaaaaaab6302da731c9',
                 'name': 'Personal',
                 'role': Roles.PERSONAL.value}))
-
 
 def get_admin_headers():
     """Erstellt den Authorization Header welcher dafür benützt wird einen Authorisierten Aufruf auf die Datenbank zu machen."""
@@ -101,7 +100,7 @@ async def create_sensor():
     model = Sensor()
     model["dev_eui"].value = ''.join(random.choice("abcdefghijklmnopqrstuvwxyz") for _ in range(16))
     model["name"].value = "Test Sensor"
-    model["art"].value = random.choice([SensorTypes.ELSYS_ERS_CO2, SensorTypes.ADEUNIS_RF, SensorTypes.TABS])
+    model["art"].value = random.choice([SensorArt.ELSYS_ERS_CO2, SensorArt.ADEUNIS_RF, SensorArt.TABS])
     model["raum"]["id"].value = raum["id"].value
     async with TestConnection() as connection:
         await SensorController().create(connection, model)
