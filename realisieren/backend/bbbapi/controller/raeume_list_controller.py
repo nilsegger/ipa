@@ -27,4 +27,4 @@ class RaeumeListController(ListController):
                 LEFT JOIN stockwerke ON raeume.idstockwerk = stockwerke.id
                 LEFT JOIN gebaeude ON stockwerke.idgebaeude = gebaeude.id
                 LIMIT {} OFFSET {}
-            """.format(limit, format)
+            """.format(limit, offset)

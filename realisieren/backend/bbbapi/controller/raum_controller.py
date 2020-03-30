@@ -25,7 +25,7 @@ class RaumController(ModelController):
     async def _select_stmt(self, model: Model, join_foreign_keys=False):
 
         if not join_foreign_keys:
-            return "SELECT id, idStockwerk, name FROM raeume WHERE id=$1"
+            return """SELECT id, idStockwerk as "stockwerk.id", name FROM raeume WHERE id=$1"""
         else:
             return """
                 SELECT 

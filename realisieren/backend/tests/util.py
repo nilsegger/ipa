@@ -1,3 +1,9 @@
+import random
+
+from bbbapi.controller.sensor_controller import SensorController
+
+from bbbapi.models.sensor import Sensor
+
 from bbbapi.controller.raum_controller import RaumController
 
 from bbbapi.models.raum import Raum
@@ -15,7 +21,7 @@ from bbbapi.models.gebaeude import Gebaeude
 from tedious.auth.auth import Auth
 from tedious.tests.util import TestConnection
 
-from bbbapi.common_types import Roles
+from bbbapi.common_types import Roles, SensorTypes
 import asyncio
 import tedious.config
 
@@ -60,6 +66,7 @@ async def create_personal():
         await PersonalController().create(connection, model)
         return model
 
+
 async def create_gebaeude():
     model = Gebaeude()
     model["name"].value = "Test Gebäude"
@@ -78,13 +85,24 @@ async def create_stockwerk():
         await StockwerkController().create(connection, model)
     return model
 
+
 async def create_raum():
     stockwerk = await create_stockwerk()
     model = Raum()
-    model["name"] = "Test Raum"
+    model["name"].value = "Test Raum"
     model["stockwerk"]["id"].value = stockwerk["id"].value
     async with TestConnection() as connection:
         await RaumController().create(connection, model)
     return model
 
 
+async def create_sensor():
+    raum = await create_raum()
+    model = Sensor()
+    model["dev_eui"].value = ''.join(random.choice("abcdefghijklmnopqrstuvwxyz") for _ in range(16))
+    model["name"].value = "Test Sensor"
+    model["art"].value = random.choice([SensorTypes.ELSYS_ERS_CO2, SensorTypes.ADEUNIS_RF, SensorTypes.TABS])
+    model["raum"]["id"].value = raum["id"].value
+    async with TestConnection() as connection:
+        await SensorController().create(connection, model)
+    return model

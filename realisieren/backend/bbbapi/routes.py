@@ -8,6 +8,8 @@ from bbbapi.controller.gebaeude_list_controller import GebaeudeListController
 from bbbapi.controller.personal_list_controller import PersonalListController
 from bbbapi.controller.raeume_list_controller import RaeumeListController
 from bbbapi.controller.raum_controller import RaumController
+from bbbapi.controller.sensor_controller import SensorController
+from bbbapi.controller.sensoren_list_controller import SensorenListController
 from bbbapi.controller.stockwerke_list_controller import \
     StockwerkeListController
 
@@ -26,6 +28,7 @@ from tedious.sql.postgres import PostgreSQLDatabase
 
 from bbbapi.controller.personal_controller import PersonalController
 from bbbapi.models.personal import Personal
+from bbbapi.models.sensor import Sensor
 from bbbapi.models.stockwerk import Stockwerk
 
 controller = None
@@ -38,6 +41,8 @@ stockwerke_form_resource = None
 stockwerke_list_resource = None
 raeume_form_resource = None
 raeume_list_resource = None
+sensor_form_resource = None
+sensoren_list_resource = None
 
 
 async def login(request):
@@ -104,6 +109,20 @@ async def raeume_list(request):
     return await controller.handle(request, raeume_list_resource)
 
 
+async def sensor_form(request):
+    """Route für das Erstellen, Aktualisieren und Löschen von Sensoren."""
+
+    model = None
+    if 'dev_eui' in request.path_params:
+        model = Sensor(dev_eui=request.path_params['dev_eui'])
+    return await controller.handle(request, sensor_form_resource, model=model)
+
+
+async def sensoren_list(request):
+    """Auflistung aller Sensoren."""
+    return await controller.handle(request, sensoren_list_resource)
+
+
 def create_app():
     """Creates app and adds all routes."""
     global controller
@@ -148,7 +167,7 @@ def create_app():
             StockwerkeListController(),
             [Roles.ADMIN.value,
              Roles.PERSONAL.value],
-            ['id', 'name', 'niveau', 'gebaeude.id', 'gebaeude.name'])
+            ['id', 'name', 'niveau', 'gebaeude.id', 'gebaeude.name'], join_foreign_keys=True)
 
         global raeume_form_resource
         raeume_form_resource = FormResource(Raum, RaumController(), 'id')
@@ -158,8 +177,19 @@ def create_app():
             RaeumeListController(),
             [Roles.ADMIN.value,
              Roles.PERSONAL.value],
-            ['id', 'name', 'stockwerk.id', 'stockwerk.name', 'stockwerk.niveau', 'gebaeude.id', 'gebaeude.name'])
+            ['id', 'name', 'stockwerk.id', 'stockwerk.name',
+             'stockwerk.niveau', 'gebaeude.id', 'gebaeude.name'], join_foreign_keys=True)
 
+        global sensor_form_resource
+        sensor_form_resource = FormResource(Sensor, SensorController(),
+                                            'dev_eui')
+
+        global sensoren_list_resource
+        sensoren_list_resource = StaticListResource(SensorenListController(),
+            [Roles.ADMIN.value, Roles.PERSONAL.value],
+            ['dev_eui', 'name', 'art', 'raum.id', 'raum.name', 'stockwerk.id',
+             'stockwerk.name', 'stockwerk.niveau', 'gebaeude.id',
+             'gebaeude.name'], join_foreign_keys=True)
 
     return StarletteApp(controller, [
         Route('/login', login, methods=["POST", "PUT", "DELETE"]),
@@ -182,5 +212,10 @@ def create_app():
         Route('/raeume', raeume_list, methods=["GET"]),
         Route('/raeume', raeume_form, methods=["POST"]),
         Route('/raeume/{id}', raeume_form,
+              methods=["GET", "PUT", "DELETE"]),
+
+        Route('/sensoren', sensoren_list, methods=["GET"]),
+        Route('/sensoren', sensor_form, methods=["POST"]),
+        Route('/sensoren/{dev_eui}', sensor_form,
               methods=["GET", "PUT", "DELETE"]),
     ]).app
