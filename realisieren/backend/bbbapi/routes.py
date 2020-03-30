@@ -4,6 +4,7 @@ import tedious.config
 from tedious.res.list_resource import ListResource, StaticListResource
 
 from bbbapi.common_types import Roles
+from bbbapi.controller.beobachter_controller import BeobachterController
 from bbbapi.controller.gebaeude_list_controller import GebaeudeListController
 from bbbapi.controller.personal_list_controller import PersonalListController
 from bbbapi.controller.raeume_list_controller import RaeumeListController
@@ -12,6 +13,7 @@ from bbbapi.controller.sensor_controller import SensorController
 from bbbapi.controller.sensoren_list_controller import SensorenListController
 from bbbapi.controller.stockwerke_list_controller import \
     StockwerkeListController
+from bbbapi.models.beobachter import Beobachter
 from bbbapi.models.meldung import Meldung
 
 from bbbapi.models.raum import Raum
@@ -46,7 +48,7 @@ raeume_list_resource = None
 sensor_form_resource = None
 sensoren_list_resource = None
 meldungen_form_resource = None
-
+beobachter_form_resource = None
 
 async def login(request):
     """Route for login."""
@@ -135,6 +137,16 @@ async def meldungen_form(request):
     return await controller.handle(request, meldungen_form_resource, model=model)
 
 
+async def beobachter_form(request):
+    """Route für das Erstellen, Aktualisieren und Löschen von Beobachtern."""
+
+    model = None
+    if 'id' in request.path_params:
+        model = Beobachter(_id=int(request.path_params['id']))
+    return await controller.handle(request, beobachter_form_resource, model=model)
+
+
+
 def create_app():
     """Creates app and adds all routes."""
     global controller
@@ -214,6 +226,9 @@ def create_app():
     global meldungen_form_resource
     meldungen_form_resource = MeldungFormResource()
 
+    global beobachter_form_resource
+    beobachter_form_resource = FormResource(Beobachter, BeobachterController(), 'id')
+
     return StarletteApp(controller, [
         Route('/login', login, methods=["POST", "PUT", "DELETE"]),
 
@@ -244,5 +259,9 @@ def create_app():
 
         Route('/meldungen', meldungen_form, methods=["POST"]),
         Route('/meldungen/{id}', meldungen_form,
+              methods=["GET", "PUT", "DELETE"]),
+
+        Route('/beobachter', beobachter_form, methods=["POST"]),
+        Route('/beobachter/{id}', beobachter_form,
               methods=["GET", "PUT", "DELETE"]),
     ]).app

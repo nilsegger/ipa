@@ -7,6 +7,7 @@ class Roles(Enum):
 
     ADMIN, PERSONAL
     """
+
     ADMIN = 'ADMIN'
     PERSONAL = 'PERSONAL'
 
@@ -16,6 +17,7 @@ class SensorArt(Enum):
 
     ADEUNIS_RF, ELSYS_ERS_CO2, TABS
     """
+
     ADEUNIS_RF = 'ADEUNIS_RF'
     ELSYS_ERS_CO2 = 'ELSYS_ERS_CO2'
     TABS = 'TABS'
@@ -27,5 +29,18 @@ class MeldungsArt(Enum):
 
         AUTO, MANUELL
     """
+
     AUTO = "AUTO"
     MANUELL = "MANUELL"
+
+
+class BeobachterArt(Enum):
+    """Ein Beobachter kann entweder einen Richtwert oder Zählerstand prüfen.
+        Beim Richtwert unterscheidet man von darüber und darunter.
+        Beim ersten muss der Wert über X liegen damit eine Meldung ausgeschriben wird und beim anderen umgekehrt.
+
+    """
+
+    RICHTWERT_DARUEBER = "RICHTWERT_DARUEBER"
+    RICHTWERT_DARUNTER= "RICHTWERT_DARUNTER"
+    ZAEHLERSTAND = "ZAEHLERSTAND"

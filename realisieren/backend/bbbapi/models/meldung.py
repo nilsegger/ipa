@@ -1,3 +1,4 @@
+from bbbapi.models.beobachter import Beobachter
 from bbbapi.models.gebaeude import Gebaeude
 
 from bbbapi.models.stockwerk import Stockwerk
@@ -19,6 +20,7 @@ class Meldung(Model):
             IntField('id', value=_id),
             EnumField('art', enum_class=MeldungsArt),
             Raum('raum'),
+            Beobachter('beobachter'),
             Stockwerk('stockwerk'),
             Gebaeude('gebaeude'),
             Sensor('sensor'),

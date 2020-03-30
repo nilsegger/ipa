@@ -74,14 +74,15 @@ SENSOR_WERTE_TABLE = """
 """
 
 BEOBACHTER_TABLE = """
-    CREATE TYPE BeobachterArt AS ENUM ('RICHTWERT', 'ZAEHLERSTAND'); 
+    CREATE TYPE BeobachterArt AS ENUM ('RICHTWERT_DARUEBER', 'RICHTWERT_DARUNTER', 'ZAEHLERSTAND'); 
     CREATE TABLE Beobachter(
         id SERIAL4 PRIMARY KEY,
         dev_euiSensor VARCHAR(16) NOT NULL,
         name VARCHAR(100) NOT NULL,
-        wertName VARCHAR(100) NOT NULL,
         art BeobachterArt NOT NULL,
+        wertName VARCHAR(100) NOT NULL,
         ausloeserWert int NOT NULL,
+        stand int DEFAULT 0
         FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui)
     );
 """
@@ -91,6 +92,7 @@ MELDUNGEN_TABLE = """
     CREATE TABLE Meldungen(
         id SERIAL4 PRIMARY KEY,
         dev_euiSensor VARCHAR(16),
+        idBeobachter int,
         idRaum int4 NOT NULL,
         uuidPersonal UUID,
         art MeldungsArt NOT NULL,
@@ -100,6 +102,7 @@ MELDUNGEN_TABLE = """
         FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui),
         FOREIGN KEY (idRaum) REFERENCES Raeume(id),
         FOREIGN KEY (uuidPersonal) REFERENCES Personal(uuid)
+        FOREIGN KEY (idBeobachter) REFERENCES Beobachter(id)
     );
 """
 

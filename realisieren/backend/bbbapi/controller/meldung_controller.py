@@ -29,8 +29,9 @@ class MeldungController(ModelController):
             return """SELECT 
                     art, datum, beschreibung, bearbeitet,
                     dev_euiSensor as "sensor.dev_eui",
-                    idRaum as "raum.id", 
+                    idRaum as "raum.id",
                     uuidPersonal as "personal.uuid",
+                    idBeobachter as "beobachter.id"
                     FROM meldungen
                     WHERE id=$1
                     """
@@ -41,6 +42,11 @@ class MeldungController(ModelController):
                     sensoren.name as "sensor.name",
                     sensoren.art as "sensor.art",
                     sensoren.art as "sensor.art",
+                    beobachter.id as "beobachter.id",
+                    beobachter.name as "beobachter.name",
+                    beobachter.stand as "beobachter.stand",
+                    beobachter.wertName as "beobachter.wertName",
+                    beobachter.ausloeserWert as "beobachter.ausloeserWert",
                     raeume.id as "raum.id",
                     raeume.name as "raum.name",
                     stockwerke.id as "stockwerk.id",
@@ -53,6 +59,7 @@ class MeldungController(ModelController):
                     logins.role as "personal.rolle"
                     FROM meldungen
                     LEFT JOIN sensoren ON meldungen.dev_euisensor = sensoren.dev_eui
+                    LEFT JOIN beobachter ON meldungen.idBeobachter = beobachter.id
                     LEFT JOIN raeume ON meldungen.idRaum = raeume.id
                     LEFT JOIN stockwerke ON raeume.idstockwerk = stockwerke.id
                     LEFT JOIN gebaeude ON stockwerke.idgebaeude = gebaeude.id
@@ -114,6 +121,14 @@ class MeldungController(ModelController):
                     'name': Permissions.READ,
                     'art': Permissions.READ
                 },
+                'beobachter': {
+                    'id': Permissions.READ,
+                    'name': Permissions.READ,
+                    'art': Permissions.READ,
+                    'wertName': Permissions.READ,
+                    'ausloeserWert': Permissions.READ,
+                    'stand': Permissions.READ
+                },
                 'raum': {
                     'id': Permissions.READ_WRITE,
                     'name': Permissions.READ
@@ -136,6 +151,11 @@ class MeldungController(ModelController):
     async def validate(self, connection: SQLConnectionInterface, model: Model,
                        _type: ValidationTypes):
         if _type == ValidationTypes.CREATE:
+
+            if model["art"].value == MeldungsArt.MANUELL:
+                await model.validate_not_empty(['personal.uuid'])
+            else:
+                await model.validate_not_empty(['beobachter.id'])
 
             await model.validate_not_empty(['raum.id', 'beschreibung'])
 
