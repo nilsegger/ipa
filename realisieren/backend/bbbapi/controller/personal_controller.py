@@ -34,7 +34,7 @@ class PersonalController(ModelController):
         return model["uuid"].value, model["name"].value
 
     async def _update_stmt(self):
-        return "UPDATE personal SET name=$2 WHERE uuid=$1"
+        return "UPDATE personal SET name=coalesce($2) WHERE uuid=$1"
 
     async def _update_values(self, model: Model):
         """Antwortet mit den korrekt sortieren Werten eines Personal Models für die Aktualisierung."""

@@ -26,7 +26,7 @@ class StockwerkController(ModelController):
         return model["gebaeude"]["id"].value, model["name"].value, model["niveau"].value
 
     async def _update_stmt(self):
-        return "UPDATE stockwerke SET idgebaeude=$2, name=$3, niveau=$4 WHERE id=$1"
+        return "UPDATE stockwerke SET idgebaeude=coalesce($2, idgebaeude), name=coalesce($3, name), niveau=coalesce($4, niveau) WHERE id=$1"
 
     async def _update_values(self, model: Model):
         return model["id"].value, model["gebaeude"]["id"].value, model["name"].value, model["niveau"].value

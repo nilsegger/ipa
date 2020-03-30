@@ -48,7 +48,7 @@ class RaumController(ModelController):
         return model["name"].value, model["stockwerk"]["id"].value
 
     async def _update_stmt(self):
-        return "UPDATE raeume SET name=$2, idstockwerk=$3 WHERE id=$1"
+        return "UPDATE raeume SET name=coalesce($2, name), idstockwerk=coalesce($3, idstockwerk) WHERE id=$1"
 
     async def _update_values(self, model: Model):
         return model["id"].value, model["name"].value, model["stockwerk"]["id"].value

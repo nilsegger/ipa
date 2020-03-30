@@ -27,7 +27,7 @@ class GebaeudeController(ModelController):
         return model["name"].value,
 
     async def _update_stmt(self):
-        return "UPDATE Gebaeude SET name=$2 WHERE id=$1"
+        return "UPDATE Gebaeude SET name=coalesce($2, name) WHERE id=$1"
 
     async def _update_values(self, model: Model):
         """Antwortet mit id, name."""
