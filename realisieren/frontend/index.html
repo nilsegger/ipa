@@ -1,18 +1,29 @@
-<!doctype html>
+---
+layout: empty
+title: BBB Gebäude Management
+---
 
-<html lang="de">
-<head>
-  <meta charset="utf-8">
+<div class="container">
 
-  <title>BBB Gebäude Management</title>
-  <meta name="description" content="Management Seite für Sensoren verteilt in den BBB Gebäuden.">
-  <meta name="author" content="Nils Egger">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <form>
+        <h1>Login</h1>
 
-  <link rel="stylesheet" href="assets/css/bootstrap.css" />
-</head>
+        <div class="form-row form-group">
+            <div class="col-sm-12 col-md-8 col-lg-4">
+                <label for="benutzername">Benutzername</label>
+                <input id="benutzername" class="form-control" type="text" placeholder="benutzer@bbbaden.ch" />
+            </div>
+        </div>
 
-<body>
-  <h1>BBB Gebäude Management</h1>
-</body>
-</html>
+        <div class="form-row form-group">
+            <div class="col-sm-12 col-md-8 col-lg-4">
+                <label for="passwort">Passwort</label>
+                <input id="passwort" class="form-control" type="password" placeholder="************" />
+            </div>
+        </div>
+
+        <input class="btn btn-primary" type="submit" value="Login" />
+    </form>
+
+
+</div>
