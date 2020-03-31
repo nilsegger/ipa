@@ -1,5 +1,13 @@
 import random
 
+from bbbapi.controller.material_controller import MaterialController
+
+from bbbapi.models.material import Material
+
+from bbbapi.controller.beobachter_controller import BeobachterController
+
+from bbbapi.models.beobachter import Beobachter
+
 from bbbapi.controller.sensor_controller import SensorController
 
 from bbbapi.models.sensor import Sensor
@@ -21,7 +29,7 @@ from bbbapi.models.gebaeude import Gebaeude
 from tedious.auth.auth import Auth
 from tedious.tests.util import TestConnection
 
-from bbbapi.common_types import Roles, SensorArt
+from bbbapi.common_types import Roles, SensorArt, BeobachterArt
 import asyncio
 import tedious.config
 
@@ -105,3 +113,26 @@ async def create_sensor():
     async with TestConnection() as connection:
         await SensorController().create(connection, model)
     return model
+
+
+async def create_beobachter():
+    sensor = await create_sensor()
+    beobachter = Beobachter()
+    beobachter["name"].value = "Test Beobachter"
+    beobachter["wertName"].value = "Temperatur"
+    beobachter["ausloeserWert"].value = 5
+    beobachter["art"].value = BeobachterArt.RICHTWERT_DARUNTER
+    beobachter["sensor"]["dev_eui"].value = sensor["dev_eui"].value
+
+    async with TestConnection() as connection:
+        await BeobachterController().create(connection, beobachter)
+    return beobachter
+
+
+async def create_material():
+    material = Material()
+    material["name"].value = "Test Material"
+
+    async with TestConnection() as connection:
+        await MaterialController().create(connection, material)
+    return material

@@ -22,7 +22,7 @@ class BeobachterController(ModelController):
     async def _select_stmt(self, model: Model, join_foreign_keys=False):
 
         if not join_foreign_keys:
-            return """SELECT dev_euiSensor as "sensor.id" , name, art, wertName as "wertName", ausloeserWert as "ausloeserWert", stand FROM beobachter WHERE id=$1"""
+            return """SELECT dev_euiSensor as "sensor.dev_eui" , name, art, wertName as "wertName", ausloeserWert as "ausloeserWert", stand FROM beobachter WHERE id=$1"""
         else:
             return """
                     SELECT beobachter.name, beobachter.art, wertName as "wertName", ausloeserWert as "ausloeserWert", stand,
@@ -161,5 +161,10 @@ class BeobachterController(ModelController):
 
     async def add_material(self, connection: SQLConnectionInterface, beobachter: Beobachter, material: Material):
         """Fügt ein Material einem Beobachter hinzu."""
-        stmt = "INSERT INTO materialzubeobachter(idmaterial, idbeobachter, anzahl) VALUES ($1, $2, $3)"
-        await connection.execute(stmt, material["id"].value, beobachter["id"].value, material["anzahl"].value)
+        stmt = "INSERT INTO materialzubeobachter(idmaterial, idbeobachter, anzahl) VALUES ($1, $2, $3) RETURNING id"
+        return await connection.fetch_value(stmt, material["id"].value, beobachter["id"].value, material["anzahl"].value)
+
+    async def remove_material(self, connection: SQLConnectionInterface, _id):
+        """Löscht die Reihe mit _id."""
+        stmt = "DELETE FROM materialzubeobachter WHERE id=$1"
+        await connection.execute(stmt, _id)

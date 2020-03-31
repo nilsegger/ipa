@@ -52,6 +52,7 @@ sensoren_list_resource = None
 meldungen_form_resource = None
 beobachter_form_resource = None
 materialien_form_resource = None
+material_zu_beobachter_resource = None
 
 async def login(request):
     """Route for login."""
@@ -157,6 +158,18 @@ async def material_form(request):
         model = Material(_id=int(request.path_params['id']))
     return await controller.handle(request, materialien_form_resource, model=model)
 
+
+async def material_zu_beobachter_form(request):
+    """Route für das Hinzufügen oder Löschen von Material zu Beobachtern."""
+
+    if 'id' in request.path_params and 'mid' in request.path_params:
+        beobachter = Beobachter(_id=request.path_params['id'])
+        material = Material(_id=request.path_params['mid'])
+        return await controller.handle(request, material_zu_beobachter_resource, beobacher=beobachter, material=material)
+    else:
+        return await controller.handle(request,
+                                       material_zu_beobachter_resource,
+                                       material_zu_beobachter_id=request.path_params['id'])
 
 def create_app():
     """Creates app and adds all routes."""
@@ -282,4 +295,7 @@ def create_app():
         Route('/materialien', material_form, methods=["POST"]),
         Route('/materialien/{id}', material_form,
               methods=["GET", "PUT", "DELETE"]),
+
+        Route('/beobachter/{id}/materialien/{mid}', material_zu_beobachter_form, methods=['POST'])
+        Route('/beobachter/materialien/{id}', material_zu_beobachter_form, methods=['DELETE'])
     ]).app
