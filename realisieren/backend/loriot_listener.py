@@ -37,6 +37,7 @@ beobachters = {
     BeobachterArt.ZAEHLERSTAND: ZaehlerstandBeobachter(),
 }
 
+
 async def lookup_sensor(connection: Connection, dev_eui: str):
     """Sucht in der Sensoren Tabllen nach dem Sensor mit der dev_eui.
 
@@ -68,12 +69,16 @@ async def handle(connection: Connection, sensor: Sensor, raw, decoded):
                              json.dumps(decoded), datetime.now())
 
     select_beobachter = """SELECT id, name, art, wertName as "wertName", ausloeserWert as "ausloeserWert", stand FROM beobachter WHERE dev_euiSensor=$1"""
-    fetched_beobachters = await connection.fetch_models(Beobachter, select_beobachter, sensor["dev_eui"].value)
+    fetched_beobachters = await connection.fetch_models(Beobachter,
+                                                        select_beobachter,
+                                                        sensor[
+                                                            "dev_eui"].value)
     beobachter_controller = BeobachterController()
     meldung_controller = MeldungController()
     for beobachter in fetched_beobachters:
         instance = beobachters[beobachter["art"].value]
-        await instance.watch(connection, beobachter, beobachter_controller, meldung_controller, sensor, decoded)
+        await instance.watch(connection, beobachter, beobachter_controller,
+                             meldung_controller, sensor, decoded)
 
 
 async def listen(uri: str, db: PostgreSQLDatabase):
@@ -131,7 +136,6 @@ async def main():
                     "{} Eine Exception wurde erhoben. Es werden 5s gewartet bis der Server wieder gestartet wird. \n {} {}".format(
                         datetime.now(), type(e), str(e)))
                 time.sleep(5)
-
 
 
 async def add_sensor():

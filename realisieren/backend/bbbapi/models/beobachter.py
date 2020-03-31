@@ -13,7 +13,7 @@ from tedious.mdl.model import Model
 class Beobachter(Model):
     """Modell welches eine Beobachter Reihe wiederspiegelt."""
 
-    def __init__(self, name: str=None, _id=None):
+    def __init__(self, name: str=None, _id=None, wert_name=None, ausloeser_wert=None, stand=None):
         super().__init__(name, [
             IntField('id', value=_id),
             Sensor('sensor'),
@@ -22,7 +22,7 @@ class Beobachter(Model):
             Gebaeude('gebaeude'),
             StrField('name', min_len=3, max_len=99),
             EnumField('art', enum_class=BeobachterArt),
-            StrField('wertName'),
-            IntField('ausloeserWert'),
-            IntField('stand')
+            StrField('wertName', value=wert_name),
+            IntField('ausloeserWert', value=ausloeser_wert),
+            IntField('stand', value=stand)
         ])
