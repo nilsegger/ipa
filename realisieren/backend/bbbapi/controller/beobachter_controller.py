@@ -1,5 +1,9 @@
 from typing import Tuple, Dict, Any, List
+
+from bbbapi.models.beobachter import Beobachter
+
 from bbbapi.controller.sensor_controller import SensorController
+from bbbapi.models.material import Material
 from bbbapi.util import sanitize_fields
 from bbbapi.common_types import Roles, BeobachterArt
 from tedious.auth.auth import Requester
@@ -154,3 +158,8 @@ class BeobachterController(ModelController):
                 raise ValidationError(['sensor.dev_eui'], "Sensor existiert nicht.")
 
         sanitize_fields(model, ['name', 'wertName'])
+
+    async def add_material(self, connection: SQLConnectionInterface, beobachter: Beobachter, material: Material):
+        """Fügt ein Material einem Beobachter hinzu."""
+        stmt = "INSERT INTO materialzubeobachter(idmaterial, idbeobachter, anzahl) VALUES ($1, $2, $3)"
+        await connection.execute(stmt, material["id"].value, beobachter["id"].value, material["anzahl"].value)

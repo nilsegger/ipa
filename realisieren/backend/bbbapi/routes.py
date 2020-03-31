@@ -6,6 +6,7 @@ from tedious.res.list_resource import ListResource, StaticListResource
 from bbbapi.common_types import Roles
 from bbbapi.controller.beobachter_controller import BeobachterController
 from bbbapi.controller.gebaeude_list_controller import GebaeudeListController
+from bbbapi.controller.material_controller import MaterialController
 from bbbapi.controller.personal_list_controller import PersonalListController
 from bbbapi.controller.raeume_list_controller import RaeumeListController
 from bbbapi.controller.raum_controller import RaumController
@@ -14,6 +15,7 @@ from bbbapi.controller.sensoren_list_controller import SensorenListController
 from bbbapi.controller.stockwerke_list_controller import \
     StockwerkeListController
 from bbbapi.models.beobachter import Beobachter
+from bbbapi.models.material import Material
 from bbbapi.models.meldung import Meldung
 
 from bbbapi.models.raum import Raum
@@ -49,6 +51,7 @@ sensor_form_resource = None
 sensoren_list_resource = None
 meldungen_form_resource = None
 beobachter_form_resource = None
+materialien_form_resource = None
 
 async def login(request):
     """Route for login."""
@@ -146,6 +149,14 @@ async def beobachter_form(request):
     return await controller.handle(request, beobachter_form_resource, model=model)
 
 
+async def material_form(request):
+    """Route für das Erstellen, Aktualisieren und Löschen von Beobachtern."""
+
+    model = None
+    if 'id' in request.path_params:
+        model = Material(_id=int(request.path_params['id']))
+    return await controller.handle(request, materialien_form_resource, model=model)
+
 
 def create_app():
     """Creates app and adds all routes."""
@@ -229,6 +240,9 @@ def create_app():
     global beobachter_form_resource
     beobachter_form_resource = FormResource(Beobachter, BeobachterController(), 'id')
 
+    global materialien_form_resource
+    materialien_form_resource = FormResource(Material, MaterialController(), 'id')
+
     return StarletteApp(controller, [
         Route('/login', login, methods=["POST", "PUT", "DELETE"]),
 
@@ -263,5 +277,9 @@ def create_app():
 
         Route('/beobachter', beobachter_form, methods=["POST"]),
         Route('/beobachter/{id}', beobachter_form,
+              methods=["GET", "PUT", "DELETE"]),
+
+        Route('/materialien', material_form, methods=["POST"]),
+        Route('/materialien/{id}', material_form,
               methods=["GET", "PUT", "DELETE"]),
     ]).app
