@@ -296,6 +296,6 @@ def create_app():
         Route('/materialien/{id}', material_form,
               methods=["GET", "PUT", "DELETE"]),
 
-        Route('/beobachter/{id}/materialien/{mid}', material_zu_beobachter_form, methods=['POST'])
+        Route('/beobachter/{id}/materialien/{mid}', material_zu_beobachter_form, methods=['POST']),
         Route('/beobachter/materialien/{id}', material_zu_beobachter_form, methods=['DELETE'])
     ]).app

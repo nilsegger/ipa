@@ -45,7 +45,7 @@ def create_meldung(beobachter, sensor, beschreibung):
     return meldung
 
 
-class _BeobachterInterface:
+class BeobachterInterface:
     """Ein Beobachter erstellt eine Meldung wenn ein gewisser Wert überschritten wurde."""
 
     def __init__(self, _type: BeobachterArt):
@@ -69,7 +69,7 @@ class _BeobachterInterface:
         raise NotImplementedError
 
 
-class ZaehlerstandBeobachter(_BeobachterInterface):
+class ZaehlerstandBeobachter(BeobachterInterface):
     """Wenn der Stand überschritten wird, so wird eine Meldung ausgelöst. Der Stand wird mit jedem Wert des Sensor inkrementiert."""
 
     def __init__(self):
@@ -106,7 +106,7 @@ class ZaehlerstandBeobachter(_BeobachterInterface):
         await beobachter_controller.update(connection, beobachter)
 
 
-class RichtwertDarueberBeobachter(_BeobachterInterface):
+class RichtwertDarueberBeobachter(BeobachterInterface):
     """Wenn ein gewisser Wert überschritten wird, so wird eine Meldung ausgelöst."""
 
     def __init__(self):
@@ -139,7 +139,7 @@ class RichtwertDarueberBeobachter(_BeobachterInterface):
                 await meldung_controller.create(connection, meldung)
 
 
-class RichtwertDarunterBeobachter(_BeobachterInterface):
+class RichtwertDarunterBeobachter(BeobachterInterface):
     """Wenn ein gewisser Wert unterschreitet wird, so wird eine Meldung ausgelöst."""
 
     def __init__(self):
