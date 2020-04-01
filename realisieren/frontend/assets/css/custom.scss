@@ -13,32 +13,48 @@ $logo-height-px: 699;
 $logo-margin-vertical-px: $logo-width-px / 100 * (100 / $logo-width-mm * $logo-margin-vertical-mm);
 $logo-margin-horizontal-px: $logo-height-px / 100 * (100 / $logo-height-mm * $logo-margin-horizontal-mm);
 
-// Value between 0 to 1
-$scale: 0.1;
-
-$logo-height-scaled: $logo-height-px * $scale;
-$margin-vertical-scaled: $logo-margin-vertical-px * $scale;
-$margin-horizontal-scaled: $logo-margin-horizontal-px * $scale;
-
-$logo-height-scaled-small: $logo-height-px * $scale;
-$margin-vertical-scaled-small: $logo-margin-vertical-px * $scale;
-$margin-horizontal-scaled-small: $logo-margin-horizontal-px * $scale;
 
 .logo-wrapper {
   position: relative;
   text-align: right;
 }
 
-.logo {
+@mixin logo-size($scale) {
+  $logo-height-scaled: $logo-height-px * $scale;
+  $margin-vertical-scaled: $logo-margin-vertical-px * $scale;
+  $margin-horizontal-scaled: $logo-margin-horizontal-px * $scale;
   height: $logo-height-scaled + px;
   margin-top: $margin-vertical-scaled + px;
   margin-bottom: $margin-vertical-scaled + px;
   margin-right: $margin-horizontal-scaled + px;
 }
 
-.logo-small {
-  height: $logo-height-scaled-small + px;
-  margin-top: $margin-vertical-scaled-small + px;
-  margin-bottom: $margin-vertical-scaled-small + px;
-  margin-right: $margin-horizontal-scaled-small + px;
+@media (min-width: 576px) {
+  .logo {
+    @include logo-size(0.025);
+  }
+
+  .logo-small {
+    @include logo-size(0.0075);
+  }
+}
+
+@media (min-width: 768px) {
+  .logo {
+    @include logo-size(0.05);
+  }
+
+  .logo-small {
+    @include logo-size(0.025);
+  }
+}
+
+@media (min-width: 992px) {
+  .logo {
+    @include logo-size(0.1);
+  }
+
+  .logo-small {
+    @include logo-size(0.075);
+  }
 }

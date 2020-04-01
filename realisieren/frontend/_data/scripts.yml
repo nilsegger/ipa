@@ -1,0 +1,4 @@
+- page: /
+  url: assets/js/login.js
+- page: /dashboard.html
+  url: assets/js/dashboard.js

@@ -36,6 +36,7 @@ from bbbapi.models.personal import Personal
 from bbbapi.models.sensor import Sensor
 from bbbapi.models.stockwerk import Stockwerk
 from bbbapi.resources.meldung_form_resource import MeldungFormResource
+from bbbapi.resources.meldungen_list_resource import MeldungenListResource
 
 controller = None
 auth_resource = None
@@ -50,6 +51,7 @@ raeume_list_resource = None
 sensor_form_resource = None
 sensoren_list_resource = None
 meldungen_form_resource = None
+meldungen_list_resource = None
 beobachter_form_resource = None
 materialien_form_resource = None
 material_zu_beobachter_resource = None
@@ -140,6 +142,10 @@ async def meldungen_form(request):
         model = Meldung(_id=int(request.path_params['id']))
     return await controller.handle(request, meldungen_form_resource, model=model)
 
+
+async def meldungen_list(request):
+    """Auflistungen der Meldungen."""
+    return await controller.handle(request, meldungen_list_resource)
 
 async def beobachter_form(request):
     """Route für das Erstellen, Aktualisieren und Löschen von Beobachtern."""
@@ -250,6 +256,9 @@ def create_app():
     global meldungen_form_resource
     meldungen_form_resource = MeldungFormResource()
 
+    global meldungen_list_resource
+    meldungen_list_resource = MeldungenListResource()
+
     global beobachter_form_resource
     beobachter_form_resource = FormResource(Beobachter, BeobachterController(), 'id')
 
@@ -284,6 +293,7 @@ def create_app():
         Route('/sensoren/{dev_eui}', sensor_form,
               methods=["GET", "PUT", "DELETE"]),
 
+        Route('/meldungen', meldungen_list, methods=["OPTIONS", "GET"]),
         Route('/meldungen', meldungen_form, methods=["POST"]),
         Route('/meldungen/{id}', meldungen_form,
               methods=["GET", "PUT", "DELETE"]),

@@ -5,25 +5,44 @@ title: BBB Gebäude Management
 
 <div class="container">
 
-    <form>
-        <h1>Login</h1>
+    <h1>Login</h1>
+
+    <div id="form">
+
+        <div id="success-alert" class="alert alert-success" style="display: none;">
+            Login war erfolgreich, Du wirst in kürze weitergeleitet.
+        </div>
+
+        <div id="error-alert" class="alert alert-danger" style="display: none;">
+            Login war nicht erfolgreich.
+        </div>
 
         <div class="form-row form-group">
             <div class="col-sm-12 col-md-8 col-lg-4">
                 <label for="benutzername">Benutzername</label>
-                <input id="benutzername" class="form-control" type="text" placeholder="benutzer@bbbaden.ch" />
+                <input id="benutzername" class="form-control" type="text"
+                       placeholder="benutzer@bbbaden.ch"/>
+                <div class="invalid-feedback">Der Benutzername darf nicht leer
+                    sein.
+                </div>
             </div>
         </div>
 
         <div class="form-row form-group">
             <div class="col-sm-12 col-md-8 col-lg-4">
                 <label for="passwort">Passwort</label>
-                <input id="passwort" class="form-control" type="password" placeholder="************" />
+                <input id="passwort" class="form-control" type="password"
+                       placeholder="************"/>
+                <div class="invalid-feedback">Das Passwort darf nicht leer
+                    sein und muss einer Mindestlänge von 8 entsprechen.
+                </div>
             </div>
         </div>
 
-        <input class="btn btn-primary" type="submit" value="Login" />
-    </form>
+        <input id="login-btn" class="btn btn-primary" type="button"
+               value="Login"/>
+    </div>
 
+    <div id="spinner" class="spinner-border text-primary" style="display: None"></div>
 
 </div>

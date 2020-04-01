@@ -134,7 +134,7 @@ class RichtwertDarueberBeobachter(BeobachterInterface):
         if actual > trigger:
             if await allowed_to_post(connection, beobachter):
                 beschreibung = "Der Sensor '{}' hat seinen Richtwert von '{}' mit '{}' überschritten.".format(
-                    sensor["name"].value, actual, trigger)
+                    sensor["name"].value, trigger, actual)
                 meldung = create_meldung(beobachter, sensor, beschreibung)
                 await meldung_controller.create(connection, meldung)
 
@@ -167,6 +167,6 @@ class RichtwertDarunterBeobachter(BeobachterInterface):
         if actual < trigger:
             if await allowed_to_post(connection, beobachter):
                 beschreibung = "Der Sensor '{}' hat seinen Richtwert von '{}' mit '{}' unterschritten.".format(
-                    sensor["name"].value, actual, trigger)
+                    sensor["name"].value, trigger, actual)
                 meldung = create_meldung(beobachter, sensor, beschreibung)
                 await meldung_controller.create(connection, meldung)

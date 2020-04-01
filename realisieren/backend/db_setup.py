@@ -4,8 +4,8 @@ import asyncio
 LOGIN_TABLE = """
         CREATE TABLE IF NOT EXISTS logins(
             uuid UUID PRIMARY KEY NOT NULL,
-            username varchar(30) NOT NULL,
-            role varchar(15) NOT NULL,
+            username varchar(100) NOT NULL,
+            role varchar(30) NOT NULL,
             password bytea NOT NULL,
             salt bytea NOT NULL,
             mem_cost int2 NOT NULL,

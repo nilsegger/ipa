@@ -1,4 +1,7 @@
 import tedious.config
+from bbbapi.models.personal import Personal
+
+from bbbapi.controller.personal_controller import PersonalController
 from tedious.auth.auth import Auth
 from tedious.tests.util import TestConnection
 
@@ -18,8 +21,12 @@ app = create_app()
 
 async def setup_admin():
     async with TestConnection() as connection:
-        auth = Auth()
-        await auth.register(connection, 'admin', 'test', Roles.ADMIN.value)
+        model = Personal()
+        model['name'].value = 'Administrator'
+        model['benutzername'].value = 'admin'
+        model['passwort'].value = '12345678'
+        model['rolle'].value = Roles.ADMIN
+        await PersonalController().create(connection, model)
 
 if __name__ == '__main__':
     import asyncio
