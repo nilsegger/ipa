@@ -8,3 +8,5 @@
   url: assets/js/gebaeude.js
 - page: /raeume.html
   url: assets/js/stockwerke.js
+- page: /raeume.html
+  url: assets/js/raeume.js

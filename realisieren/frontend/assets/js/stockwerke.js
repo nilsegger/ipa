@@ -96,6 +96,8 @@ function loadStockwerke() {
             for(let i = 0; i < list.length; i++) {
                 let item = list[i];
                 setStockwerkRow(item["id"], item["name"],  item["niveau"], item["gebaeude"]["id"], item["gebaeude"]["name"]);
+
+                $("#raum-stockwerk").append("<option value='"+ item["id"] +"'>"+item["name"] + " " + item["gebaeude"]["name"] + "</option>");
             }
         } else {
             // TODO Fehlermeldig
