@@ -257,7 +257,7 @@ def create_app():
     meldungen_form_resource = MeldungFormResource()
 
     global meldungen_list_resource
-    meldungen_list_resource = MeldungenListResource()
+    meldungen_list_resource = MeldungenListResource(limit=25)
 
     global beobachter_form_resource
     beobachter_form_resource = FormResource(Beobachter, BeobachterController(), 'id')
@@ -293,10 +293,9 @@ def create_app():
         Route('/sensoren/{dev_eui}', sensor_form,
               methods=["GET", "PUT", "DELETE"]),
 
-        Route('/meldungen', meldungen_list, methods=["OPTIONS", "GET"]),
+        Route('/meldungen', meldungen_list, methods=["GET"]),
         Route('/meldungen', meldungen_form, methods=["POST"]),
-        Route('/meldungen/{id}', meldungen_form,
-              methods=["GET", "PUT", "DELETE"]),
+        Route('/meldungen/{id}', meldungen_form, methods=["GET", "PUT", "DELETE"]),
 
         Route('/beobachter', beobachter_form, methods=["POST"]),
         Route('/beobachter/{id}', beobachter_form,

@@ -12,10 +12,19 @@ title: BBB Gebäude Management
             <th>Datum</th>
             <th>Beschreibung</th>
             <th>Melder</th>
+            <th>Ort</th>
             <th>Aktionen</th>
         </tr>
         </thead>
         <tbody id="meldungen_table">
         </tbody>
+        <tfoot>
+            <tr id="loadingRow" style="display: none;">
+                <td colspan="6"><div class="spinner-border text-primary"></div></td>
+            </tr>
+            <tr id="loadMoreBtnRow" style="display: none;">
+                <td colspan="6"><button type="button" id="loadMoreBtn" class="btn btn-primary">Mehr laden.</button></td>
+            </tr>
+        </tfoot>
     </table>
 </div>

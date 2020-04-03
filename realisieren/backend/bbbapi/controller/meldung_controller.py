@@ -75,10 +75,10 @@ class MeldungController(ModelController):
         return model["sensor"]["dev_eui"].value, model["beobachter"]["id"].value, model["raum"]["id"].value, model["personal"]["uuid"].value, model["art"].value.value, datetime.now(), model["beschreibung"].value
 
     async def _update_stmt(self):
-        return "UPDATE meldungen SET dev_euisensor=coalesce($2, dev_euisensor), idraum=coalesce($3, idraum), uuidpersonal=coalesce($4, uuidpersonal), beschreibung=coalesce($5, beschreibung) WHERE id=$1"
+        return "UPDATE meldungen SET dev_euisensor=coalesce($2, dev_euisensor), idraum=coalesce($3, idraum), uuidpersonal=coalesce($4, uuidpersonal), beschreibung=coalesce($5, beschreibung), bearbeitet=coalesce($6, bearbeitet) WHERE id=$1"
 
     async def _update_values(self, model: Model):
-        return model["id"].value, model["sensor"]["dev_eui"].value, model["raum"]["id"].value, model["personal"]["uuid"].value, model["beschreibung"].value
+        return model["id"].value, model["sensor"]["dev_eui"].value, model["raum"]["id"].value, model["personal"]["uuid"].value, model["beschreibung"].value, model["bearbeitet"].value
 
     async def create(self, connection: SQLConnectionInterface, model: Model):
         """Erstellt Meldung und setzt die neue ID."""
@@ -114,7 +114,7 @@ class MeldungController(ModelController):
                 'id': Permissions.READ,
                 'art': Permissions.READ,
                 'datum': Permissions.READ,
-                'bearbeitet': Permissions.READ,
+                'bearbeitet': Permissions.READ_WRITE,
                 'beschreibung': Permissions.READ_WRITE,
                 'sensor': {
                     'dev_eui': Permissions.READ_WRITE,

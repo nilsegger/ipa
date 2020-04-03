@@ -48,7 +48,7 @@ class Auth {
 
 class Client {
 
-    static _request(url, method, callback, isNested= false) {
+    static _request(url, method, callback, data, isNested= false) {
         /*
             Verpackt in die Anfrage den Authorization Header.
             Wenn die Anfrage mit einem 401 Status Antwortet, so wird ein neuer
@@ -59,10 +59,11 @@ class Client {
             headers: {
                 'Authorization': 'Bearer ' + Auth.retrieveAccessToken()
             },
+            data: data,
             complete: function (response) {
                 if(response.status === 401 && !isNested) {
                     Auth.retrieveNewAccessToken(function () {
-                        Client._request(url, method, callback, true);
+                        Client._request(url, method, callback, data,true);
                     })
                 } else if(response.status === 401 && isNested) {
                     Auth.logout();
@@ -76,16 +77,16 @@ class Client {
         Client._request(url, 'GET', callback);
     }
 
-    static post() {
-
+    static post(url, data, callback) {
+        Client._request(url, 'POST', callback);
     }
 
-    static put() {
-
+    static put(url, callback) {
+        Client._request(url, 'PUT', callback);
     }
 
-    static delete() {
-
+    static delete(url, callback) {
+        Client._request(url, 'DELETE', callback);
     }
 }
 

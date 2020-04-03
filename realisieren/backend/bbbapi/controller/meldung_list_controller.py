@@ -24,7 +24,7 @@ class MeldungListController(ListController):
                 bearbeitet,
                 beschreibung
                 FROM meldungen
-                ORDER BY idraum, datum DESC
+                ORDER BY datum DESC
                 LIMIT {} OFFSET {}
             """.format(limit, offset)
         else:
@@ -61,13 +61,13 @@ class MeldungListController(ListController):
                     LEFT JOIN gebaeude ON stockwerke.idgebaeude = gebaeude.id
                     LEFT JOIN personal ON meldungen.uuidpersonal = personal.uuid
                         """
-            orders = "ORDER BY idraum, datum DESC"
+            orders = "ORDER BY datum DESC"
             if not self.only_bearbeitet and not self.only_not_bearbeitet:
-                return "{} ORDER BY meldungen.idRaum, meldungen.datum DESC LIMIT {} OFFSET {}".format(
+                return "{} ORDER BY meldungen.datum DESC LIMIT {} OFFSET {}".format(
                     columns, limit, offset)
             elif self.only_not_bearbeitet:
-                return "{} WHERE meldungen.bearbeitet=false {} LIMIT {} OFFSET".format(
+                return "{} WHERE meldungen.bearbeitet=false {} LIMIT {} OFFSET {}".format(
                     columns, orders, limit, offset)
             else:
-                return "{} WHERE meldungen.bearbeitet=true {} LIMIT {} OFFSET".format(
+                return "{} WHERE meldungen.bearbeitet=true {} LIMIT {} OFFSET {}".format(
                     columns, orders, limit, offset)
