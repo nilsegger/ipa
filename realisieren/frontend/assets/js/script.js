@@ -37,6 +37,12 @@ class Auth {
 
     }
 
+    static getRole() {
+        let token = Auth.retrieveAccessToken();
+        let payload = atob(token.split('.')[1]);
+        return payload['role'];
+    }
+
     static logout() {
         sessionStorage.removeItem('accessToken');
         sessionStorage.removeItem('refreshToken');
@@ -78,11 +84,11 @@ class Client {
     }
 
     static post(url, data, callback) {
-        Client._request(url, 'POST', callback);
+        Client._request(url, 'POST', callback, data);
     }
 
-    static put(url, callback) {
-        Client._request(url, 'PUT', callback);
+    static put(url, data, callback) {
+        Client._request(url, 'PUT', callback, data);
     }
 
     static delete(url, callback) {

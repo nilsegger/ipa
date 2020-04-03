@@ -19,7 +19,7 @@ class MeldungenListResource(ListResource):
             Roles.PERSONAL.value
         ], [
             'id', 'bearbeitet', 'beschreibung', 'art', 'datum', 'sensor.dev_eui', 'sensor.name',
-            'raum.id', 'raum.name', 'stockwerk.id', 'stockwerk.name',
+            'raum.id', 'raum.name', 'stockwerk.id', 'stockwerk.niveau', 'stockwerk.name',
             'gebaeude.id', 'gebaeude.name', 'beobachter.id', 'beobachter.name', 'personal.uuid', 'personal.name'
         ], limit,
             True)

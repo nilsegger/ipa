@@ -13,6 +13,7 @@ $logo-height-px: 699;
 $logo-margin-vertical-px: $logo-width-px / 100 * (100 / $logo-width-mm * $logo-margin-vertical-mm);
 $logo-margin-horizontal-px: $logo-height-px / 100 * (100 / $logo-height-mm * $logo-margin-horizontal-mm);
 
+$primary: #c84646;
 
 .logo-wrapper {
   position: relative;
@@ -57,4 +58,19 @@ $logo-margin-horizontal-px: $logo-height-px / 100 * (100 / $logo-height-mm * $lo
   .logo-small {
     @include logo-size(0.075);
   }
+}
+
+
+.stockwerk-title {
+  margin-left: 15px;
+}
+
+.raum-title {
+  margin-left: 30px;
+  color: $primary;
+}
+
+.raum-table-container {
+  margin-left: 30px;
+  margin-right: 30px;
 }

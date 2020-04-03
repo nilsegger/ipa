@@ -29,7 +29,7 @@ class MeldungListController(ListController):
             """.format(limit, offset)
         else:
             columns = """
-                    SELECT 
+                    SELECT
                     meldungen.id, 
                     meldungen.art,
                     meldungen.datum,

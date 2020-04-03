@@ -35,6 +35,8 @@ from bbbapi.controller.personal_controller import PersonalController
 from bbbapi.models.personal import Personal
 from bbbapi.models.sensor import Sensor
 from bbbapi.models.stockwerk import Stockwerk
+from bbbapi.resources.beobachter_zu_materialien_list_resource import \
+    MaterialienZuBeobachterListResource
 from bbbapi.resources.meldung_form_resource import MeldungFormResource
 from bbbapi.resources.meldungen_list_resource import MeldungenListResource
 
@@ -177,6 +179,13 @@ async def material_zu_beobachter_form(request):
                                        material_zu_beobachter_resource,
                                        material_zu_beobachter_id=request.path_params['id'])
 
+async def material_zu_beobachter_list(request):
+    """Erstellt eine Auflistung von allen Materialien für einen Beobachter."""
+
+    beobachter = Beobachter(_id=int(request.path_params['id']))
+    return await controller.handle(request, MaterialienZuBeobachterListResource(beobachter))
+
+
 def create_app():
     """Creates app and adds all routes."""
     global controller
@@ -300,6 +309,8 @@ def create_app():
         Route('/beobachter', beobachter_form, methods=["POST"]),
         Route('/beobachter/{id}', beobachter_form,
               methods=["GET", "PUT", "DELETE"]),
+        Route('/beobachter/{id}/materialien', material_zu_beobachter_list,
+              methods=["GET"]),
 
         Route('/materialien', material_form, methods=["POST"]),
         Route('/materialien/{id}', material_form,
