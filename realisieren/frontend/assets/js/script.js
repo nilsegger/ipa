@@ -40,7 +40,7 @@ class Auth {
     static getRole() {
         let token = Auth.retrieveAccessToken();
         let payload = atob(token.split('.')[1]);
-        return payload['role'];
+        return JSON.parse(payload)['role'];
     }
 
     static logout() {

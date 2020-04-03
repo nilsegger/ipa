@@ -174,10 +174,19 @@ function loadMaterial(list) {
             if(count === Object.keys(beobachterCounter).length) {
                 // Alle Anfragen haben fertig geladen.
 
+                let materialContainer = $("#material-container");
+
+                if(Object.keys(materialien).length === 0) {
+                    materialContainer.html("<li class='list-group-item text-primary'>Keine Materialien benötigt.</li>");
+                } else {
+                    materialContainer.html("");
+                }
+
+
                 for(let id in materialien) {
                     let item = materialien[id];
                     let anzahl = item["anzahl"];
-                    let materialContainer = $("#material-container");
+
                     materialContainer.append('<li class="list-group-item"><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="material-'+id+'"><label class="form-check-label" for="material-'+id+'">' + anzahl + 'x ' + item["name"] + '</label></div></li>');
                 }
 
@@ -185,7 +194,6 @@ function loadMaterial(list) {
 
         });
     }
-    // TODO material lade und darstelle
 }
 
 let lastData = [];
