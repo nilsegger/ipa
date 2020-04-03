@@ -1,0 +1,84 @@
+---
+layout: default
+title: Personal
+---
+
+<div class="modal fade bd-example-modal-lg" id="personal-form" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h5 class="modal-title">Personal Form</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div id="benutzername-warning" class="alert alert-danger" style="display: none">
+                Bitte stellen Sie sicher, dass der Benutzername eindeutig ist.
+            </div>
+
+            <div class="form-row form-group">
+
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <label for="benutzername">Benutzername</label>
+                    <input class="form-control" type="text" id="benutzername" placeholder="hansmuster" />
+                    <div class="invalid-feedback">Der Benutzername darf nicht leer sein und muss mindestens 3 bis 100 Charakter haben.</div>
+                </div>
+
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <label for="passwort">Passwort</label>
+                    <input class="form-control" type="password" id="passwort" placeholder="*******" />
+                    <div class="invalid-feedback">Das Passwort darf nicht leer sein und muss mindestens 8 bis 100 Charakter haben.</div>
+                </div>
+
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <label for="name">Name</label>
+                    <input class="form-control" type="text" id="name" placeholder="Hans Muster" />
+                     <div class="invalid-feedback">Der Name darf nicht leer sein und muss mindestens 3 bis 100 Charakter haben.</div>
+                </div>
+
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <label for="rolle">Rolle</label>
+                    <select id="rolle" class="form-control">
+                        <option value="PERSONAL" selected>Personal</option>
+                        <option value="ADMIN">Admin</option>
+                    </select>
+                    <div class="invalid-feedback">Die Rolle muss ausgewählt sein.</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" id="personal-save-btn">Speichern</button>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="container mt-3">
+
+    <button id="create-personal-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#personal-form">Personal erstellen</button>
+
+    <table class="mt-3 table table-striped">
+
+        <thead>
+            <tr>
+                <th>Benutzername</th>
+                <th>Name</th>
+                <th>Rolle</th>
+                <th>Ansehen</th>
+            </tr>
+        </thead>
+
+        <tbody id="personal-table">
+
+        </tbody>
+
+    </table>
+
+</div>

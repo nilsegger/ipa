@@ -35,6 +35,7 @@ class MaterialController(ModelController):
         """Erstellt das Modell und setzt die ID."""
         await self.validate(connection, model, ValidationTypes.CREATE)
         model["id"].value = await connection.fetch_value(await self._insert_stmt(), *await self._insert_values(model))
+        return model
 
     @property
     def identifiers(self) -> List[str]:

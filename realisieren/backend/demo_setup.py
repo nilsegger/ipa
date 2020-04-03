@@ -1,4 +1,8 @@
 import tedious.config
+from bbbapi.controller.material_controller import MaterialController
+
+from bbbapi.models.material import Material
+
 from bbbapi.controller.personal_controller import PersonalController
 
 from bbbapi.models.personal import Personal
@@ -57,6 +61,15 @@ async def create_beobachter(connection, name, art, ausloeserWert,
     return await BeobachterController().create(connection, beobachter)
 
 
+async def create_material(connection, name):
+    material = Material()
+    material["name"].value = name
+    return await MaterialController().create(connection, material)
+
+
+async def add_material_to_beobachter(connection, material, beobachter):
+    await BeobachterController().add_material(connection, beobachter, material)
+
 async def main():
     """Erstellt den Adeunis Sensor und fügt einen Beobachter hinzu."""
 
@@ -108,9 +121,15 @@ async def main():
             await create_beobachter(connection, 'Adeunis Temperatur Darunter',
                                     BeobachterArt.RICHTWERT_DARUNTER, 18,
                                     adeunis["dev_eui"].value, wertName='temperature')
-            await create_beobachter(connection, 'Adeunis Zählerstand',
-                                    BeobachterArt.ZAEHLERSTAND, 5,
+            adeunis_zaehlerstand_beobachter = await create_beobachter(connection, 'Adeunis Zählerstand',
+                                    BeobachterArt.ZAEHLERSTAND, 3,
                                     adeunis["dev_eui"].value)
+
+            seife = await create_material(connection, 'Seife')
+            await add_material_to_beobachter(connection, seife, adeunis_zaehlerstand_beobachter)
+
+            wc_papier = await create_material(connection, 'WC Papier')
+            await add_material_to_beobachter(connection, wc_papier, adeunis_zaehlerstand_beobachter)
 
             await create_beobachter(connection, 'Elsys Temperatur Darüber',
                                     BeobachterArt.RICHTWERT_DARUEBER, 25,
@@ -125,6 +144,7 @@ async def main():
             await create_beobachter(connection, 'Elsys CO2 Darüber',
                                     BeobachterArt.RICHTWERT_DARUEBER, 600,
                                     elsys2["dev_eui"].value, wertName='co2')
+
 
 
 if __name__ == '__main__':

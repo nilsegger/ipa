@@ -97,13 +97,15 @@ class Client {
 }
 
 
-function check(elem, min_len, max_len) {
+function check(elem, min_len, max_len, skipEmpty=false) {
     /*
         Prüft ob der Wert eines Input Elements nicht null ist
         und er mindest und maximal Länge entspricht.
      */
 
     let value = elem.val();
+
+    if(!value && skipEmpty) return true;
 
     let minValid = min_len == null ? true : value.length >= min_len;
     let maxValid = max_len == null ? true : value.length <= max_len;

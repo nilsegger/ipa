@@ -21,7 +21,7 @@ PERSONAL_TABLE = """
     CREATE TABLE Personal(
         uuid UUID PRIMARY KEY,
         name varchar(100),
-        FOREIGN KEY (uuid) REFERENCES logins(uuid)
+        FOREIGN KEY (uuid) REFERENCES logins(uuid) ON DELETE CASCADE
     );
 """
 
@@ -38,7 +38,7 @@ STOCKWERKE_TABLE = """
         idGebaeude int4 NOT NULL,
         name varchar(100) NOT NULL,
         niveau int NOT NULL,
-        FOREIGN KEY (idGebaeude) REFERENCES Gebaeude(id)
+        FOREIGN KEY (idGebaeude) REFERENCES Gebaeude(id) ON DELETE CASCADE
     );
 """
 
@@ -47,7 +47,7 @@ RAEUME_TABLE = """
         id SERIAL4 PRIMARY KEY,
         idStockwerk int4 NOT NULL,
         name varchar(100) NOT NULL,
-        FOREIGN KEY (idStockwerk) REFERENCES Stockwerke(id)
+        FOREIGN KEY (idStockwerk) REFERENCES Stockwerke(id) ON DELETE CASCADE
     );
 """
 
@@ -58,7 +58,7 @@ SENSOREN_TABLE = """
         idRaum int4 NOT NULL,
         art SensorArt NOT NULL,
         name VARCHAR(100) NOT NULL,
-        FOREIGN KEY (idRaum) REFERENCES Raeume(id)
+        FOREIGN KEY (idRaum) REFERENCES Raeume(id) ON DELETE CASCADE
     );
 """
 
@@ -69,7 +69,7 @@ SENSOR_WERTE_TABLE = """
         rohWert VARCHAR NOT NULL,
         dekodiertJSON TEXT NOT NULL,
         erhalten timestamp NOT NULL,
-        FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui)
+        FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui) ON DELETE CASCADE
     );
 """
 
@@ -83,7 +83,7 @@ BEOBACHTER_TABLE = """
         wertName VARCHAR(100),
         ausloeserWert int NOT NULL,
         stand int DEFAULT 0,
-        FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui)
+        FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui) ON DELETE CASCADE
     );
 """
 
@@ -99,10 +99,10 @@ MELDUNGEN_TABLE = """
         datum timestamp NOT NULL,
         bearbeitet boolean DEFAULT false,
         beschreibung TEXT NOT NULL,
-        FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui),
-        FOREIGN KEY (idRaum) REFERENCES Raeume(id),
-        FOREIGN KEY (uuidPersonal) REFERENCES Personal(uuid),
-        FOREIGN KEY (idBeobachter) REFERENCES Beobachter(id)
+        FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui) ON DELETE CASCADE,
+        FOREIGN KEY (idRaum) REFERENCES Raeume(id) ON DELETE CASCADE,
+        FOREIGN KEY (uuidPersonal) REFERENCES Personal(uuid) ON DELETE CASCADE,
+        FOREIGN KEY (idBeobachter) REFERENCES Beobachter(id) ON DELETE CASCADE
     );
 """
 
@@ -119,8 +119,8 @@ MATERIAL_ZU_BEOBACHTER_TABLE = """
         idMaterial int4 NOT NULL,
         idBeobachter int4 NOT NULL,
         anzahl int DEFAULT 1,
-        FOREIGN KEY (idMaterial) REFERENCES Materialien(id),
-        FOREIGN KEY (idBeobachter) REFERENCES Beobachter(id)
+        FOREIGN KEY (idMaterial) REFERENCES Materialien(id) ON DELETE CASCADE,
+        FOREIGN KEY (idBeobachter) REFERENCES Beobachter(id) ON DELETE CASCADE
     );
 """
 

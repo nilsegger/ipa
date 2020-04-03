@@ -41,6 +41,9 @@ class PersonalController(ModelController):
 
         return model["uuid"].value, model["name"].value
 
+    async def _delete_stmt(self):
+        return """DELETE FROM logins WHERE uuid=$1"""
+
     @property
     def identifiers(self) -> List[str]:
         """Nur die UUID ist Wichtig um eine Person zu erkennen."""
@@ -101,6 +104,16 @@ class PersonalController(ModelController):
                 raise ValidationError(['uuid'], "UUID can not be set in advance.")
 
             await model.validate_not_empty(['name', 'benutzername', 'passwort', 'rolle'])
+
+            stmt = "SELECT uuid FROM logins WHERE username=$1 LIMIT 1"
+            if await connection.fetch_row(stmt, model["benutzername"].value) is not None:
+                raise ValidationError(['benutzername'], "Benutzername existiert bereits.")
+        elif _type == ValidationTypes.UPDATE:
+            stmt = "SELECT uuid FROM logins WHERE uuid!=$1 AND username=$2 LIMIT 1"
+            if await connection.fetch_row(stmt, model["uuid"].value, model[
+                "benutzername"].value) is not None:
+                raise ValidationError(['benutzername'],
+                                      "Benutzername existiert bereits.")
 
         sanitize_fields(model, ['name', 'benutzername'])
 
