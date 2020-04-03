@@ -1,0 +1,67 @@
+---
+layout: default
+title: Räume
+---
+
+{% include gebaeude_form.html %}
+{% include stockwerke_form.html %}
+
+<div class="container mt-3">
+
+    <div>
+        <h1>Gebäude</h1>
+
+        <button id="create-gebaeude-btn" class="btn btn-primary" data-toggle="modal" data-target="#gebaeude-form">Gebäude
+            erstellen
+        </button>
+
+        <table class="mt-3 table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Aktionen</th>
+            </tr>
+            </thead>
+            <tbody id="gebaeude-table"></tbody>
+        </table>
+    </div>
+
+    <div class="mt-3">
+        <h1>Stockwerke</h1>
+
+        <button id="create-stockwerk-btn" class="btn btn-primary" data-toggle="modal" data-target="#stockwerke-form">Stockwerk
+            erstellen
+        </button>
+
+        <table class="mt-3 table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Niveau</th>
+                <th>Gebäude</th>
+                <th>Aktionen</th>
+            </tr>
+            </thead>
+            <tbody id="stockwerk-table">
+
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-3">
+        <h1>Räume</h1>
+
+        <button class="mt-3 btn btn-primary">Raum erstellen</button>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Raum</th>
+                <th>Stockwerk</th>
+                <th>Gebäude</th>
+                <th>Aktionen</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>

@@ -12,7 +12,7 @@ class RaeumeListController(ListController):
     async def _select_stmt(self, limit, offset, join_foreign_keys) -> str:
 
         if not join_foreign_keys:
-            return """SELECT id, name, idStockwerk AS "stockwerk.id" FROM raeume LIMIT {} OFFSET {}""".format(limit, offset)
+            return """SELECT id, name, idStockwerk AS "stockwerk.id" FROM raeume"""
         else:
             return """
                 SELECT
@@ -26,5 +26,4 @@ class RaeumeListController(ListController):
                 FROM raeume
                 LEFT JOIN stockwerke ON raeume.idstockwerk = stockwerke.id
                 LEFT JOIN gebaeude ON stockwerke.idgebaeude = gebaeude.id
-                LIMIT {} OFFSET {}
-            """.format(limit, offset)
+            """

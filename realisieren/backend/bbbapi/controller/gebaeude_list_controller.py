@@ -11,7 +11,7 @@ class GebaeudeListController(ListController):
 
     async def _select_stmt(self, limit, offset, join_foreign_keys) -> str:
 
-        return """SELECT id, name FROM gebaeude LIMIT {} OFFSET {}""".format(limit, offset)
+        return """SELECT id, name FROM gebaeude"""
 
 
 

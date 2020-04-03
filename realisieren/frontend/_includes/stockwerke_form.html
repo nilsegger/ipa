@@ -1,0 +1,46 @@
+<div class="modal fade bd-example-modal-lg" id="stockwerke-form" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h5 class="modal-title">Stockwerke Form</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="form-row form-group">
+
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <label for="stockwerk-name">Name des Stockwerks</label>
+                    <input class="form-control" type="text" id="stockwerk-name" placeholder="Erdgeschoss" />
+                    <div class="invalid-feedback">Der Name darf nicht leer sein und muss mindestens 3 bis 100 Charakter haben.</div>
+                </div>
+
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <label for="stockwerk-niveau">Nivea des Stockwerks</label>
+                    <input class="form-control" type="number" id="stockwerk-niveau" placeholder="0" />
+                    <div class="invalid-feedback">Das Niveau darf nicht leer sein und muss einer Zahl entsprechen.</div>
+                    <small class="text-muted">Damit das Programm weiss, wie die Stockwerke zu sortieren sind, muss ein Niveau angegeben werden. Das Erdgeschoss wäre bei 0 und das Obergeschoss bei 1.</small>
+                </div>
+
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <label for="stockwerk-gebaeude">Gebäude</label>
+                    <select id="stockwerk-gebaeude" class="form-control">
+
+                    </select>
+                    <div class="invalid-feedback">Das Gebäude darf nicht leer sein.</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" id="stockwerk-save-btn">Speichern</button>
+        </div>
+
+    </div>
+  </div>
+</div>

@@ -4,3 +4,7 @@
   url: assets/js/dashboard.js
 - page: /personal.html
   url: assets/js/personal.js
+- page: /raeume.html
+  url: assets/js/gebaeude.js
+- page: /raeume.html
+  url: assets/js/stockwerke.js
