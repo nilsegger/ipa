@@ -3,9 +3,10 @@ function setSensorRow(id, art, name, raumId, raumName, row) {
     let rowId = "sensor-" + id + "-row";
     let viewId = "sensor-" + id + "-view";
     let deleteId = "sensor-" + id + "-delete";
+    let openId = "sensor-" + id + "-open";
     let tableId = "#sensor-table";
 
-    let columns = '<td>' + id + '</td><td>' + art + '</td><td>' + name + '</td><td>' + raumName + '</td><td><button class="btn-info btn" id="' + viewId + '">Editieren</button><button id="' + deleteId + '" class="btn-danger btn">Löschen</button></td>';
+    let columns = '<td>' + id + '</td><td>' + art + '</td><td>' + name + '</td><td>' + raumName + '</td><td><button class="btn-primary btn" id="' + openId + '">Ansehen</button><button class="btn-info btn" id="' + viewId + '">Editieren</button><button id="' + deleteId + '" class="btn-danger btn">Löschen</button></td>';
     let table = $(tableId);
 
     if (row === undefined) {
@@ -39,6 +40,10 @@ function setSensorRow(id, art, name, raumId, raumName, row) {
 
         }
     );
+
+    $("#" + openId).click(function () {
+        window.location.href = self + "sensor.html#"+id;
+    });
 
 }
 

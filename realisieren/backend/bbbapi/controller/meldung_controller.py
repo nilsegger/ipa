@@ -1,13 +1,15 @@
 from datetime import datetime
 from typing import Tuple, Dict, Any, List
 
+from bbbapi.controller.beobachter_controller import BeobachterController
+
 from bbbapi.util import sanitize_fields
 
 from bbbapi.controller.raum_controller import RaumController
 
 from bbbapi.controller.sensor_controller import SensorController
 
-from bbbapi.common_types import Roles, MeldungsArt
+from bbbapi.common_types import Roles, MeldungsArt, BeobachterArt
 from tedious.auth.auth import Requester
 from tedious.mdl.model import Model, Permissions, ValidationError
 from tedious.mdl.model_controller import ModelController, ValidationTypes, \
@@ -22,6 +24,7 @@ class MeldungController(ModelController):
         super().__init__('meldungen', 'id')
         self.sensor_controller = SensorController()
         self.raum_controller = RaumController()
+        self.beobachter_controller = BeobachterController()
 
     async def _select_stmt(self, model: Model, join_foreign_keys=False):
 
@@ -82,8 +85,22 @@ class MeldungController(ModelController):
 
     async def create(self, connection: SQLConnectionInterface, model: Model):
         """Erstellt Meldung und setzt die neue ID."""
+
+        if model["art"].value == MeldungsArt.MANUELL:
+
+            if not model["beobachter"]["id"].empty:
+                await self.beobachter_controller.get(connection, model["beobachter"], join_foreign_keys=True)
+                print(model["beobachter"]["raum"]["id"].value)
+                model["raum"]["id"].value = model["beobachter"]["raum"]["id"].value
+
         await self.validate(connection, model, ValidationTypes.CREATE)
         model["id"].value = await connection.fetch_value(await self._insert_stmt(), *await self._insert_values(model))
+
+        if model["art"].value == MeldungsArt.MANUELL and not model["beobachter"]["id"].empty:
+            if model["beobachter"]["art"].value == BeobachterArt.ZAEHLERSTAND:
+                model["beobachter"]["stand"].value = 0
+                await self.beobachter_controller.update(connection, model["beobachter"])
+
         return model
 
     @property
@@ -122,7 +139,7 @@ class MeldungController(ModelController):
                     'art': Permissions.READ
                 },
                 'beobachter': {
-                    'id': Permissions.READ,
+                    'id': Permissions.READ_WRITE,
                     'name': Permissions.READ,
                     'art': Permissions.READ,
                     'wertName': Permissions.READ,

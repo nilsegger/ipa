@@ -44,7 +44,7 @@ class BeobachterController(ModelController):
                 """
 
     async def _insert_stmt(self):
-        return "INSERT INTO beobachter(dev_euisensor, name, wertname, art, ausloeserwert, stand) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id"
+        return "INSERT INTO beobachter(dev_euisensor, name, wertname, art, ausloeserwert, stand) VALUES ($1, $2, $3, $4, $5, coalesce($6, 0)) RETURNING id"
 
     async def _insert_values(self, model: Model):
         return model["sensor"]["dev_eui"].value, model["name"].value, model[

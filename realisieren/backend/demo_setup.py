@@ -112,7 +112,7 @@ async def main():
                                          SensorArt.ELSYS_ERS_CO2,
                                          raum_2["id"].value)
             elsys2 = await create_sensor(connection, "A81758FFFE048CCA",
-                                         "Elsys Sensor 1",
+                                         "Elsys Sensor 2",
                                          SensorArt.ELSYS_ERS_CO2,
                                          raum_3["id"].value)
 

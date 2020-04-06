@@ -25,6 +25,56 @@ function preparePage(eui, callback) {
 
 }
 
+
+function beobachterMeldungErstellen(beobachterId) {
+
+    let beschreibung = $("#beschreibung");
+
+    if(check(beschreibung, 3)) {
+
+        let request = {
+            'beschreibung': beschreibung.val(),
+            'beobachter': {'id': beobachterId}
+        };
+
+        Client.post(endpoint + 'meldungen', JSON.stringify(request), function (response) {
+
+            if(response.status === 200) {
+                beschreibung.val("");
+                $("#meldung-form").modal("hide");
+            } else {
+                // TODO fehlermeldig
+            }
+
+        })
+
+    }
+
+}
+
+function displayBeobachter(list) {
+
+    let table = $("#sensor-beobachter");
+
+    for(let i = 0; i < list.length; i++) {
+
+        let item = list[i];
+        let id = 'beobachter-'+item["id"]+'-btn';
+
+        let row = '<tr><td>'+item['art']+'</td><td>'+item['name']+'</td><td>'+item['ausloeserWert']+'</td><td>'+item['stand']+'</td><td>'+item['wertName']+'</td><td><button id="'+id+'" class="btn btn-primary">Meldung auslösen</button></td></tr>';
+        table.append(row);
+
+        $("#" + id).click(function () {
+            $("#meldung-form").modal("show");
+            $('#beschreibung-save-btn').off('click');
+            $("#beschreibung-save-btn").click(function () {
+                beobachterMeldungErstellen(item["id"]);
+            });
+        })
+    }
+
+}
+
 let diagramCounter = 0;
 
 function createDiagram(title, labels, datasets) {
@@ -148,23 +198,6 @@ function displayValues(values) {
 
 }
 
-function loadValues(eui, min, max) {
-
-    Client.get(endpoint + 'sensoren/' + eui + '/werte?min=' + min + '&max=' + max, function (response) {
-
-        if (response.status === 200) {
-
-            let result = JSON.parse(response.responseText);
-
-            displayValues(result['list']);
-        } else {
-            // TODO fehlermeldig
-        }
-
-    })
-
-}
-
 function dateToInputValue(date) {
      return date.toISOString().slice(0,10);
 }
@@ -185,7 +218,8 @@ $(document).ready(function () {
             inpFrom.val(dateToInputValue(new Date(min * 1000)));
             inpTo.val(dateToInputValue(new Date(max * 1000)));
 
-            loadValues(eui, min, max)
+            loadSensorWerte(eui, min, max, displayValues);
+            loadSensorBeobachter(eui, displayBeobachter);
         });
 
         filter.click(function () {
@@ -194,7 +228,7 @@ $(document).ready(function () {
             let min = (new Date(inpFrom.val())).valueOf() / 1000 - h24;
             let max = ((new Date(inpTo.val())).valueOf() / 1000) + h24;
 
-            loadValues(eui, min, max)
+            loadSensorWerte(eui, min, max, displayValues);
         });
 
     }

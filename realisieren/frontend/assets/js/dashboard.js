@@ -82,7 +82,7 @@ function loadAdmin() {
 
     getMeldungen(function (list) {
 
-        if(list.length === 0) {
+        if (list.length === 0) {
             let table = $("#meldungen_table");
             table.append("<tr><td colspan='6' class='text-primary'>Keine Meldungen vorhanden.</td></tr>");
         }
@@ -104,7 +104,7 @@ function loadAdmin() {
             addRow(item["id"], item["art"], datum.toLocaleString("de-CH"), item["beschreibung"], melderId, melderName, item["raum"]["id"], item["raum"]["name"], item["stockwerk"]["name"], item["gebaeude"]["name"]);
         }
         spinnerRow.fadeOut(0);
-        if(!endOfData) {
+        if (!endOfData) {
             loadMoreBtnRow.fadeIn(0);
         }
     });
@@ -116,21 +116,31 @@ function sortByOrt(list) {
 
     let gebaeude = {};
 
-    for(let i = 0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i++) {
         let item = list[i];
 
         let gebaeudeID = item["gebaeude"]["id"];
         let stockwerkNiveau = item["stockwerk"]["niveau"];
         let raumID = item["raum"]["id"];
 
-        if(!(gebaeudeID in gebaeude)) {
-            gebaeude[gebaeudeID] = {'name': item["gebaeude"]["name"], 'stockwerke': {}};
+        if (!(gebaeudeID in gebaeude)) {
+            gebaeude[gebaeudeID] = {
+                'name': item["gebaeude"]["name"],
+                'stockwerke': {}
+            };
         }
-        if(!(stockwerkNiveau in gebaeude[gebaeudeID]['stockwerke'])) {
-            gebaeude[gebaeudeID]['stockwerke'][stockwerkNiveau] = {'id':  item["stockwerk"]["id"], 'name': item["stockwerk"]["name"], 'raeume': {}};
+        if (!(stockwerkNiveau in gebaeude[gebaeudeID]['stockwerke'])) {
+            gebaeude[gebaeudeID]['stockwerke'][stockwerkNiveau] = {
+                'id': item["stockwerk"]["id"],
+                'name': item["stockwerk"]["name"],
+                'raeume': {}
+            };
         }
-        if(!(raumID in gebaeude[gebaeudeID]['stockwerke'][stockwerkNiveau]['raeume'])) {
-            gebaeude[gebaeudeID]['stockwerke'][stockwerkNiveau]['raeume'][raumID] = {'name': item["raum"]["name"], 'meldungen': []}
+        if (!(raumID in gebaeude[gebaeudeID]['stockwerke'][stockwerkNiveau]['raeume'])) {
+            gebaeude[gebaeudeID]['stockwerke'][stockwerkNiveau]['raeume'][raumID] = {
+                'name': item["raum"]["name"],
+                'meldungen': []
+            }
         }
         gebaeude[gebaeudeID]['stockwerke'][stockwerkNiveau]['raeume'][raumID]['meldungen'].push(item);
     }
@@ -144,28 +154,28 @@ function loadMaterial(list) {
      */
     let beobachterCounter = {};
 
-    for(let i = 0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i++) {
         let item = list[i];
-        if(item['art'] !== 'AUTO') continue;
+        if (item['art'] !== 'AUTO') continue;
         let beobachter = item['beobachter']['id'];
-        if(!(beobachter in beobachterCounter)) beobachterCounter[beobachter] = 0;
+        if (!(beobachter in beobachterCounter)) beobachterCounter[beobachter] = 0;
         beobachterCounter[beobachter]++;
     }
 
     let count = 0;
     let materialien = {};
 
-    for(let beobachterKey in beobachterCounter) {
-        Client.get(endpoint + 'beobachter/' + beobachterKey + '/materialien', function(response) {
-            if(response.status === 200) {
+    for (let beobachterKey in beobachterCounter) {
+        Client.get(endpoint + 'beobachter/' + beobachterKey + '/materialien', function (response) {
+            if (response.status === 200) {
                 let items = JSON.parse(response.responseText)['list'];
-                for(let i = 0; i < items.length; i++) {
+                for (let i = 0; i < items.length; i++) {
                     let item = items[i];
                     let id = item["id"];
                     let name = item["name"];
                     let anzahl = item["anzahl"] * beobachterCounter[beobachterKey];
 
-                    if(!(id in materialien)) {
+                    if (!(id in materialien)) {
                         materialien[id] = {'name': name, 'anzahl': anzahl}
                     } else {
                         materialien[id]['anzahl'] += anzahl
@@ -177,28 +187,48 @@ function loadMaterial(list) {
             }
             count++;
 
-            if(count === Object.keys(beobachterCounter).length) {
+            if (count === Object.keys(beobachterCounter).length) {
                 // Alle Anfragen haben fertig geladen.
 
                 let materialContainer = $("#material-container");
 
-                if(Object.keys(materialien).length === 0) {
+                if (Object.keys(materialien).length === 0) {
                     materialContainer.html("<li class='list-group-item text-primary'>Keine Materialien benötigt.</li>");
                 } else {
                     materialContainer.html("");
                 }
 
 
-                for(let id in materialien) {
+                for (let id in materialien) {
                     let item = materialien[id];
                     let anzahl = item["anzahl"];
 
-                    materialContainer.append('<li class="list-group-item"><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="material-'+id+'"><label class="form-check-label" for="material-'+id+'">' + anzahl + 'x ' + item["name"] + '</label></div></li>');
+                    materialContainer.append('<li class="list-group-item"><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="material-' + id + '"><label class="form-check-label" for="material-' + id + '">' + anzahl + 'x ' + item["name"] + '</label></div></li>');
                 }
 
             }
 
         });
+    }
+}
+
+function saveFeedback(raumID) {
+    let beschreibung = $("#beschreibung");
+    if (check(beschreibung, 3)) {
+        let request = {
+            'beschreibung': beschreibung.val(),
+            'raum': {'id': raumID}
+        };
+        Client.post(endpoint + 'meldungen', JSON.stringify(request), function (response) {
+
+            if (response.status === 200) {
+                beschreibung.val("");
+                $("#meldung-form").modal("hide");
+            } else {
+                // TODO fehlermeldig
+            }
+
+        })
     }
 }
 
@@ -226,64 +256,75 @@ function loadReinigungspersonal() {
 
         let sorted = sortByOrt(list);
 
-        if(Object.keys(sorted).length === 0) {
+        if (Object.keys(sorted).length === 0) {
             meldungenContainer.append('<p class="text-primary">Keine offenen Meldungen!</p>');
         }
 
-        for(let gebaeudeKey in sorted) {
+        for (let gebaeudeKey in sorted) {
             let gebaeude = sorted[gebaeudeKey];
             meldungenContainer.append("<h3>" + gebaeude['name'] + "</h3>");
 
             let stockwerkKeys = [];
-            for(let key in gebaeude['stockwerke']) stockwerkKeys.push(Number(key));
+            for (let key in gebaeude['stockwerke']) stockwerkKeys.push(Number(key));
             stockwerkKeys.sort();
 
-            for(let stockwerkKey in stockwerkKeys) {
-                let stockwerk = gebaeude['stockwerke'][stockwerkKey];
-                meldungenContainer.append('<h4 class="stockwerk-title">' + stockwerk['name']  + '</h4>');
+            for (let i = 0; i < stockwerkKeys.length; i++) {
+                let stockwerk = gebaeude['stockwerke'][stockwerkKeys[i]];
 
-                for(let raumId in stockwerk['raeume']) {
+                meldungenContainer.append('<h4 class="stockwerk-title">' + stockwerk['name'] + '</h4>');
+
+                for (let raumId in stockwerk['raeume']) {
                     let raum = stockwerk['raeume'][raumId];
 
                     let rows = '';
 
-                    for(let i = 0; i < raum['meldungen'].length; i++) {
+                    for (let i = 0; i < raum['meldungen'].length; i++) {
                         let meldung = raum['meldungen'][i];
                         let id = meldung["id"];
                         let art = meldung['art'];
                         let datum = new Date(meldung["datum"] * 1000);
                         let beschreibung = meldung['beschreibung'];
                         let melder;
-                        if(art === 'AUTO') {
+                        if (art === 'AUTO') {
                             melder = meldung['beobachter']['name'];
                         } else {
                             melder = meldung['personal']['name'];
                         }
 
-                        rows += '<tr id="meldung-'+id+'"><td>' + art + '</td><td>'+datum.toLocaleString("de-CH")+'</td><td>'+beschreibung+'</td><td>'+melder+'</td><td><button class="btn btn-success" type="button" id="meldung-'+id+'-btn">Gelöst</button></td></tr>';
+                        rows += '<tr id="meldung-' + id + '"><td>' + art + '</td><td>' + datum.toLocaleString("de-CH") + '</td><td>' + beschreibung + '</td><td>' + melder + '</td><td><button class="btn btn-success" type="button" id="meldung-' + id + '-btn">Gelöst</button></td><td><button class="btn btn-primary" type="button" id="meldung-' + id + '-btn-feedback">Feedback</button></td></tr>';
                     }
 
                     meldungenContainer.append('<h5 class="raum-title">' + raum["name"] + '</h5>');
-                    meldungenContainer.append('<div class="raum-table-container"><table class="table table-striped"><thead><tr><th>Art</th>\n' +
+                    meldungenContainer.append('<div class="raum-table-container table-responsive"><table class="table table-striped"><thead><tr><th>Art</th>\n' +
                         '            <th>Datum</th>\n' +
                         '            <th>Beschreibung</th>\n' +
                         '            <th>Melder</th>\n' +
-                        '            <th>Aktionen</th></tr></thead><tbody>' + rows + '</tbody></table></div>');
+                        '            <th>Gelöst</th><th>Feedback</th></tr></thead><tbody>' + rows + '</tbody></table></div>');
 
-                    for(let i = 0; i < raum['meldungen'].length; i++) {
+                    for (let i = 0; i < raum['meldungen'].length; i++) {
                         let id = raum['meldungen'][i]["id"];
 
-                        $("#meldung-"+id+"-btn").click(function() {
+                        $("#meldung-" + id + "-btn").click(function () {
                             setSolved(id);
-                        })
+                        });
 
+                        $("#meldung-" + id + "-btn-feedback").click(function () {
+
+                            $("#meldung-form").modal("show");
+
+                            $("#beschreibung-save-btn").off();
+                            $("#beschreibung-save-btn").click(function () {
+                                saveFeedback(raum['meldungen'][i]["raum"]["id"]);
+                            });
+
+                        })
                     }
                 }
 
             }
         }
 
-        if(!endOfData) loadMoreBtn.fadeIn(0);
+        if (!endOfData) loadMoreBtn.fadeIn(0);
 
     });
 

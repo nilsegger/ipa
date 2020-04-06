@@ -4,6 +4,8 @@ title: Sensor
 isAdmin: true
 ---
 
+{% include meldung_form.html %}
+
 <div class="container mt-3">
 
     <h1 id="sensor-name">
@@ -44,8 +46,10 @@ isAdmin: true
                     <th>Auslöser</th>
                     <th>Stand</th>
                     <th>Wertname</th>
+                    <th>Auslösen</th>
                 </tr>
                 </thead>
+                <tbody id="sensor-beobachter"></tbody>
             </table>
         </div>
     </div>
