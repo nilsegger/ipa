@@ -23,25 +23,29 @@ class GebaeudeController(ModelController):
         return "INSERT INTO Gebaeude(id, name) VALUES (DEFAULT, $1) RETURNING id"
 
     async def _insert_values(self, model: Model):
-        """Antwortet mit name."""
         return model["name"].value,
 
     async def _update_stmt(self):
         return "UPDATE Gebaeude SET name=coalesce($2, name) WHERE id=$1"
 
     async def _update_values(self, model: Model):
-        """Antwortet mit id, name."""
         return model["id"].value, model["name"].value
 
     async def create(self, connection: SQLConnectionInterface, model: Model):
-        """Erstellt ein neues Gebäude."""
+        """Erstellt das Gebäude Modell und setzt die ID.
+
+        Args:
+            connection: Verbindung zu Datenbank.
+            model: Gebäude Model.
+        """
+
         await self.validate(connection, model, ValidationTypes.CREATE)
         model["id"].value = await connection.fetch_value(await self._insert_stmt(), *await self._insert_values(model))
         return model
 
     @property
     def identifiers(self) -> List[str]:
-        """Beim Gebäude Table ist jediglich die ID wichtig."""
+        """Ein Gebäude Modell wird durch die ID identifiziert."""
         return ["id"]
 
     async def get_manipulation_permissions(self, requester: Requester,

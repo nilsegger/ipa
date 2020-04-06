@@ -51,9 +51,6 @@ class PersonalController(ModelController):
         Args:
             connection: Verbindung zu Datenbank.
             model: Personal Model.
-
-        Returns:
-            Personal Modell.
         """
 
         await self.validate(connection, model, ValidationTypes.CREATE)

@@ -3,6 +3,7 @@ from tedious.mdl.list_controller import ListController
 
 
 class MeldungListController(ListController):
+    """Erstellt eine Auflistung aller Meldungen."""
 
     def __init__(self, only_bearbeitet=False, only_not_bearbeitet=False):
         self.only_bearbeitet = only_bearbeitet
