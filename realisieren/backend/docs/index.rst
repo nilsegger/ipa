@@ -16,6 +16,7 @@ Dies ist die technische Dokumentation für den Python Quellcode im Backend.
    beobachter
    models
    controllers
+   resources
 
 
 Oft benutzte Typen in diesem Projekt
