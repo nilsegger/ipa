@@ -71,8 +71,26 @@ isAdmin: true
             <button type="button" id="filter-btn" class="btn btn-primary">Filter anwenden</button>
         </div>
 
-        <div id="diagram-container"></div>
+        <div class="mt-3">
+            <div class="form-row form-group">
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <label for="from">Zeitlicher Abstand zwischen den Punkten</label>
+                    <select class="form-control" id="delta">
+                        <option value="300000">5 Minuten</option>
+                        <option value="600000">10 Minuten</option>
+                        <option value="1800000">30 Minuten</option>
+                        <option value="3600000" selected>1 Stunde</option>
+                        <option value="7200000">2 Stunden</option>
+                        <option value="18000000">5 Stunden</option>
+                        <option value="43200000">12 Stunden</option>
+                        <option value="86400000">24 Stunden</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" id="filter-delta-btn" class="btn btn-primary">Delta anwenden</button>
+        </div>
 
+        <div id="diagram-container"></div>
 
     </div>
 

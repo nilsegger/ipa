@@ -47,7 +47,7 @@ function addRow(id, art, datum, beschreibung, melderID, melderName, raumID, raum
     let table = $("#meldungen_table");
 
     let row = `<tr id="meldung-${id}">
-            <td>Art</td>
+            <td>${art}</td>
             <td>${datum}</td>
             <td>${beschreibung} </td>
             <td>${melderName}</td>

@@ -30,7 +30,7 @@ function beobachterMeldungErstellen(beobachterId) {
 
     let beschreibung = $("#beschreibung");
 
-    if(check(beschreibung, 3)) {
+    if (check(beschreibung, 3)) {
 
         let request = {
             'beschreibung': beschreibung.val(),
@@ -39,7 +39,7 @@ function beobachterMeldungErstellen(beobachterId) {
 
         Client.post(endpoint + 'meldungen', JSON.stringify(request), function (response) {
 
-            if(response.status === 200) {
+            if (response.status === 200) {
                 beschreibung.val("");
                 $("#meldung-form").modal("hide");
             } else {
@@ -56,12 +56,12 @@ function displayBeobachter(list) {
 
     let table = $("#sensor-beobachter");
 
-    for(let i = 0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i++) {
 
         let item = list[i];
-        let id = 'beobachter-'+item["id"]+'-btn';
+        let id = 'beobachter-' + item["id"] + '-btn';
 
-        let row = '<tr><td>'+item['art']+'</td><td>'+item['name']+'</td><td>'+item['ausloeserWert']+'</td><td>'+item['stand']+'</td><td>'+item['wertName']+'</td><td><button id="'+id+'" class="btn btn-primary">Meldung auslösen</button></td></tr>';
+        let row = '<tr><td>' + item['art'] + '</td><td>' + item['name'] + '</td><td>' + item['ausloeserWert'] + '</td><td>' + item['stand'] + '</td><td>' + item['wertName'] + '</td><td><button id="' + id + '" class="btn btn-primary">Meldung auslösen</button></td></tr>';
         table.append(row);
 
         $("#" + id).click(function () {
@@ -114,7 +114,7 @@ function findMinMaxAvg(values) {
     return [min, max, avg / values.length];
 }
 
-function createDataset(label, data, color="#c84646") {
+function createDataset(label, data, color = "#c84646") {
     let dataset = {
         label: label,
         data: data,
@@ -126,9 +126,21 @@ function createDataset(label, data, color="#c84646") {
     return dataset;
 }
 
-function displayValues(values) {
+let displayDelta = 3600000;
+let values;
+
+function displayValues() {
+
+    let container = $("#diagram-container");
+    if (values.length === 0) {
+        container.html("<p class='text-primary'><b>Keine Daten gefunden.</b></p>");
+        return;
+    } else {
+        container.html("");
+    }
 
     let labels = [];
+    let groupedValues = {};
 
     let data = {
         'temperature': {},
@@ -138,69 +150,72 @@ function displayValues(values) {
         'co2': {}
     };
 
-    let last;
+    let lastReceived;
+    let label;
 
     for (let i = 0; i < values.length; i++) {
-        let erhalten = values[i]["erhalten"];
-        let date = new Date(erhalten * 1000);
+        let value = values[i];
+        let received = new Date(value['erhalten'] * 1000);
 
-        let label = date.toLocaleDateString('de-CH');
-        if (label !== last) {
-            last = label;
+        if (lastReceived === undefined || received.valueOf() - lastReceived.valueOf() >= displayDelta) {
+            // Offset wurde überschritten, somit wird ein neues Label erstellt.
+            label = received.toLocaleString('de-CH');
             labels.push(label);
+            lastReceived = received;
+            groupedValues[label] = [];
+
+
         }
+        groupedValues[label].push(value);
+    }
 
-        let werte = JSON.parse(values[i]['dekodiertJSON']);
+    let counts = [];
+    // Beinhaltet min, max und avg pro Sensor Wert
+    let valueCounts = {};
+    for (let i = 0; i < labels.length; i++) {
+        let label = labels[i];
 
-        for (let key in data) {
-            if (key in werte) {
-                if (!(label in data[key])) data[key][label] = [];
-                data[key][label].push(werte[key]);
+        // Zählerstand Werte
+        counts.push(groupedValues[label].length);
+
+        let specificValueCounts = {};
+
+        for(let q = 0; q < groupedValues[label].length; q++) {
+            let data = JSON.parse(groupedValues[label][q]['dekodiertJSON']);
+
+            for(let key in data) {
+                if(!(key in specificValueCounts)) specificValueCounts[key] = [];
+                specificValueCounts[key].push(data[key]);
             }
         }
-    }
 
-    let container = $("#diagram-container");
-    container.html("");
-
-    let diagramsVisualized = 0;
-
-    for (let key in data) {
-
-        let min = [];
-        let max = [];
-        let avg = [];
-
-        for (let _ in data[key]) {
-            let res = findMinMaxAvg(data[key][_]);
-            min.push(res[0]);
-            max.push(res[1]);
-            avg.push(res[2]);
-        }
-
-        if(min.length !== 0) {
-
-            diagramsVisualized += 1;
-
-            let datasets = [
-                createDataset('Min', min),
-                createDataset('Max', max, "#802E9E"),
-                createDataset('Avg', avg, "#C8FF46")
-            ];
-
-            createDiagram(key.toUpperCase(), labels, datasets);
+        for(let key in specificValueCounts) {
+            if(!(key in valueCounts)) valueCounts[key] = {'min': [], 'max': [], 'avg': []};
+            let result = findMinMaxAvg(specificValueCounts[key]);
+            valueCounts[key]['min'].push(result[0]);
+            valueCounts[key]['max'].push(result[1]);
+            valueCounts[key]['avg'].push(result[2]);
         }
     }
 
-    if(diagramsVisualized === 0) {
-        container.html("<p class='text-primary'><b>Keine Daten gefunden.</b></p>");
+    console.log(valueCounts);
+
+    createDiagram('Zählerstand', labels, [createDataset("Anzahl Packete", counts)]);
+
+    for(let key in valueCounts) {
+        createDiagram(key.toUpperCase(), labels, [
+            createDataset('Min', valueCounts[key]['min']),
+            createDataset('Max', valueCounts[key]['max'], "#802E9E"),
+            createDataset('Avg', valueCounts[key]['avg'], "#C8FF46"),
+        ])
     }
 
 }
 
 function dateToInputValue(date) {
-     return date.toISOString().slice(0,10);
+    return date.toISOString().slice(0, 10);
 }
+
 
 $(document).ready(function () {
 
@@ -218,21 +233,30 @@ $(document).ready(function () {
             inpFrom.val(dateToInputValue(new Date(min * 1000)));
             inpTo.val(dateToInputValue(new Date(max * 1000)));
 
-            loadSensorWerte(eui, min, max, displayValues);
+            loadSensorWerte(eui, min, max, function (list) {
+                values = list;
+                displayValues();
+            });
             loadSensorBeobachter(eui, displayBeobachter);
         });
 
         filter.click(function () {
 
-            let h24 = 60* 60 * 24;
+            let h24 = 60 * 60 * 24;
             let min = (new Date(inpFrom.val())).valueOf() / 1000 - h24;
             let max = ((new Date(inpTo.val())).valueOf() / 1000) + h24;
 
-            loadSensorWerte(eui, min, max, displayValues);
+            loadSensorWerte(eui, min, max, function (list) {
+                values = list;
+                displayValues();
+            });
         });
 
+        $("#filter-delta-btn").click(function () {
+            displayDelta = Number($("#delta").val());
+            displayValues();
+        });
     }
-
 
 
 });
