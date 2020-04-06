@@ -11,10 +11,10 @@ class SensorenListController(ListController):
     async def _select_stmt(self, limit, offset, join_foreign_keys) -> str:
         stmt = None
         if not join_foreign_keys:
-            stmt = """SELECT name, idRaum as "raum.id", art FROM sensoren"""
+            stmt = """SELECT sensoren.dev_eui, name, idRaum as "raum.id", art FROM sensoren"""
         else:
             stmt = """
-            SELECT sensoren.name, sensoren.art,
+            SELECT sensoren.dev_eui, sensoren.name, sensoren.art,
             raeume.id as "raum.id", raeume.name as "raum.name",
             stockwerke.id as "stockwerk.id", stockwerke.name as "stockwerk.name", stockwerke.niveau as "stockwerk.niveau",
             gebaeude.id as "gebaeude.id", gebaeude.name as "gebaeude.name"

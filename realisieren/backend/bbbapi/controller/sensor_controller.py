@@ -112,6 +112,9 @@ class SensorController(ModelController):
         if _type == ValidationTypes.CREATE:
             await model.validate_not_empty(['dev_eui', 'name', 'art', 'raum.id'])
 
+            if await self.get(connection, model) is not None:
+                raise ValidationError(['dev_eui'], "Sensor existiert bereits.")
+
         if not model["raum"]["id"].empty:
             if await self.raum_controller.get(connection, model["raum"]) is None:
                 raise ValidationError(['raum.id'], "Raum existiert nicht.")
