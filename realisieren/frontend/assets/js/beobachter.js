@@ -1,5 +1,7 @@
 function setBeobachterRow(id, art, name, wertName, ausloeser, stand, sensorId, sensorName, row) {
-
+    /*
+        Erstellt eine Reihe in der Tabelle und aktiviert Onclick Listener für die Buttons.
+     */
     let rowId = "beobachter-" + id + "-row";
     let viewId = "beobachter-" + id + "-view";
     let deleteId = "beobachter-" + id + "-delete";
@@ -43,6 +45,11 @@ function setBeobachterRow(id, art, name, wertName, ausloeser, stand, sensorId, s
 
 
 function beobachterForm(method, url, id, row) {
+
+    /*
+        Bei Aufruf, validiert Inhalt der Benutzereingaben und schickt danach die Anfrage ans Backend.
+        Wenn die Anfrage mit 200 Antwortet, so wird eine Reihe in der Tabelle erstellt oder aktualisiert.
+     */
 
     let art = $("#beobachter-art");
     let name = $("#beobachter-name");
@@ -100,6 +107,10 @@ let selectedBeobachter;
 
 $(document).ready(function () {
 
+    /*
+        Erstellt die Tabelle und bereitet die Form vor.
+     */
+
     populateTable('beobachter', loadBeobachter, $("#beobachter-loader"), $("#beobachter-empty"), undefined, function (item) {
         setBeobachterRow(item["id"], item["art"], item["name"], item["wertName"], item["ausloeserWert"], item["stand"], item["sensor"]["id"], item["sensor"]["name"]);
     });
@@ -120,7 +131,6 @@ $(document).ready(function () {
     });
 
     $("#beobachter-save-btn").click(function () {
-
         if (selectedBeobachter === undefined) {
             beobachterForm(Client.post, endpoint + 'beobachter');
         } else {

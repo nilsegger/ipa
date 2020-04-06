@@ -1,5 +1,9 @@
 function appendPersonal(uuid, benutzername, name, rolle, row) {
 
+    /*
+        Erstellt eine Reihe in der Tabelle und aktiviert onclick listeners.
+     */
+
     let columns = '<td>' + benutzername + '</td><td>' + name + '</td></td><td>' + rolle + '</td><td><button id="personal-' + uuid + '-view" class="btn btn-info">Ansehen</button><button id="personal-' + uuid + '-delete" class="btn btn-danger">Löschen</button></td>';
 
     if(row === undefined) {
@@ -23,6 +27,11 @@ function appendPersonal(uuid, benutzername, name, rolle, row) {
 }
 
 function deletePersonal(uuid) {
+
+    /*
+        Endgültig löscht ein Personal und dazugehörendes Login.
+     */
+
     Client.delete(endpoint + 'personal/' + uuid, function (response) {
         if(response.status === 200) {
             $("#personal-" + uuid + "-row").remove();
@@ -33,6 +42,10 @@ function deletePersonal(uuid) {
 }
 
 function savePersonal(method, url, uuid, row) {
+
+    /*
+        Prüft Werte und schickt eine Erstellungs Anfrage an das Backend.
+     */
 
     let benutzername = $("#benutzername");
     let passwort = $("#passwort");

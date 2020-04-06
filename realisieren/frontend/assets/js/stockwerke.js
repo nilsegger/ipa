@@ -1,5 +1,9 @@
 function setStockwerkRow(id, name, niveau, gebaeudeId, gebaeudeName, row) {
 
+    /*
+        Erstellt eine Reihe in der Stockwerken Tabelle.
+     */
+
     let rowId = "stockwerk-" + id + "-row";
     let viewId = "stockwerk-" + id + "-view";
     let deleteId = "stockwerk-" + id + "-delete";
@@ -41,6 +45,10 @@ function setStockwerkRow(id, name, niveau, gebaeudeId, gebaeudeName, row) {
 
 
 function stockwerkForm(method, url, id, row) {
+
+    /*
+        Überprüft alle Werte in der Form und schickt eine Erstellungs Anfrage an die Backend.
+     */
 
     let name = $("#stockwerk-name");
     let niveau = $("#stockwerk-niveau");

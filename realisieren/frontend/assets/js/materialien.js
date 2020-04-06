@@ -1,5 +1,9 @@
 function setMaterialRow(id, name, row) {
 
+    /*
+        Erstellt eine Reihe in der Tabelle.
+     */
+
     let rowId = "material-"+id+"-row";
     let viewId = "material-"+id+"-view";
     let deleteId = "material-"+id+"-delete";
@@ -39,6 +43,10 @@ function setMaterialRow(id, name, row) {
 
 
 function materialForm(method, url, id, row) {
+
+    /*
+        Nachdem alle Werte überprüft wurden, wird eine Anfrage ans Backend geschickt für das Erstellen eines Materiales.
+     */
 
     let name = $("#material-name");
 

@@ -2,6 +2,10 @@ let sensorArt;
 
 function preparePage(eui, callback) {
 
+    /*
+        Lädt die Attribute eines Sensors von der API.
+     */
+
     Client.get(endpoint + 'sensoren/' + eui, function (response) {
 
         if (response.status === 200) {
@@ -27,6 +31,10 @@ function preparePage(eui, callback) {
 
 
 function beobachterMeldungErstellen(beobachterId) {
+
+    /*
+        Funktion zum Erstellen einer Meldung.
+     */
 
     let beschreibung = $("#beschreibung");
 
@@ -54,6 +62,10 @@ function beobachterMeldungErstellen(beobachterId) {
 
 function displayBeobachter(list) {
 
+    /*
+        Stellt alle Beobachter des Sensors in einer Tabelle dar und aktiviert die Buttons zum auslösen einer Meldung.
+     */
+
     let table = $("#sensor-beobachter");
 
     for (let i = 0; i < list.length; i++) {
@@ -78,6 +90,9 @@ function displayBeobachter(list) {
 let diagramCounter = 0;
 
 function createDiagram(title, labels, datasets) {
+    /*
+        Erstellt ein Chart.js Diagramm im Diagram Container.
+     */
     let container = $("#diagram-container");
     diagramCounter += 1;
     let id = "diagram-" + diagramCounter;
@@ -99,6 +114,9 @@ function createDiagram(title, labels, datasets) {
 }
 
 function findMinMaxAvg(values) {
+    /*
+        Findet den kleinsten und grössten Wert in einem Array und berechnet auch noch den Durchschnittlichen.
+     */
 
     let min;
     let max;
@@ -115,6 +133,9 @@ function findMinMaxAvg(values) {
 }
 
 function createDataset(label, data, color = "#c84646") {
+    /*
+        Erstellt ein Dataset welches von Chart.js gelesen werden kann.
+     */
     let dataset = {
         label: label,
         data: data,
@@ -131,6 +152,10 @@ let values;
 
 function displayValues() {
 
+    /*
+        Gruppiert die Werte nach dem displayDelta Kriterium und stellt diese mit createDiagram dar.
+     */
+
     let container = $("#diagram-container");
     if (values.length === 0) {
         container.html("<p class='text-primary'><b>Keine Daten gefunden.</b></p>");
@@ -141,14 +166,6 @@ function displayValues() {
 
     let labels = [];
     let groupedValues = {};
-
-    let data = {
-        'temperature': {},
-        'light': {},
-        'humidity': {},
-        'motion': {},
-        'co2': {}
-    };
 
     let lastReceived;
     let label;
@@ -198,8 +215,6 @@ function displayValues() {
         }
     }
 
-    console.log(valueCounts);
-
     createDiagram('Zählerstand', labels, [createDataset("Anzahl Packete", counts)]);
 
     for(let key in valueCounts) {
@@ -213,6 +228,10 @@ function displayValues() {
 }
 
 function dateToInputValue(date) {
+    /*
+        Verwandelt ein Date Object in einen String welcher von Input[type=date] gelesen werden können.
+        Kopiert von https://stackoverflow.com/questions/28729634/set-values-in-input-type-date-and-time-in-javascript
+     */
     return date.toISOString().slice(0, 10);
 }
 

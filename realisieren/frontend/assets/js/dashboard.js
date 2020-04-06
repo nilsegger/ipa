@@ -1,4 +1,7 @@
 function setSolved(meldungId) {
+    /*
+        Setzt bearbeitet auf True und schickt eine Anfrage ans Backend, funktioniert diese, so wird die Reihe aus der Tabelle entfernt.
+     */
     let request = {
         'bearbeitet': true
     };
@@ -8,6 +11,9 @@ function setSolved(meldungId) {
 }
 
 function deleteMeldung(meldungId) {
+    /*
+        Löscht eine Meldung komplett aus der Datenbank.
+     */
     Client.delete(endpoint + 'meldungen/' + meldungId.toString(), function () {
         $("#meldung-" + meldungId).remove();
     })
@@ -19,6 +25,9 @@ let endOfData = false;
 let loading = false;
 
 function getMeldungen(callback) {
+    /*
+        Auflistung aller Meldungen welche noch unbearbeitet sind. Ruft callback mit kompletter Liste auf.
+     */
 
     if (loading || endOfData) return;
 
@@ -44,6 +53,10 @@ function getMeldungen(callback) {
 }
 
 function addRow(id, art, datum, beschreibung, melderID, melderName, raumID, raumName, stockwerk, gebaeude) {
+    /*
+        Erstellt eine Reihe in der Tabelle. Aktiviert Onclick listeners für Buttons.
+     */
+
     let table = $("#meldungen_table");
 
     let row = `<tr id="meldung-${id}">
@@ -73,6 +86,10 @@ function addRow(id, art, datum, beschreibung, melderID, melderName, raumID, raum
 
 
 function loadAdmin() {
+
+    /*
+        Ladet Daten für die Administratoren Ansicht und erstellt die Tabelle.
+     */
 
     let spinnerRow = $("#loadingRow");
     let loadMoreBtnRow = $("#loadMoreBtnRow");
@@ -113,6 +130,11 @@ function loadAdmin() {
 
 
 function sortByOrt(list) {
+
+    /*
+        Sortierungs Algorithmus für die Reinigunspersonal Ansicht.
+        Gruppiert zuerst nach Gebäude, danach Stockwerk und schlussendlich die Räume.
+     */
 
     let gebaeude = {};
 
@@ -213,6 +235,9 @@ function loadMaterial(list) {
 }
 
 function saveFeedback(raumID) {
+    /*
+        Schickt eine Anfrage ans Backend um eine Meldung zu erstellen.
+     */
     let beschreibung = $("#beschreibung");
     if (check(beschreibung, 3)) {
         let request = {
@@ -235,6 +260,9 @@ function saveFeedback(raumID) {
 let lastData = [];
 
 function loadReinigungspersonal() {
+    /*
+        Lädt Ansicht für das Reinigunspersonal und stellt die Ansicht anhand von SortByOrt dar.
+     */
 
     let container = $("#personal-container");
     container.fadeIn();
@@ -331,6 +359,10 @@ function loadReinigungspersonal() {
 }
 
 $(document).ready(function () {
+
+    /*
+        Entscheidet durch Rolle im Access Key welche Ansicht dargestellt werden soll.
+     */
 
     if (Auth.getRole() === 'ADMIN') {
         loadAdmin();

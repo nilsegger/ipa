@@ -1,5 +1,9 @@
 function setRaumRow(id, name, stockwerkId, stockwerkName, row) {
 
+    /*
+        Erstellt eine Reihe in der Tabelle.
+     */
+
     let rowId = "raum-"+id+"-row";
     let viewId = "raum-"+id+"-view";
     let deleteId = "raum-"+id+"-delete";
@@ -40,6 +44,10 @@ function setRaumRow(id, name, stockwerkId, stockwerkName, row) {
 
 
 function raumForm(method, url, id, row) {
+
+    /*
+        Prüft Werte und schickt Erstellungs Anfrage an das Backend.
+     */
 
     let name = $("#raum-name");
     let stockwerId = $("#raum-stockwerk");

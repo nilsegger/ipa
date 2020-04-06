@@ -1,5 +1,9 @@
 function setSensorRow(id, art, name, raumId, raumName, row) {
 
+    /*
+        Erstellt eine Sensor Reihe in der Tabelle.
+     */
+
     let rowId = "sensor-" + id + "-row";
     let viewId = "sensor-" + id + "-view";
     let deleteId = "sensor-" + id + "-delete";
@@ -49,6 +53,11 @@ function setSensorRow(id, art, name, raumId, raumName, row) {
 
 
 function sensorForm(method, url, row) {
+
+    /*
+        Überprüft die Werte in der Form und schickt eine Anfrage an das Backend.
+     */
+
     let duplicateAlert = $("#sensor-duplicate-alert");
 
     duplicateAlert.hide();

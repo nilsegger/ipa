@@ -1,4 +1,7 @@
 function addLink() {
+    /*
+        Fügt ein Material einem Beobachter hinzu. So wird dieses Material bei jeder Meldung des Beobachters vorgeschlagen.
+     */
 
     let material = $("#material");
     let beobachter = $("#beobachter");
@@ -35,6 +38,10 @@ function addLink() {
 
 function deleteLink(id) {
 
+    /*
+        Löscht die Verbindung eines Materiales zu Beobachters.
+     */
+
     Client.delete(endpoint + 'beobachter/materialien/' + id, function (response) {
         if(response.status === 200) {
             $("#row-" + id).remove();
@@ -46,10 +53,17 @@ function deleteLink(id) {
 }
 
 function beobachterSection(id, name) {
+    /*
+        Erstellt eine Reihe aus der Tabelle.
+     */
     return '<div class="mt-3" id="beobachter-' + id+ '"><h3>' + name + '</h3><div class="table-responsive"><table class="table table-striped"><thead><tr><th>Material</th><th>Anzahl</th><th>Löschen</th></tr></thead><tbody id="beobachter-' + id + '-table"></tbody><tfoot><tr id="beobachter-' + id + '-loader"><td colspan="3"><div class="spinner-border text-primary"></div></td></tr><tr id="beobachter-' + id + '-empty"><td colspan="3" class="text-primary">Keine Materialien.</td></tr></tfoot></table></div></div>';
 }
 
 function loadBeobachterTable(id, name) {
+
+    /*
+        Lädt die Daten für die Tabelle und aktiviert Onclick Listeners.
+     */
 
     populateTable('beobachter-' + id, function (callback, offset) {
         loadMaterialZuBeobachter(id, callback, offset);

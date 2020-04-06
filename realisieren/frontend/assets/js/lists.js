@@ -1,3 +1,7 @@
+/*
+    Diese Skript enthält alle Auflistungen. Der Offset kann meist ignoriert werden, da dieser nur für Meldungen im Backend implementiert ist.
+ */
+
 function loadList(url, callback) {
     Client.get(url, function (response) {
         if (response.status === 200) {

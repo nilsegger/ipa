@@ -7,6 +7,9 @@ const personalDashboard = self + "dashboard_personal.html";
 class Auth {
 
     static saveTokens(access, refresh) {
+        /*
+            Speichert Access und Refresh Token im SessionStorage.
+         */
         sessionStorage.setItem('accessToken', access);
         if(refresh != null) {
             sessionStorage.setItem('refreshToken', refresh);
@@ -14,14 +17,24 @@ class Auth {
     }
 
     static retrieveAccessToken() {
+        /*
+            Holt AccessToken aus dem SessionStorage.
+         */
         return sessionStorage.getItem('accessToken');
     }
 
     static retrieveRefreshToken() {
+        /*
+            Holt RefreshToken aus dem SessionStorage.
+         */
         return sessionStorage.getItem('refreshToken');
     }
 
     static retrieveNewAccessToken(callback) {
+
+        /*
+            Schickt eine Anfrage für einen neuen Accesstoken an die API
+         */
 
         $.ajax(endpoint + 'login', {
             method: 'PUT',
@@ -39,12 +52,18 @@ class Auth {
     }
 
     static getRole() {
+        /*
+            Dekodiert den Payload des Accesstoken und antwortet mit der Rolle.
+         */
         let token = Auth.retrieveAccessToken();
         let payload = atob(token.split('.')[1]);
         return JSON.parse(payload)['role'];
     }
 
     static logout() {
+        /*
+            Löscht die Tokens aus dem SessionStorage und leitet zur Login Seite.
+         */
         sessionStorage.removeItem('accessToken');
         sessionStorage.removeItem('refreshToken');
         window.location.replace(login);
