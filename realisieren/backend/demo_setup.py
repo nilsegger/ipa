@@ -67,7 +67,8 @@ async def create_material(connection, name):
     return await MaterialController().create(connection, material)
 
 
-async def add_material_to_beobachter(connection, material, beobachter):
+async def add_material_to_beobachter(connection, material, beobachter, anzahl):
+    material["anzahl"].value = anzahl
     await BeobachterController().add_material(connection, beobachter, material)
 
 async def main():
@@ -126,10 +127,10 @@ async def main():
                                     adeunis["dev_eui"].value)
 
             seife = await create_material(connection, 'Seife')
-            await add_material_to_beobachter(connection, seife, adeunis_zaehlerstand_beobachter)
+            await add_material_to_beobachter(connection, seife, adeunis_zaehlerstand_beobachter, 1)
 
             wc_papier = await create_material(connection, 'WC Papier')
-            await add_material_to_beobachter(connection, wc_papier, adeunis_zaehlerstand_beobachter)
+            await add_material_to_beobachter(connection, wc_papier, adeunis_zaehlerstand_beobachter, 5)
 
             await create_beobachter(connection, 'Elsys Temperatur Darüber',
                                     BeobachterArt.RICHTWERT_DARUEBER, 25,

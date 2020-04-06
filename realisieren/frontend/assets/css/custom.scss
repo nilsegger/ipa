@@ -15,10 +15,7 @@ $logo-margin-horizontal-px: $logo-height-px / 100 * (100 / $logo-height-mm * $lo
 
 $primary: #c84646;
 
-.logo-wrapper {
-  position: relative;
-  text-align: right;
-}
+
 
 @mixin logo-size($scale) {
   $logo-height-scaled: $logo-height-px * $scale;
@@ -30,17 +27,28 @@ $primary: #c84646;
   margin-right: $margin-horizontal-scaled + px;
 }
 
-@media (min-width: 576px) {
-  .logo {
-    @include logo-size(0.025);
-  }
 
-  .logo-small {
-    @include logo-size(0.0075);
-  }
+.logo-wrapper {
+  position: relative;
+  text-align: right;
+  display: none;
+}
+
+.logo {
+  @include logo-size(0.025);
+}
+
+
+.logo-small {
+  @include logo-size(0.01);
 }
 
 @media (min-width: 768px) {
+
+  .logo-wrapper {
+    display: block;
+  }
+
   .logo {
     @include logo-size(0.05);
   }

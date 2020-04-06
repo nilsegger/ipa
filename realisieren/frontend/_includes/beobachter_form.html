@@ -1,0 +1,96 @@
+<div class="modal fade" id="beobachter-form" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Beobachter Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-row form-group">
+
+                    <div class="col-sm-12 col-md-8 col-lg-6">
+                        <label for="beobachter-name">Name des Beobachters</label>
+                        <input class="form-control" type="text" id="beobachter-name"
+                               placeholder="Temperatur Beobachter"/>
+                        <div class="invalid-feedback">Der Name darf nicht leer sein und muss mindestens 3 bis 100
+                            Charakter haben.
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-8 col-lg-6">
+                        <label for="beobachter-art">Art</label>
+                        <select id="beobachter-art" class="form-control">
+                            <option value="ZAEHLERSTAND">Zählerstand</option>
+                            <option value="RICHTWERT_DARUEBER">Richtwert darüber</option>
+                            <option value="RICHTWERT_DARUNTER">Richtwert darunter</option>
+                        </select>
+                        <div class="invalid-feedback">Die Art darf nicht leer sein.</div>
+                        <div class="text-muted">
+                            <ol class="list-group">
+                                <li class="list-group-item">Ein Zählerstand Beobachter misst wie oft ein Sensor einen Wert geschickt hat und löst beim Auslöserwert eine Meldung aus.</li>
+                                <li class="list-group-item">Ein Richtwert darüber gibt eine Meldung aus, wenn der mit Wert Name definierte Wert eines Sensor über dem Auslöserwert liegt.</li>
+                                <li class="list-group-item">Ein Richtwert darunter gibt eine Meldung aus, wenn der mit Wert Name definierte Wert eines Sensor unter dem Auslöserwert liegt.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-8 col-lg-6">
+                        <label for="beobachter-sensor">Sensor</label>
+                        <select id="beobachter-sensor" class="form-control">
+
+                        </select>
+                        <div class="invalid-feedback">Der Sensor darf nicht leer sein.</div>
+
+                        <div class="text-muted">
+                            <ol class="list-group">
+                                <li class="list-group-item">Der Adeunis Sensor meldet den Wert 'temperature'.</li>
+                                <li class="list-group-item">Ein Elsys ERS CO2 Sensor besitzt die Werte 'temperature', 'co2', 'motion', 'light' und 'humidity'.</li>
+                                <li class="list-group-item">Der Tabs Sensor kann nur mit dem Zählerstand verbunden werden.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-8 col-lg-6">
+                        <label for="beobachter-ausloeser">Auslöserwert</label>
+                        <input class="form-control" type="number" id="beobachter-ausloeser" step="0.1" placeholder="22"/>
+                        <div class="invalid-feedback">Der Auslöserwert darf nicht leer sein.</div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-8 col-lg-6">
+                        <label for="beobachter-wert-name">Wert Name</label>
+                        <select id="beobachter-wert-name" class="form-control">
+                            <option value="temperature">Adeunis Temperatur</option>
+                            <option value="temperature">Elsys Temperatur</option>
+                            <option value="co2">Elsys CO2</option>
+                            <option value="motion">Elsys Bewegungen</option>
+                            <option value="light">Elsys Licht</option>
+                            <option value="humidity">Elsys Feuchtigkeit</option>
+                        </select>
+                        <div class="invalid-feedback">Der Wert Name darf nur bei einem Zählerstand leer sein.</div>
+                        <div class="text-muted">Dieses Feld muss nur für Richtwert Beobachter ausgefüllt werden.</div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-8 col-lg-6">
+                        <label for="beobachter-stand">Stand</label>
+                        <input class="form-control" type="number" id="beobachter-stand" step="1" placeholder="22"/>
+                        <div class="invalid-feedback">Der Stand darf nicht leer sein.</div>
+                        <div class="text-muted">Dieses Feld muss nur für den Zählerstand Beobachter ausgefüllt werden.</div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="beobachter-save-btn">Speichern</button>
+            </div>
+
+        </div>
+    </div>
+</div>

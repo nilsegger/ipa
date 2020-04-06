@@ -1,0 +1,61 @@
+<div class="modal fade" id="sensor-form" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h5 class="modal-title">Sensor Form</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div id="sensor-duplicate-alert" style="display: none" class="alert alert-danger">
+                Dieser Sensor wurde bereits verwendet.
+            </div>
+
+            <div class="form-row form-group">
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <label for="sensor-eui">Device EUI</label>
+                    <input class="form-control" type="text" id="sensor-eui" placeholder="0000000000000000" />
+                    <div class="invalid-feedback">Die Device EUI muss einer länge von 16 entsprechen.</div>
+                </div>
+
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <label for="sensor-name">Name des Sensors</label>
+                    <input class="form-control" type="text" id="sensor-name" placeholder="Sensor XY" />
+                    <div class="invalid-feedback">Der Name darf nicht leer sein und muss mindestens 3 bis 100 Charakter haben.</div>
+                </div>
+
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <label for="sensor-art">Art</label>
+                    <select id="sensor-art" class="form-control">
+                        <option value="ADEUNIS_RF" selected>Adeunis</option>
+                        <option value="ELSYS_ERS_CO2">Elsys ERS CO2</option>
+                        <option value="TABS">Tabs Tür Sensor</option>
+                    </select>
+                    <div class="invalid-feedback">Die Art des Sensors darf nicht fehlen.</div>
+                </div>
+
+
+                <div class="col-sm-12 col-md-8 col-lg-6">
+                    <label for="sensor-raum">Raum</label>
+                    <select id="sensor-raum" class="form-control">
+
+                    </select>
+                    <div class="invalid-feedback">Der Raum darf nicht leer sein.</div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" id="sensor-save-btn">Speichern</button>
+        </div>
+
+    </div>
+  </div>
+</div>

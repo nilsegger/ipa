@@ -1,13 +1,57 @@
-<nav class="navbar navbar-expand bg-light   ">
-    <span class="navbar-brand mb-0 h1">{{ page.title }} </span>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">{{ page.title }}</a>
 
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-        {% for item in site.data.navigation %}
-        <li class="nav-item {% if page.url == item.link %} active {% endif %}">
-            <a class="nav-link" href="{{item.link}}">{{ item.name }}</a>
+     {% if page.isAdmin %}
+
+        <li class="nav-item">
+            <a class="nav-link" href="/dashboard.html">Dashboard</a>
         </li>
-        {% endfor %}
+
+        <li class="nav-item">
+            <a class="nav-link" href="/personal.html">Personal</a>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="gebaeudeVerwaltung" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                Gebäude Verwaltung
+            </a>
+            <div class="dropdown-menu" aria-labelledby="gebaeudeVerwaltung">
+                <a class="dropdown-item" href="gebaeude.html">Gebäude</a>
+                <a class="dropdown-item" href="stockwerke.html">Stockwerke</a>
+                <a class="dropdown-item" href="raeume.html">Räume</a>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/sensoren.html">Sensoren</a>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="meldungenVerwaltung" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                Meldungen Verwaltung
+            </a>
+            <div class="dropdown-menu" aria-labelledby="meldungenVerwaltung">
+                <a class="dropdown-item" href="/beobachter.html">Beobachter</a>
+                <a class="dropdown-item" href="/materialien.html">Materialien</a>
+                <a class="dropdown-item" href="/material_zu_beobachter.html">Materialien mit Beobachter verbinden</a>
+            </div>
+        </li>
+
+        {% endif %}
+
+        <li class="nav-item">
+            <button id="logout-btn" class="btn nav-link">Logout</button>
+        </li>
     </ul>
 
+  </div>
     {% include logo-small.html %}
 </nav>

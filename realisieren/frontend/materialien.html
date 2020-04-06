@@ -1,16 +1,16 @@
 ---
 layout: default
-title: Räume
+title: Materialien
 isAdmin: true
 ---
 
-{% include raum_form.html %}
+{% include material_form.html %}
 
 <div class="container mt-3">
 
-    <h1>Räume</h1>
+    <h1>Materialien</h1>
 
-    <button id="create-raum-btn" class="btn btn-primary" data-toggle="modal" data-target="#raum-form">Raum
+    <button id="create-material-btn" class="btn btn-primary" data-toggle="modal" data-target="#material-form">Material
         erstellen
     </button>
 
@@ -19,21 +19,21 @@ isAdmin: true
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Stockwerk</th>
                 <th>Aktionen</th>
             </tr>
             </thead>
-            <tbody id="raum-table"></tbody>
+            <tbody id="materialien-table"></tbody>
             <tfoot>
-            <tr id="raeume-loader">
+            <tr id="materialien-loader">
                 <td colspan="3">
                     <div class="spinner-border text-primary"></div>
                 </td>
             </tr>
-            <tr id="raeume-empty">
-                <td colspan="3" class="text-primary">Es existieren keine Räume.</td>
+            <tr id="materialien-empty">
+                <td colspan="3" class="text-primary">Es existieren keine Materialien.</td>
             </tr>
             </tfoot>
         </table>
     </div>
+
 </div>

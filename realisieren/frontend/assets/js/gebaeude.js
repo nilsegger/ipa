@@ -11,7 +11,7 @@ function setGebaeudeRow(id, name, row) {
     $("#gebaeude-" + id + "-view").click(
         function () {
             selectedGebaeude = id;
-            $("#gebaeude-name").val(name);
+            reset($("#gebaeude-name"), name);
             $("#gebaeude-form").modal('show');
         }
     );
@@ -59,34 +59,13 @@ function gebaeudeForm(method, url, id, row) {
 
 }
 
-
-function loadGebaeude() {
-
-    Client.get(endpoint + 'gebaeude', function(response) {
-
-        if(response.status === 200) {
-
-            let list = JSON.parse(response.responseText)['list'];
-
-            for(let i = 0; i < list.length; i++) {
-                let item = list[i];
-                setGebaeudeRow(item["id"], item["name"]);
-
-                $("#stockwerk-gebaeude").append('<option value="'+item["id"]+'">'+item["name"]+'</option>');
-            }
-
-        } else {
-            // TODO Fehlermeldig
-        }
-
-    })
-
-}
-
 let selectedGebaeude;
 
 $(document).ready(function() {
-    loadGebaeude();
+
+    populateTable('gebaeude', loadGebaeude, $("#gebaeude-loader"), $("#gebaeude-empty"), undefined, function (item) {
+        setGebaeudeRow(item["id"], item["name"]);
+    });
 
     $("#create-gebaeude-btn").click(function () {
         selectedGebaeude = undefined;

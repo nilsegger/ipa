@@ -44,18 +44,18 @@ class BeobachterController(ModelController):
                 """
 
     async def _insert_stmt(self):
-        return "INSERT INTO beobachter(dev_euisensor, name, wertname, art, ausloeserwert) VALUES ($1, $2, $3, $4, $5) RETURNING id"
+        return "INSERT INTO beobachter(dev_euisensor, name, wertname, art, ausloeserwert, stand) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id"
 
     async def _insert_values(self, model: Model):
         return model["sensor"]["dev_eui"].value, model["name"].value, model[
             "wertName"].value, model["art"].value.value, model[
-                   "ausloeserWert"].value
+                   "ausloeserWert"].value, model["stand"].value
 
     async def _update_stmt(self):
         return "UPDATE beobachter SET dev_euiSensor=coalesce($2, dev_euiSensor), name=coalesce($3, name), wertName=coalesce($4, wertName), art=coalesce($5, art),  ausloeserwert=coalesce($6, ausloeserwert), stand=coalesce($7, stand) WHERE id=$1"
 
     async def _update_values(self, model: Model):
-        return (model["id"].value, *await self._insert_values(model), model["stand"].value)
+        return (model["id"].value, *await self._insert_values(model))
 
     async def create(self, connection: SQLConnectionInterface, model: Model):
         """Erstellt Beobachter und setzt ID."""

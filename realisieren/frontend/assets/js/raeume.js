@@ -17,9 +17,8 @@ function setRaumRow(id, name, stockwerkId, stockwerkName, row) {
     $("#" + viewId).click(
         function () {
             selectedRaum = id;
-            $("#raum-name").val(name);
-            $("#raum-stockwerk").val(stockwerkId);
-
+            reset($("#raum-name"), name);
+            reset($("#raum-stockwerk"), stockwerkId);
             $("#raum-form").modal('show');
         }
     );
@@ -67,7 +66,7 @@ function raumForm(method, url, id, row) {
                     id = JSON.parse(response.responseText)["id"];
                 }
 
-                setRaumRow(id, nameVal, stockwerkVal, $("#raum-stockwerk").text(), row);
+                setRaumRow(id, nameVal, stockwerkVal, $("#raum-stockwerk option:selected").text(), row);
 
                  $("#raum-form").modal("hide");
 
@@ -81,33 +80,25 @@ function raumForm(method, url, id, row) {
 
 }
 
-
-function loadRaeume() {
-
-    Client.get(endpoint + 'raeume', function(response) {
-        if(response.status === 200) {
-            let list = JSON.parse(response.responseText)['list'];
-            for(let i = 0; i < list.length; i++) {
-                let item = list[i];
-                setRaumRow(item["id"], item["name"], item["stockwerk"]["id"], item["stockwerk"]["name"] + " " + item["gebaeude"]["name"]);
-            }
-        } else {
-            // TODO Fehlermeldig
-        }
-
-    })
-
-}
-
 let selectedRaum;
 
 $(document).ready(function() {
-    loadRaeume();
+
+    populateTable('raeume', loadRaeume, $("#raeume-loader"), $("#raeume-empty"), undefined, function (item) {
+        setRaumRow(item["id"], item["name"], item["stockwerk"]["id"], item["stockwerk"]["name"] + " " + item["gebaeude"]["name"]);
+    });
+
+    loadStockwerke(function (list) {
+        for(let i = 0; i < list.length; i++) {
+            let item = list[i];
+            $("#raum-stockwerk").append("<option value='"+ item["id"] +"'>"+item["name"] + " " + item["gebaeude"]["name"] + "</option>");
+        }
+    });
 
     $("#create-raum-btn").click(function () {
         selectedRaum = undefined;
-        $("#raum-name").val("");
-        $("#raum-stockwerk").val("");
+        reset($("#raum-name"));
+        reset($("#raum-stockwerk"));
     });
 
     $("#raum-save-btn").click(function() {

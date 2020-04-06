@@ -9,11 +9,12 @@ function appendPersonal(uuid, benutzername, name, rolle, row) {
     }
 
     $("#personal-" + uuid + "-view").click(function () {
-        selected = uuid;
+        selectedPersonal = uuid;
+        reset($("#benutzername"), benutzername);
+        reset($("#name"), name);
+        reset($("#rolle"), rolle);
+        reset($("#passwort"));
         $("#personal-form").modal("show");
-        $("#benutzername").val(benutzername);
-        $("#name").val(name);
-        $("#rolle").val(rolle);
     });
 
     $("#personal-" + uuid + "-delete").click(function () {
@@ -40,10 +41,10 @@ function savePersonal(method, url, uuid, row) {
 
     let skipEmptyValidation = uuid!==undefined;
 
-    let benutzernameValid = check(benutzername, 3, 100, skipEmptyValidation);
+    let benutzernameValid = check(benutzername, 3, 100);
     let passwortValid = check(passwort, 8, 100, skipEmptyValidation);
-    let nameValid = check(name, 3, 100, skipEmptyValidation);
-    let rolleValid = check(rolle, skipEmptyValidation);
+    let nameValid = check(name, 3, 100);
+    let rolleValid = check(rolle);
 
     if (benutzernameValid && passwortValid && nameValid && rolleValid) {
 
@@ -84,55 +85,28 @@ function savePersonal(method, url, uuid, row) {
 
 }
 
-let offset = 0;
-let endOfData = false;
-
-function loadPersonal() {
-
-    Client.get(endpoint + 'personal?offset=' + offset, function (response) {
-
-        if (response.status === 200) {
-
-            let result = JSON.parse(response.responseText);
-
-            offset = result['offset'];
-            endOfData = result['is_end'];
-            let list = result['list'];
-
-            for (let i = 0; i < list.length; i++) {
-                let item = list[i];
-                let uuid = item['uuid'];
-                let benutzername = item['benutzername'];
-                let name = item['name'];
-                let rolle = item['rolle'];
-
-                appendPersonal(uuid, benutzername, name, rolle);
-
-            }
-
-        } else {
-            // TODO Fehlermeldig.
-        }
-
-    })
-
-}
-
-let selected;
+let selectedPersonal;
 
 $(document).ready(function () {
 
+    populateTable('personal', loadPersonal, $("#personal-loader"), $("#personal-empty"), undefined, function (item) {
+        appendPersonal(item['uuid'], item['benutzername'], item['name'], item['rolle']);
+    });
+
     $("#create-personal-btn").click(function () {
-        selected = undefined;
+        selectedPersonal = undefined;
+        reset($("#benutzername"));
+        reset($("#passwort"));
+        reset($("#name"));
+        reset($("#rolle"));
     });
 
     $("#personal-save-btn").click(function () {
-        if (selected === undefined) {
+        if (selectedPersonal === undefined) {
             savePersonal(Client.post, endpoint + 'personal');
         } else {
             savePersonal(Client.put, endpoint + 'personal/' + selected, selected, $("#personal-"+selected+"-row"));
         }
     });
 
-    loadPersonal();
 });

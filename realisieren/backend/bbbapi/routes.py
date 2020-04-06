@@ -1,7 +1,11 @@
 from uuid import UUID
 
 import tedious.config
-from tedious.res.list_resource import ListResource, StaticListResource
+from bbbapi.controller.beobachter_list_controller import \
+    BeobachterListController
+from bbbapi.controller.materialien_list_controller import \
+    MaterialienListController
+from tedious.res.list_resource import StaticListResource
 
 from bbbapi.common_types import Roles
 from bbbapi.controller.beobachter_controller import BeobachterController
@@ -39,6 +43,10 @@ from bbbapi.resources.beobachter_zu_materialien_list_resource import \
     MaterialienZuBeobachterListResource
 from bbbapi.resources.meldung_form_resource import MeldungFormResource
 from bbbapi.resources.meldungen_list_resource import MeldungenListResource
+from bbbapi.resources.material_zu_beobachter_resource import MaterialZuBeobachterResource
+from bbbapi.resources.sensor_beobachter_list_resource import \
+    SensorBeobachterListResource
+from bbbapi.resources.sensor_wert_list_resource import SensorWertListResource
 
 controller = None
 auth_resource = None
@@ -55,7 +63,9 @@ sensoren_list_resource = None
 meldungen_form_resource = None
 meldungen_list_resource = None
 beobachter_form_resource = None
+beobachter_list_resource = None
 materialien_form_resource = None
+material_list_resource = None
 material_zu_beobachter_resource = None
 
 async def login(request):
@@ -142,12 +152,14 @@ async def meldungen_form(request):
     model = None
     if 'id' in request.path_params:
         model = Meldung(_id=int(request.path_params['id']))
-    return await controller.handle(request, meldungen_form_resource, model=model)
+    return await controller.handle(request, meldungen_form_resource,
+                                   model=model)
 
 
 async def meldungen_list(request):
     """Auflistungen der Meldungen."""
     return await controller.handle(request, meldungen_list_resource)
+
 
 async def beobachter_form(request):
     """Route für das Erstellen, Aktualisieren und Löschen von Beobachtern."""
@@ -155,35 +167,65 @@ async def beobachter_form(request):
     model = None
     if 'id' in request.path_params:
         model = Beobachter(_id=int(request.path_params['id']))
-    return await controller.handle(request, beobachter_form_resource, model=model)
+    return await controller.handle(request, beobachter_form_resource,
+                                   model=model)
 
 
-async def material_form(request):
+async def beobachter_list(request):
+    """Auflistungen der Beobachter."""
+    return await controller.handle(request, beobachter_list_resource)
+
+
+async def materialien_form(request):
     """Route für das Erstellen, Aktualisieren und Löschen von Beobachtern."""
 
     model = None
     if 'id' in request.path_params:
         model = Material(_id=int(request.path_params['id']))
-    return await controller.handle(request, materialien_form_resource, model=model)
+    return await controller.handle(request, materialien_form_resource,
+                                   model=model)
+
+
+async def materialien_list(request):
+    """Auflistungen der Materialien."""
+    return await controller.handle(request, material_list_resource)
 
 
 async def material_zu_beobachter_form(request):
     """Route für das Hinzufügen oder Löschen von Material zu Beobachtern."""
 
     if 'id' in request.path_params and 'mid' in request.path_params:
-        beobachter = Beobachter(_id=request.path_params['id'])
-        material = Material(_id=request.path_params['mid'])
-        return await controller.handle(request, material_zu_beobachter_resource, beobacher=beobachter, material=material)
+        beobachter = Beobachter(_id=int(request.path_params['id']))
+        material = Material(_id=int(request.path_params['mid']))
+        return await controller.handle(request,
+                                       material_zu_beobachter_resource,
+                                       beobachter=beobachter, material=material)
     else:
         return await controller.handle(request,
                                        material_zu_beobachter_resource,
-                                       material_zu_beobachter_id=request.path_params['id'])
+                                       material_zu_beobachter_id=
+                                       int(request.path_params['id']))
+
 
 async def material_zu_beobachter_list(request):
     """Erstellt eine Auflistung von allen Materialien für einen Beobachter."""
 
     beobachter = Beobachter(_id=int(request.path_params['id']))
-    return await controller.handle(request, MaterialienZuBeobachterListResource(beobachter))
+    return await controller.handle(request,
+                                   MaterialienZuBeobachterListResource(
+                                       beobachter))
+
+
+async def sensor_beobachter_list(request):
+    """Erstellt eine Auflistung von allen Beobachtern eines Sensors."""
+    sensor = Sensor(dev_eui=request.path_params['dev_eui'])
+    return await controller.handle(request, SensorBeobachterListResource(sensor))
+
+
+async def sensor_wert_list(request):
+    """Erstellt eine Auflistung von allen Werten eines Sensors."""
+    sensor = Sensor(dev_eui=request.path_params['dev_eui'])
+    return await controller.handle(request, SensorWertListResource(sensor))
 
 
 def create_app():
@@ -269,10 +311,26 @@ def create_app():
     meldungen_list_resource = MeldungenListResource(limit=25)
 
     global beobachter_form_resource
-    beobachter_form_resource = FormResource(Beobachter, BeobachterController(), 'id')
+    beobachter_form_resource = FormResource(Beobachter, BeobachterController(),
+                                            'id')
+
+    global beobachter_list_resource
+    beobachter_list_resource = StaticListResource(BeobachterListController(), [Roles.ADMIN.value,
+                                                 Roles.PERSONAL.value], ['id', 'name', 'art', 'stand', 'ausloeserWert', 'wertName', 'sensor.dev_eui', 'sensor.name'], join_foreign_keys=True)
+
 
     global materialien_form_resource
-    materialien_form_resource = FormResource(Material, MaterialController(), 'id')
+    materialien_form_resource = FormResource(Material, MaterialController(),
+                                             'id')
+
+    global material_list_resource
+    material_list_resource = StaticListResource(MaterialienListController(),
+                                                [Roles.ADMIN.value,
+                                                 Roles.PERSONAL.value],
+                                                ['id', 'name'])
+
+    global material_zu_beobachter_resource
+    material_zu_beobachter_resource = MaterialZuBeobachterResource()
 
     return StarletteApp(controller, [
         Route('/login', login, methods=["POST", "PUT", "DELETE"]),
@@ -301,21 +359,29 @@ def create_app():
         Route('/sensoren', sensor_form, methods=["POST"]),
         Route('/sensoren/{dev_eui}', sensor_form,
               methods=["GET", "PUT", "DELETE"]),
+        Route('/sensoren/{dev_eui}/beobachter', sensor_beobachter_list, methods=["GET", "PUT", "DELETE"]),
+        Route('/sensoren/{dev_eui}/werte', sensor_wert_list, methods=["GET", "PUT", "DELETE"]),
 
         Route('/meldungen', meldungen_list, methods=["GET"]),
         Route('/meldungen', meldungen_form, methods=["POST"]),
-        Route('/meldungen/{id}', meldungen_form, methods=["GET", "PUT", "DELETE"]),
+        Route('/meldungen/{id}', meldungen_form,
+              methods=["GET", "PUT", "DELETE"]),
 
+        Route('/beobachter', beobachter_list, methods=["GET"]),
         Route('/beobachter', beobachter_form, methods=["POST"]),
         Route('/beobachter/{id}', beobachter_form,
               methods=["GET", "PUT", "DELETE"]),
+
         Route('/beobachter/{id}/materialien', material_zu_beobachter_list,
               methods=["GET"]),
 
-        Route('/materialien', material_form, methods=["POST"]),
-        Route('/materialien/{id}', material_form,
+        Route('/materialien', materialien_list, methods=["GET"]),
+        Route('/materialien', materialien_form, methods=["POST"]),
+        Route('/materialien/{id}', materialien_form,
               methods=["GET", "PUT", "DELETE"]),
 
-        Route('/beobachter/{id}/materialien/{mid}', material_zu_beobachter_form, methods=['POST']),
-        Route('/beobachter/materialien/{id}', material_zu_beobachter_form, methods=['DELETE'])
+        Route('/beobachter/{id}/materialien/{mid}',
+              material_zu_beobachter_form, methods=['POST']),
+        Route('/beobachter/materialien/{id}', material_zu_beobachter_form,
+              methods=['DELETE'])
     ]).app

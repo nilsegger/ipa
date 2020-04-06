@@ -2,11 +2,25 @@
   url: assets/js/login.js
 - page: /dashboard.html
   url: assets/js/dashboard.js
+- page: /dashboard_personal.html
+  url: assets/js/dashboard.js
 - page: /personal.html
   url: assets/js/personal.js
-- page: /raeume.html
+- page: /gebaeude.html
   url: assets/js/gebaeude.js
-- page: /raeume.html
+- page: /stockwerke.html
   url: assets/js/stockwerke.js
 - page: /raeume.html
   url: assets/js/raeume.js
+- page: /sensoren.html
+  url: assets/js/sensoren.js
+- page: /materialien.html
+  url: assets/js/materialien.js
+- page: /beobachter.html
+  url: assets/js/beobachter.js
+- page: /material_zu_beobachter.html
+  url: assets/js/material_zu_beobachter.js
+- page: /sensor.html
+  url: assets/js/sensor.js
+- page: /sensor.html
+  url: assets/js/chart.js

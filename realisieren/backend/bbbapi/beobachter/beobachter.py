@@ -92,9 +92,10 @@ class ZaehlerstandBeobachter(BeobachterInterface):
             payload: Sensor Werte in JSON
         """
 
+        beobachter["stand"].value += 1
         actual = beobachter["stand"].value
         trigger = beobachter["ausloeserWert"].value
-        beobachter["stand"].value += 1
+
         if actual >= trigger:
             if await allowed_to_post(connection, beobachter):
                 beschreibung = "Der Sensor '{}' hat seinen Zählerstand von '{}' überschritten.".format(

@@ -97,7 +97,7 @@ MELDUNGEN_TABLE = """
         uuidPersonal UUID,
         art MeldungsArt NOT NULL,
         datum timestamp NOT NULL,
-        bearbeitet boolean DEFAULT false,
+        bearbeitet boolean DEFAULT false NOT NULL,
         beschreibung TEXT NOT NULL,
         FOREIGN KEY (dev_euiSensor) REFERENCES Sensoren(dev_eui) ON DELETE CASCADE,
         FOREIGN KEY (idRaum) REFERENCES Raeume(id) ON DELETE CASCADE,
@@ -118,7 +118,7 @@ MATERIAL_ZU_BEOBACHTER_TABLE = """
         id SERIAL4 PRIMARY KEY,
         idMaterial int4 NOT NULL,
         idBeobachter int4 NOT NULL,
-        anzahl int DEFAULT 1,
+        anzahl int DEFAULT 1 NOT NULL,
         FOREIGN KEY (idMaterial) REFERENCES Materialien(id) ON DELETE CASCADE,
         FOREIGN KEY (idBeobachter) REFERENCES Beobachter(id) ON DELETE CASCADE
     );

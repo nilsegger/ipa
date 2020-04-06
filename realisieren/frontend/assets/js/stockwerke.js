@@ -1,15 +1,15 @@
 function setStockwerkRow(id, name, niveau, gebaeudeId, gebaeudeName, row) {
 
-    let rowId = "stockwerk-"+id+"-row";
-    let viewId = "stockwerk-"+id+"-view";
-    let deleteId = "stockwerk-"+id+"-delete";
+    let rowId = "stockwerk-" + id + "-row";
+    let viewId = "stockwerk-" + id + "-view";
+    let deleteId = "stockwerk-" + id + "-delete";
     let tableId = "#stockwerk-table";
 
-    let columns = '<td>'+name+'</td><td>'+niveau+'</td><td>'+gebaeudeName+'</td><td><button class="btn-info btn" id="'+viewId+'">Editieren</button><button id="'+deleteId+'" class="btn-danger btn">Löschen</button></td>';
+    let columns = '<td>' + name + '</td><td>' + niveau + '</td><td>' + gebaeudeName + '</td><td><button class="btn-info btn" id="' + viewId + '">Editieren</button><button id="' + deleteId + '" class="btn-danger btn">Löschen</button></td>';
     let table = $(tableId);
 
-    if(row === undefined) {
-        table.append('<tr id="'+rowId+'">'+columns+'</tr>');
+    if (row === undefined) {
+        table.append('<tr id="' + rowId + '">' + columns + '</tr>');
     } else {
         row.html(columns);
     }
@@ -17,9 +17,9 @@ function setStockwerkRow(id, name, niveau, gebaeudeId, gebaeudeName, row) {
     $("#" + viewId).click(
         function () {
             selectedStockwerk = id;
-            $("#stockwerk-name").val(name);
-            $("#stockwerk-niveau").val(niveau);
-            $("#stockwerk-gebaeude").val(gebaeudeId);
+            reset($("#stockwerk-name"), name);
+            reset($("#stockwerk-niveau"), niveau);
+            reset($("#stockwerk-gebaeude"), gebaeudeId);
             $("#stockwerke-form").modal('show');
         }
     );
@@ -27,7 +27,7 @@ function setStockwerkRow(id, name, niveau, gebaeudeId, gebaeudeName, row) {
     $("#" + deleteId).click(
         function () {
             Client.delete(endpoint + 'stockwerke/' + id, function (response) {
-                if(response.status === 200) {
+                if (response.status === 200) {
                     $("#" + rowId).remove();
                 } else {
                     // TODO fehlermeldig
@@ -52,7 +52,7 @@ function stockwerkForm(method, url, id, row) {
     let niveauValid = check(niveau);
     let gebaeudeIDValid = check(gebaeudeID);
 
-    if(nameValid && niveauValid && gebaeudeIDValid) {
+    if (nameValid && niveauValid && gebaeudeIDValid) {
         let nameVal = name.val();
         let niveauVal = niveau.val();
         let gebaeudeIdVal = gebaeudeID.val();
@@ -65,17 +65,17 @@ function stockwerkForm(method, url, id, row) {
             }
         };
 
-        method(url, JSON.stringify(request), function(response) {
+        method(url, JSON.stringify(request), function (response) {
 
-            if(response.status === 200) {
+            if (response.status === 200) {
 
-                if(id === undefined) {
+                if (id === undefined) {
                     id = JSON.parse(response.responseText)["id"];
                 }
 
-                setStockwerkRow(id, nameVal, niveauVal, gebaeudeIdVal, gebaeudeID.text(), row);
+                setStockwerkRow(id, nameVal, niveauVal, gebaeudeIdVal, $("#stockwerk-gebaeude option:selected").text(), row);
 
-                 $("#stockwerke-form").modal("hide");
+                $("#stockwerke-form").modal("hide");
 
             } else {
                 // TODO fehlermeldig
@@ -87,45 +87,34 @@ function stockwerkForm(method, url, id, row) {
 
 }
 
-
-function loadStockwerke() {
-
-    Client.get(endpoint + 'stockwerke', function(response) {
-        if(response.status === 200) {
-            let list = JSON.parse(response.responseText)['list'];
-            for(let i = 0; i < list.length; i++) {
-                let item = list[i];
-                setStockwerkRow(item["id"], item["name"],  item["niveau"], item["gebaeude"]["id"], item["gebaeude"]["name"]);
-
-                $("#raum-stockwerk").append("<option value='"+ item["id"] +"'>"+item["name"] + " " + item["gebaeude"]["name"] + "</option>");
-            }
-        } else {
-            // TODO Fehlermeldig
-        }
-
-    })
-
-}
-
 let selectedStockwerk;
 
-$(document).ready(function() {
-    loadStockwerke();
+$(document).ready(function () {
 
+    populateTable('stockwerke', loadStockwerke, $("#stockwerke-loader"), $("#stockwerke-empty"), undefined, function (item) {
+        setStockwerkRow(item["id"], item["name"], item["niveau"], item["gebaeude"]["id"], item["gebaeude"]["name"]);
+    });
+
+    loadGebaeude(function (list) {
+        for (let i = 0; i < list.length; i++) {
+            let item = list[i];
+            $("#stockwerk-gebaeude").append('<option value="' + item["id"] + '">' + item["name"] + '</option>');
+        }
+    });
 
     $("#create-stockwerk-btn").click(function () {
         selectedStockwerk = undefined;
-        $("#stockwerk-name").val("");
-        $("#stockwerk-niveau").val("");
-        $("#stockwerk-gebaeude").val("");
+        reset($("#stockwerk-name"));
+        reset($("#stockwerk-niveau"));
+        reset($("#stockwerk-gebaeude"));
     });
 
-    $("#stockwerk-save-btn").click(function() {
+    $("#stockwerk-save-btn").click(function () {
 
-        if(selectedStockwerk === undefined) {
+        if (selectedStockwerk === undefined) {
             stockwerkForm(Client.post, endpoint + 'stockwerke');
         } else {
-            stockwerkForm(Client.put, endpoint + 'stockwerke/' + selectedStockwerk, selectedStockwerk, $("#stockwerk-"+ selectedStockwerk +"-row"));
+            stockwerkForm(Client.put, endpoint + 'stockwerke/' + selectedStockwerk, selectedStockwerk, $("#stockwerk-" + selectedStockwerk + "-row"));
         }
 
     });

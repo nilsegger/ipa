@@ -1,16 +1,16 @@
 ---
 layout: default
-title: Räume
+title: Sensoren
 isAdmin: true
 ---
 
-{% include raum_form.html %}
+{% include sensor_form.html %}
 
 <div class="container mt-3">
 
-    <h1>Räume</h1>
+    <h1>Sensoren</h1>
 
-    <button id="create-raum-btn" class="btn btn-primary" data-toggle="modal" data-target="#raum-form">Raum
+    <button id="create-sensor-btn" class="btn btn-primary" data-toggle="modal" data-target="#sensor-form">Sensor
         erstellen
     </button>
 
@@ -18,20 +18,22 @@ isAdmin: true
         <table class="mt-3 table table-striped">
             <thead>
             <tr>
+                <th>EUI</th>
+                <th>Art</th>
                 <th>Name</th>
-                <th>Stockwerk</th>
+                <th>Ort</th>
                 <th>Aktionen</th>
             </tr>
             </thead>
-            <tbody id="raum-table"></tbody>
+            <tbody id="sensor-table"></tbody>
             <tfoot>
-            <tr id="raeume-loader">
-                <td colspan="3">
+            <tr id="sensor-loader">
+                <td colspan="5">
                     <div class="spinner-border text-primary"></div>
                 </td>
             </tr>
-            <tr id="raeume-empty">
-                <td colspan="3" class="text-primary">Es existieren keine Räume.</td>
+            <tr id="sensor-empty">
+                <td colspan="5" class="text-primary">Es existieren keine Sensoren.</td>
             </tr>
             </tfoot>
         </table>

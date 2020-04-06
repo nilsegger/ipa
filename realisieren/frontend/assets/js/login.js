@@ -40,7 +40,11 @@ function signIn() {
                         success.fadeIn(0);
                         let responseText = JSON.parse(response.responseText);
                         Auth.saveTokens(responseText["token"], responseText["refresh_token"]);
-                        window.location.replace(dashboard);
+                        if(Auth.getRole() === 'ADMIN') {
+                            window.location.replace(adminDashboard);
+                        } else {
+                            window.location.replace(personalDashboard);
+                        }
                     } else {
                         error.fadeIn(0);
                     }
@@ -52,5 +56,5 @@ function signIn() {
 
 
 $(document).ready(function () {
-    let button = $("#login-btn").click(signIn);
+    $("#login-btn").click(signIn);
 });

@@ -1,7 +1,8 @@
 const endpoint = "http://localhost:8000/";
 const self = "http://localhost:4000/";
 const login = self;
-const dashboard = self + "dashboard";
+const adminDashboard = self + "dashboard.html";
+const personalDashboard = self + "dashboard_personal.html";
 
 class Auth {
 
@@ -110,7 +111,7 @@ function check(elem, min_len, max_len, skipEmpty=false) {
     let minValid = min_len == null ? true : value.length >= min_len;
     let maxValid = max_len == null ? true : value.length <= max_len;
 
-    if (!value || !minValid || !maxValid) {
+    if (value == null || !value || !minValid || !maxValid) {
         elem.addClass('is-invalid');
         return false;
     } else {
@@ -118,6 +119,15 @@ function check(elem, min_len, max_len, skipEmpty=false) {
         return true;
     }
 
+}
+
+function reset(elem, val) {
+    /*
+       Entfernt die Klasse is-invalid und setzt den Wert eines Input Feldes auf den val Parameter,
+       ist dieser undefined, so wird das Feld leer.
+     */
+    elem.val(val === undefined ? "" : val);
+    elem.removeClass('is-invalid');
 }
 
 $(document).ready(function () {
@@ -130,8 +140,18 @@ $(document).ready(function () {
 
     let signedIn = Auth.retrieveRefreshToken() != null;
     if (signedIn && window.location.href === login) {
-        window.location.replace(dashboard);
+        if(Auth.getRole() === 'ADMIN') {
+            window.location.replace(adminDashboard);
+        } else {
+            window.location.replace(personalDashboard);
+        }
     } else if (!signedIn && window.location.href !== login) {
         Auth.logout();
+    } else if(signedIn && Auth.getRole() === 'PERSONAL' && window.location.href !== personalDashboard) {
+        window.location.replace(personalDashboard);
     }
+
+    $("#logout-btn").click(function () {
+        Auth.logout();
+    })
 });

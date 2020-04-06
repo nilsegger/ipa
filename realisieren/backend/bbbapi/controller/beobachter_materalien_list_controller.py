@@ -14,7 +14,7 @@ class BeobachterMateralienListController(ListController):
     async def _select_stmt(self, limit, offset, join_foreign_keys) -> str:
 
        return """
-            SELECT materialien.id as "id", anzahl, materialien.name as "name" FROM materialzubeobachter LEFT JOIN materialien on materialzubeobachter.idmaterial = materialien.id
+            SELECT materialzubeobachter.id as "id", anzahl, materialien.name as "name" FROM materialzubeobachter LEFT JOIN materialien on materialzubeobachter.idmaterial = materialien.id
             WHERE idbeobachter=$1
        """
 

@@ -1,16 +1,18 @@
 ---
 layout: default
-title: Räume
+title: Stockwerke
 isAdmin: true
 ---
 
-{% include raum_form.html %}
+{% include stockwerke_form.html %}
 
 <div class="container mt-3">
 
-    <h1>Räume</h1>
 
-    <button id="create-raum-btn" class="btn btn-primary" data-toggle="modal" data-target="#raum-form">Raum
+    <h1>Stockwerke</h1>
+
+    <button id="create-stockwerk-btn" class="btn btn-primary" data-toggle="modal" data-target="#stockwerke-form">
+        Stockwerk
         erstellen
     </button>
 
@@ -19,21 +21,26 @@ isAdmin: true
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Stockwerk</th>
+                <th>Niveau</th>
+                <th>Gebäude</th>
                 <th>Aktionen</th>
             </tr>
             </thead>
-            <tbody id="raum-table"></tbody>
+            <tbody id="stockwerk-table">
+
+            </tbody>
+
             <tfoot>
-            <tr id="raeume-loader">
+            <tr id="stockwerke-loader">
                 <td colspan="3">
                     <div class="spinner-border text-primary"></div>
                 </td>
             </tr>
-            <tr id="raeume-empty">
-                <td colspan="3" class="text-primary">Es existieren keine Räume.</td>
+            <tr id="stockwerke-empty">
+                <td colspan="3" class="text-primary">Es existieren keine Stockwerke.</td>
             </tr>
             </tfoot>
         </table>
     </div>
+
 </div>

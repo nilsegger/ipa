@@ -81,6 +81,12 @@ function loadAdmin() {
     loadMoreBtnRow.fadeOut(0);
 
     getMeldungen(function (list) {
+
+        if(list.length === 0) {
+            let table = $("#meldungen_table");
+            table.append("<tr><td colspan='6' class='text-primary'>Keine Meldungen vorhanden.</td></tr>");
+        }
+
         for (let i = 0; i < list.length; i++) {
             let item = list[i];
             let datum = new Date(item["datum"] * 1000);
