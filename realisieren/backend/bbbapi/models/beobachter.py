@@ -11,7 +11,11 @@ from tedious.mdl.model import Model
 
 
 class Beobachter(Model):
-    """Modell welches eine Beobachter Reihe wiederspiegelt."""
+    """Ein Beobachtermodell entspricht einer Reihe aus der Beobachter Tabelle.
+
+    Felder:
+        id, name, art, wertName, ausloeserWert, stand, sensor, raum, stockwerk, gebaeude
+    """
 
     def __init__(self, name: str=None, _id=None, wert_name=None, ausloeser_wert=None, stand=None):
         super().__init__(name, [

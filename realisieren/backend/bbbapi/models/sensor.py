@@ -10,7 +10,11 @@ from tedious.mdl.model import Model, IOModel
 
 
 class Sensor(Model):
-    """Ein Sensor Modell stellt eine Reihe aus der Sensoren Tabelle dar."""
+    """Ein Sensormodell entspricht einer Reihe aus der Sensoren Tabelle.
+
+    Felder:
+        dev_eui, art, name, raum, stockwerk, gebaeude
+    """
 
     def __init__(self, name: str=None, dev_eui=None):
         super().__init__(name, [

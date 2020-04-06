@@ -14,6 +14,12 @@ from tedious.mdl.model import Model, IOModel
 
 
 class Meldung(Model):
+    """Ein Meldungsmodell entspricht einer Reihe aus der Meldungen Tabelle.
+
+    Felder:
+        id, art, bearbeitet, beschreibung, datum, raum, beobachter, gebaeude, stockwerk,
+        sensor, personal
+    """
 
     def __init__(self, name: str = None, _id=None):
         super().__init__(name, [

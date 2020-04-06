@@ -5,8 +5,10 @@ from bbbapi.common_types import Roles
 
 
 class Personal(Model):
-    """Wiederspiegelt eine Person aus dem Reinigungspersonal oder der
-    Administratorgruppe.
+    """Ein Personalmodell entspricht einer Reihe aus der Personal Tabelle.
+
+    Felder:
+        uuid, name, benutzername, passwort, rolle
     """
 
     def __init__(self, name: str = None, uuid=None):

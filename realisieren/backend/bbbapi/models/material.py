@@ -3,7 +3,11 @@ from tedious.mdl.model import Model
 
 
 class Material(Model):
-    """Modell für ein Material. Ein Material hat einen nur einen Namen und ID."""
+    """Ein Materialmodell entspricht einer Reihe aus der Materialien Tabelle.
+
+    Felder:
+        id, name, anzahl
+    """
 
     def __init__(self, name: str=None, _id=None):
         super().__init__(name, [

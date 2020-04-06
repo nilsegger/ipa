@@ -4,7 +4,11 @@ from tedious.mdl.fields import *
 
 
 class Stockwerk(Model):
-    """Modell für die Datenhaltung von Stockwerken."""
+    """Ein Stockwerkmodell entspricht einer Reihe aus der Stockwerke Tabelle.
+
+    Felder:
+        id, name, niveau, gebaeude
+    """
 
     def __init__(self, name: str = None, _id=None):
         super().__init__(name, [

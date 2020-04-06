@@ -46,7 +46,7 @@ def create_meldung(beobachter, sensor, beschreibung):
 
 
 class BeobachterInterface:
-    """Ein Beobachter erstellt eine Meldung wenn ein gewisser Wert überschritten wurde."""
+    """Ein Beobachter erstellt eine Meldung, wenn eine Bedingung nicht eingehalten wird."""
 
     def __init__(self, _type: BeobachterArt):
         self.type = _type
@@ -56,16 +56,18 @@ class BeobachterInterface:
                     beobachter_controller: BeobachterController,
                     meldung_controller: MeldungController,
                     sensor: Sensor, payload: Dict[str, Any]):
-        """Wird Aufgerufen wenn ein neuer Wert eines Sensors erhalten wurde.
+        """Wird Aufgerufen, wenn ein neuer Wert eines Sensors erhalten wurde.
 
         Args:
-            connection: Verbindung zur Datenbank
-            beobachter: Beobachter Instanz von Datenbank
+            connection: Verbindung zur Datenbank.
+            beobachter: Beobachter Instanz von Datenbank.
             beobachter_controller: Controller für die Aktualisierung eines Beobachter.
             meldung_controller: Controller für das Erstellen einer Meldung.
-            sensor: Sensor Modell
-            payload: JSON Werte des Modells
+            sensor: Sensor Modell aus der Datenbank, entspricht einer Reihe.
+            payload: Werte des Sensors als Dict dekodiert eines :class:`~bbbapi.decoders.decoder.Decoder`.
+
         """
+
         raise NotImplementedError
 
 
@@ -84,12 +86,12 @@ class ZaehlerstandBeobachter(BeobachterInterface):
         Der Stand wird mit jedem Wert des Sensor inkrementiert.
 
         Args:
-            connection: Verbindung zur Datenbank
-            beobachter: Beobachter Instanz von Datenbank
+            connection: Verbindung zur Datenbank.
+            beobachter: Beobachter Instanz von Datenbank.
             beobachter_controller: Controller für die Aktualisierung eines Beobachter.
-            meldung_controller: Controller für das Erstellen von Meldungen
-            sensor: Sensor Modell
-            payload: Sensor Werte in JSON
+            meldung_controller: Controller für das Erstellen einer Meldung.
+            sensor: Sensor Modell aus der Datenbank, entspricht einer Reihe.
+            payload: Werte des Sensors als Dict dekodiert eines :class:`~bbbapi.decoders.decoder.Decoder`.
         """
 
         beobachter["stand"].value += 1
@@ -122,12 +124,12 @@ class RichtwertDarueberBeobachter(BeobachterInterface):
         ein definierter Wert überschreitet, wird eine Meldung ausgeschrieben.
 
         Args:
-            connection: Verbindung zur Datenbank
-            beobachter: Beobachter Instanz von Datenbank
+            connection: Verbindung zur Datenbank.
+            beobachter: Beobachter Instanz von Datenbank.
             beobachter_controller: Controller für die Aktualisierung eines Beobachter.
-            meldung_controller: Controller für das Erstellen von Meldungen
-            sensor: Sensor Modell
-            payload: Sensor Werte in JSON
+            meldung_controller: Controller für das Erstellen einer Meldung.
+            sensor: Sensor Modell aus der Datenbank, entspricht einer Reihe.
+            payload: Werte des Sensors als Dict dekodiert eines :class:`~bbbapi.decoders.decoder.Decoder`.
         """
 
         actual = payload[beobachter["wertName"].value]
@@ -155,12 +157,12 @@ class RichtwertDarunterBeobachter(BeobachterInterface):
         ein definierter Wert unterschreitet, wird eine Meldung ausgeschrieben.
 
         Args:
-            connection: Verbindung zur Datenbank
-            beobachter: Beobachter Instanz von Datenbank
+            connection: Verbindung zur Datenbank.
+            beobachter: Beobachter Instanz von Datenbank.
             beobachter_controller: Controller für die Aktualisierung eines Beobachter.
-            meldung_controller: Controller für das Erstellen von Meldungen
-            sensor: Sensor Modell
-            payload: Sensor Werte in JSON
+            meldung_controller: Controller für das Erstellen einer Meldung.
+            sensor: Sensor Modell aus der Datenbank, entspricht einer Reihe.
+            payload: Werte des Sensors als Dict dekodiert eines :class:`~bbbapi.decoders.decoder.Decoder`.
         """
 
         actual = payload[beobachter["wertName"].value]

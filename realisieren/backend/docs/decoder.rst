@@ -7,7 +7,7 @@ Decoders
 Einführung
 ==========
 
-Das Decoders Modul enthält die verschiedenen Sensor Wert Dekodierer.
+Das Decoders Modul enthält die verschiedenen Sensor Dekodierer.
 Die Aufgabe eines Dekodierers ist einen Sensor Wert entgegenzunehmen und
 diesen in die verschiedenen Werte, wie zum Beispiel Temperatur, Licht und
 CO2 aufzuteilen und diese wieder zurückzugeben.
@@ -19,26 +19,26 @@ Klassen
 Interface
 ---------
 
-.. autoclass:: decoders.decoder.Decoder
+.. autoclass:: bbbapi.decoders.decoder.Decoder
     :members:
 
 -------------
 Elsys ERS CO2
 -------------
 
-.. autoclass:: decoders.elsys.ElsysDecoder
+.. autoclass:: bbbapi.decoders.elsys.ElsysDecoder
     :members:
 
 ----------
 Adeunis RF
 ----------
 
-.. autoclass:: decoders.adeunis.AdeunisDecoder
+.. autoclass:: bbbapi.decoders.adeunis.AdeunisDecoder
     :members:
 
 ----
 Tabs
 ----
 
-.. autoclass:: decoders.tabs.TabsDecoder
+.. autoclass:: bbbapi.decoders.tabs.TabsDecoder
     :members:

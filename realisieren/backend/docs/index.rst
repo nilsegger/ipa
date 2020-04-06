@@ -13,16 +13,51 @@ Dies ist die technische Dokumentation für den Python Quellcode im Backend.
    :caption: Contents:
 
    decoder
+   beobachter
+   models
+   controllers
 
 
+Oft benutzte Typen in diesem Projekt
+====================================
+
+------
+Rollen
+------
+
+Bei den Rollen wird lediglich zwischen einem Adminitrator und einer Person aus dem Personal unterschieden.
+
+.. autoclass:: bbbapi.common_types.Roles
+   :members:
+
+--------
 Sensoren
-========
+--------
 
 Es gibt vordefinierte Sensoren, möchte man einen Neuen hinzufügen, so muss
 für diesen einen :class:`~decoder.Decoder` erstellt werden und einen
 Eintrag in die folgende Enumerierung eingetragen werden.
 
-.. autoclass:: common_types.SensorTypes
+.. autoclass:: bbbapi.common_types.SensorArt
+   :members:
+
+----------
+Beobachter
+----------
+
+Bei den Sensoren gibt es drei verschiedene Arten.
+
+.. autoclass:: bbbapi.common_types.BeobachterArt
+   :members:
+
+---------
+Meldungen
+---------
+
+Eine Meldung wird entweder automatisch von einem Beobachter erstellt oder manuell eines Personal.
+
+.. autoclass:: bbbapi.common_types.MeldungsArt
+   :members:
 
 Indices and tables
 ==================
