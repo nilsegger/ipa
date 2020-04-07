@@ -38,11 +38,12 @@ class Auth {
 
         $.ajax(endpoint + 'login', {
             method: 'PUT',
-            data: Auth.retrieveAccessToken(),
+            data: Auth.retrieveRefreshToken(),
             complete: function (response) {
-                if(response.code === 200) {
+                if(response.status === 200) {
                     let responseText = JSON.parse(response.responseText);
                     Auth.saveTokens(responseText["token"]);
+                    callback();
                 } else {
                     Auth.logout();
                 }
@@ -90,11 +91,13 @@ class Client {
                 if(response.status === 401 && !isNested) {
                     Auth.retrieveNewAccessToken(function () {
                         Client._request(url, method, callback, data,true);
-                    })
+                    });
                 } else if(response.status === 401 && isNested) {
                     Auth.logout();
+                } else {
+                    callback(response);
                 }
-                callback(response);
+
             }
         });
     }
@@ -172,5 +175,6 @@ $(document).ready(function () {
 
     $("#logout-btn").click(function () {
         Auth.logout();
-    })
+    });
+
 });
