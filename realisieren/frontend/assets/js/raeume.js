@@ -44,48 +44,34 @@ function setRaumRow(id, name, stockwerkId, stockwerkName, row) {
 
 
 function raumForm(method, url, id, row) {
-
     /*
         Prüft Werte und schickt Erstellungs Anfrage an das Backend.
      */
-
     let name = $("#raum-name");
     let stockwerId = $("#raum-stockwerk");
-
     let nameValid = check(name, 3, 100);
     let stockwerkValid = check(stockwerId);
-
     if(nameValid && stockwerkValid) {
         let nameVal = name.val();
         let stockwerkVal = stockwerId.val();
-
         let request = {
             'name': nameVal,
             'stockwerk': {
                 'id': Number(stockwerkVal)
             }
         };
-
         method(url, JSON.stringify(request), function(response) {
-
             if(response.status === 200) {
-
                 if(id === undefined) {
                     id = JSON.parse(response.responseText)["id"];
                 }
-
                 setRaumRow(id, nameVal, stockwerkVal, $("#raum-stockwerk option:selected").text(), row);
-
                  $("#raum-form").modal("hide");
-
             } else {
                 // TODO fehlermeldig
             }
-
         });
-
     }
-
 }
 
 let selectedRaum;

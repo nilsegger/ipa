@@ -3,6 +3,11 @@
  */
 
 function loadList(url, callback) {
+    /*
+        Lädt eine Liste aus dem Backend und ruft callback mit der Liste,
+        Bool ob Ende erreicht ist
+        und dem Offset, welcher bei der nächsten Anfrage mitgesendet werden muss.
+     */
     Client.get(url, function (response) {
         if (response.status === 200) {
             let result = JSON.parse(response.responseText);
