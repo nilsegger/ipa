@@ -13,9 +13,6 @@ $logo-height-px: 699;
 $logo-margin-vertical-px: $logo-width-px / 100 * (100 / $logo-width-mm * $logo-margin-vertical-mm);
 $logo-margin-horizontal-px: $logo-height-px / 100 * (100 / $logo-height-mm * $logo-margin-horizontal-mm);
 
-$primary: #c84646;
-
-
 @mixin logo-size($scale) {
   $logo-height-scaled: $logo-height-px * $scale;
   $margin-vertical-scaled: $logo-margin-vertical-px * $scale;
@@ -26,6 +23,8 @@ $primary: #c84646;
   margin-right: $margin-horizontal-scaled + px;
 }
 
+
+$primary: #c84646;
 
 .logo-wrapper {
   position: relative;
