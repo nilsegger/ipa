@@ -56,9 +56,13 @@ class Auth {
         /*
             Dekodiert den Payload des Accesstoken und antwortet mit der Rolle.
          */
-        let token = Auth.retrieveAccessToken();
-        let payload = atob(token.split('.')[1]);
-        return JSON.parse(payload)['role'];
+        try {
+            let token = Auth.retrieveAccessToken();
+            let payload = atob(token.split('.')[1]);
+            return JSON.parse(payload)['role'];
+        } catch (e) {
+            return undefined;
+        }
     }
 
     static logout() {

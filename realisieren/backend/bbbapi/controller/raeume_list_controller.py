@@ -26,4 +26,5 @@ class RaeumeListController(ListController):
                 FROM raeume
                 LEFT JOIN stockwerke ON raeume.idstockwerk = stockwerke.id
                 LEFT JOIN gebaeude ON stockwerke.idgebaeude = gebaeude.id
+                ORDER BY "gebaeude.id", "stockwerk.niveau"
             """
